@@ -1,5 +1,5 @@
 ---
-title: DermAlert
+title: AguaPrev
 date: 2025-05-05
 image: /assets/posts/bg/dermatoscopio.png
 description: Primeira etapa do projeto concluído
@@ -10,17 +10,17 @@ icon: /assets/posts/icons/montanha_icon.png
 ---
 
 
-O câncer de pele representa uma das neoplasias mais comuns globalmente, mas também uma das mais preveníveis quando detectado precocemente. É neste cenário que surge o **DermAlert**, um projeto inovador que promete transformar a triagem de pacientes com suspeita de câncer de pele, especialmente no contexto da atenção primária à saúde.
+O câncer de pele representa uma das neoplasias mais comuns globalmente, mas também uma das mais preveníveis quando detectado precocemente. É neste cenário que surge o **AguaPrev**, um projeto inovador que promete transformar a triagem de pacientes com suspeita de câncer de pele, especialmente no contexto da atenção primária à saúde.
 
 ## O Desafio da Detecção Precoce
 
 A identificação precoce de lesões suspeitas de câncer de pele é fundamental para o sucesso do tratamento. No entanto, muitos profissionais da atenção primária enfrentam desafios na avaliação dermatológica, seja pela falta de especialização específica ou pela ausência de ferramentas adequadas para uma análise mais precisa.
 
-O DermAlert foi concebido para preencher essa lacuna, oferecendo uma solução tecnológica que auxilia na triagem eficiente e no encaminhamento adequado de pacientes, otimizando o fluxo de atendimento e aumentando as chances de detecção precoce.
+O AguaPrev foi concebido para preencher essa lacuna, oferecendo uma solução tecnológica que auxilia na triagem eficiente e no encaminhamento adequado de pacientes, otimizando o fluxo de atendimento e aumentando as chances de detecção precoce.
 
 ## Primeira Etapa: Fundações Sólidas Estabelecidas
 
-A primeira fase do projeto DermAlert foi concluída com resultados positivos, estabelecendo as bases para uma ferramenta robusta e eficaz:
+A primeira fase do projeto AguaPrev foi concluída com resultados positivos, estabelecendo as bases para uma ferramenta robusta e eficaz:
 
 ### Levantamento de Requisitos
 Nossa equipe conduziu um levantamento abrangente de requisitos, envolvendo profissionais de saúde, dermatologistas e especialistas em tecnologia. Este processo garantiu que o desenvolvimento fosse orientado pelas necessidades reais dos usuários finais e pelas melhores práticas clínicas.
@@ -39,7 +39,7 @@ Realizamos testes bem-sucedidos da integração entre dermatoscópio e dispositi
 
 ## Próximas Etapas: Rumo à Implementação Clínica
 
-Com as fundações estabelecidas, o projeto DermAlert avança para fases cruciais que aproximarão a solução da realidade prática:
+Com as fundações estabelecidas, o projeto AguaPrev avança para fases cruciais que aproximarão a solução da realidade prática:
 
 ### Fase de Beta Teste
 Iniciaremos em breve a fase de testes beta com um grupo seleto de profissionais e instituições. Esta etapa será fundamental para:
@@ -56,7 +56,7 @@ Paralelamente, estamos preparando a documentação necessária para submissão a
 
 ## Impacto Esperado na Atenção Primária
 
-O DermAlert tem o potencial de gerar transformações significativas no atendimento dermatológico na atenção primária:
+O AguaPrev tem o potencial de gerar transformações significativas no atendimento dermatológico na atenção primária:
 
 **Para Profissionais**: Maior confiança na avaliação de lesões suspeitas, redução do tempo de triagem e melhoria na qualidade do encaminhamento para especialistas.
 
@@ -68,12 +68,12 @@ O DermAlert tem o potencial de gerar transformações significativas no atendime
 
 ## Compromisso com a Inovação Responsável
 
-O desenvolvimento do DermAlert está pautado pelos mais altos padrões éticos e científicos. Nosso compromisso vai além da inovação tecnológica, abrangendo a responsabilidade social e o impacto positivo na saúde pública.
+O desenvolvimento do AguaPrev está pautado pelos mais altos padrões éticos e científicos. Nosso compromisso vai além da inovação tecnológica, abrangendo a responsabilidade social e o impacto positivo na saúde pública.
 
 A parceria entre tecnologia e medicina, quando conduzida com rigor científico e ética, tem o poder de democratizar o acesso a cuidados de qualidade e salvar vidas através da detecção precoce.
 
-O projeto DermAlert representa um marco importante na integração entre tecnologia e saúde no Brasil. Com a primeira etapa concluída com sucesso e as próximas fases bem estruturadas, estamos confiantes de que em breve ofereceremos uma ferramenta que fará a diferença real na vida de profissionais de saúde e, principalmente, de pacientes.
+O projeto AguaPrev representa um marco importante na integração entre tecnologia e saúde no Brasil. Com a primeira etapa concluída com sucesso e as próximas fases bem estruturadas, estamos confiantes de que em breve ofereceremos uma ferramenta que fará a diferença real na vida de profissionais de saúde e, principalmente, de pacientes.
 
 A jornada continua, e cada etapa nos aproxima do objetivo de tornar a detecção precoce do câncer de pele mais acessível, eficiente e confiável em todos os níveis de atenção à saúde.
 
-*Acompanhe nossos próximos posts para atualizações sobre o progresso do projeto DermAlert e seus resultados nos testes beta.*
+*Acompanhe nossos próximos posts para atualizações sobre o progresso do projeto AguaPrev e seus resultados nos testes beta.*

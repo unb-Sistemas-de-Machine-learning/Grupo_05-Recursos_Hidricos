@@ -1,6 +1,6 @@
-site_name: DermAlert
-repo_url: https://github.com/DermAlert/dermalert.github.io
-repo_name: DermAlert
+site_name: Recursos Hídricos - ML
+repo_url: https://github.com/unb-Sistemas-de-Machine-learning/Grupo_05-Recursos_Hidricos/tree/gh-pages
+repo_name: Recursos Hídricos - ML
 docs_dir: docs
 
 nav:
@@ -19,7 +19,7 @@ nav:
       - Atas de Reunião: ajuda-e-suporte/documentacao-gces/atas-reunioes.md
       - Checklists: ajuda-e-suporte/documentacao-gces/checklist.md
       - Backlog do projeto: ajuda-e-suporte/documentacao-gces/backlog.md
-  - Curso de Extensão:
+  - Dashboards:
     - curso-de-extensao/sobre-o-curso.md
   - Sobre:
     - sobre/sobre-o-projeto.md
