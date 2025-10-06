@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== Base ===== */
+@layer base {
+  :root { --brand:#094559; }
+  html,body{ @apply overflow-x-hidden; }
+  html{ scroll-behavior:smooth; }
+  body{ @apply bg-white dark:bg-[#0E1A2B]; }
+  ::selection{ background:rgba(9,69,89,.18); }
+}
+
+/* ===== Utilidades (hero etc.) ===== */
+@layer utilities {
+  .fade-item{ @apply opacity-0 translate-y-3 will-change-transform transition; }
+  .fade-in{ @apply opacity-100 translate-y-0; }
+}
+
+/* ===== MENU (fora do header): drawer mobile + modal desktop ===== */
+@layer components {
+  /* Overlay root (agora é irmão do header, não filho) */
+  [data-menu]{
+    position: fixed; inset: 0; z-index: 60; /* acima do header z-50 */
+    opacity: 0; pointer-events: none;
+    background: rgba(0,0,0,.40);
+    transition: opacity 220ms ease;
+  }
+  [data-menu].is-open{ opacity:1; pointer-events:auto; }
+
+  /* === Drawer (MOBILE) === */
+  [data-menu-drawer]{
+    position: absolute; top:0; right:0;
+    height: 100dvh; width: 85vw; max-width: 20rem;
+    background: theme(colors.white); color: theme(colors.gray.900);
+    border-left: 1px solid rgba(0,0,0,.08);
+    transform: translateX(100%);
+    transition: transform 280ms cubic-bezier(.22,1,.36,1);
+    box-shadow: -12px 0 40px rgba(0,0,0,.18);
+  }
+  .dark [data-menu-drawer]{
+    background:#0E1A2B; color: theme(colors.gray.100);
+    border-left-color: rgba(255,255,255,.12);
+  }
+  [data-menu].is-open [data-menu-drawer]{ transform: translateX(0); }
+
+  /* === Modal (DESKTOP) — centralizado pelo overlay com grid === */
+  [data-menu-modal]{ display:none; }
+  @media (min-width:1024px){
+    /* overlay vira grid p/ centralizar */
+    [data-menu]{ display:grid; place-items:center; }
+
+    /* esconder drawer no desktop */
+    [data-menu-drawer]{ display:none; }
+
+    /* modal central */
+    [data-menu-modal]{
+      display:block;
+      position: relative;
+      width: 760px; max-width: 92vw; max-height: calc(100dvh - 4rem);
+      background: theme(colors.white); color: theme(colors.gray.900);
+      border: 1px solid rgba(0,0,0,.08);
+      border-radius: 1rem;
+      box-shadow: 0 30px 80px rgba(0,0,0,.18), 0 14px 40px rgba(0,0,0,.08);
+      transform: scale(.96);
+      opacity: 0;
+      transition:
+        transform 230ms cubic-bezier(.22,1,.36,1),
+        opacity 230ms ease;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      overflow: hidden;
+    }
+    .dark [data-menu-modal]{
+      background:#0E1A2B; color: theme(colors.gray.100);
+      border-color: rgba(255,255,255,.12);
+    }
+    [data-menu].is-open [data-menu-modal]{ transform: scale(1); opacity: 1; }
+  }
+
+  /* ===== Estilos internos do modal (desktop) ===== */
+  .menu-grid{
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 16px;
+    padding: 16px;
+  }
+  .menu-card{
+    @apply rounded-xl border border-black/5 dark:border-white/10 p-4;
+    background: rgba(255,255,255,.7);
+  }
+  .dark .menu-card{ background: rgba(255,255,255,.05); }
+
+  .menu-list a{
+    @apply flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition;
+  }
+  .menu-list a:hover{
+    @apply bg-black/5 dark:bg-white/10;
+  }
+  .menu-list svg{ flex: 0 0 auto; }
+
+  .menu-cta{
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-[var(--brand)] text-white px-4 py-2 text-sm font-medium hover:brightness-110;
+  }
+
+  .menu-kbd{
+    @apply text-[11px] px-1.5 py-0.5 rounded border border-black/10 dark:border-white/15;
+    background: rgba(0,0,0,.06);
+  }
+  .dark .menu-kbd{ background: rgba(255,255,255,.08); }
+}

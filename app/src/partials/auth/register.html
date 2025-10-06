@@ -1,0 +1,69 @@
+<section class="w-full">
+  <div class="w-full max-w-[540px] mx-auto px-5 sm:px-6 lg:px-10 py-10">
+    <header class="mb-8 text-center">
+      <h1 class="text-2xl sm:text-3xl font-semibold text-[#031E21] dark:text-white">Criar Conta</h1>
+      <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">
+        Acesso ao sistema da Órtese — UnB/FCTE
+      </p>
+    </header>
+
+    <form id="register-form" class="rounded-2xl border border-black/5 dark:border-white/10 bg-white/70 dark:bg-white/5 backdrop-blur p-6 shadow space-y-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div>
+          <label for="name" class="block text-sm mb-1">Nome completo</label>
+          <input id="name" name="name" type="text" required
+                 class="w-full rounded-xl border border-gray-300 dark:border-white/20 bg-transparent px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#094559]" />
+        </div>
+        <div>
+          <label for="role" class="block text-sm mb-1">Perfil</label>
+          <select id="role" name="role" class="w-full rounded-xl border border-gray-300 dark:border-white/20 bg-transparent px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#094559]">
+            <option>Médico</option>
+            <option>Paciente</option>
+            <option>Pesquisador</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label for="email" class="block text-sm mb-1">E-mail</label>
+        <input id="email" name="email" type="email" required
+               class="w-full rounded-xl border border-gray-300 dark:border-white/20 bg-transparent px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#094559]" />
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div>
+          <label for="password" class="block text-sm mb-1">Senha</label>
+          <input id="password" name="password" type="password" required
+                 class="w-full rounded-xl border border-gray-300 dark:border-white/20 bg-transparent px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#094559]" />
+          <div class="mt-2 h-1.5 w-full rounded-full bg-gray-200 dark:bg-white/10 overflow-hidden">
+            <div id="pwd-meter" class="h-full w-0 bg-rose-500"></div>
+          </div>
+          <p id="pwd-hint" class="mt-1 text-[11px] text-gray-500 dark:text-gray-400">
+            Use 8+ chars, maiúscula, número e símbolo.
+          </p>
+        </div>
+        <div>
+          <label for="confirm" class="block text-sm mb-1">Confirmar senha</label>
+          <input id="confirm" name="confirm" type="password" required
+                 class="w-full rounded-xl border border-gray-300 dark:border-white/20 bg-transparent px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#094559]" />
+        </div>
+      </div>
+
+      <label class="flex items-start gap-2 text-sm">
+        <input id="terms" type="checkbox" class="mt-1 accent-[#094559]" />
+        <span>Concordo com os <a href="#" class="underline">termos de uso</a> e <a href="#" class="underline">política de privacidade</a>.</span>
+      </label>
+
+      <button type="submit" class="w-full rounded-xl bg-[#094559] text-white py-2.5 text-sm font-semibold hover:brightness-110">
+        Criar conta
+      </button>
+
+      <p id="reg-msg" class="text-xs text-center text-gray-500 dark:text-gray-400">Você receberá um e-mail de confirmação.</p>
+    </form>
+
+    <div class="mt-6 text-center text-sm">
+      <span class="text-gray-500 dark:text-gray-400">Já tem conta?</span>
+      <a href="/login.html" class="ml-2 text-[#094559] hover:underline font-medium">Fazer login</a>
+    </div>
+  </div>
+</section>

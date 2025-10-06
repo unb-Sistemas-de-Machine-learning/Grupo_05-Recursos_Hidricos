@@ -1,0 +1,52 @@
+<section class="w-full">
+  <div class="w-full max-w-[480px] mx-auto px-5 sm:px-6 lg:px-10 py-10">
+    <header class="mb-8 text-center">
+      <h1 class="text-2xl sm:text-3xl font-semibold text-[#031E21] dark:text-white">Acessar Sistema</h1>
+      <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">
+        Órtese Motorizada de Joelho — UnB/FCTE
+      </p>
+    </header>
+
+    <form id="login-form" class="rounded-2xl border border-black/5 dark:border-white/10 bg-white/70 dark:bg-white/5 backdrop-blur p-6 shadow space-y-4">
+      <div>
+        <label for="email" class="block text-sm mb-1">E-mail</label>
+        <input id="email" name="email" type="email" required
+               class="w-full rounded-xl border border-gray-300 dark:border-white/20 bg-transparent px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#094559]" />
+      </div>
+
+      <div>
+        <label for="password" class="block text-sm mb-1">Senha</label>
+        <input id="password" name="password" type="password" required
+               class="w-full rounded-xl border border-gray-300 dark:border-white/20 bg-transparent px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#094559]" />
+      </div>
+
+      <div class="flex items-center justify-between text-sm">
+        <label class="inline-flex items-center gap-2">
+          <input id="remember" type="checkbox" class="accent-[#094559]" />
+          Lembrar
+        </label>
+        <a href="#" class="text-[#094559] hover:underline">Esqueci a senha</a>
+      </div>
+
+      <button type="submit"
+              class="w-full rounded-xl bg-[#094559] text-white py-2.5 text-sm font-semibold hover:brightness-110">
+        Entrar
+      </button>
+
+      <p id="login-msg" class="text-xs text-center text-gray-500 dark:text-gray-400">
+        *Autenticação necessária — conecte ao backend quando estiver pronto.
+      </p>
+    </form>
+
+    <div class="mt-6 text-center text-sm">
+      <span class="text-gray-500 dark:text-gray-400">Não tem conta?</span>
+      <a href="/register.html" class="ml-2 text-[#094559] hover:underline font-medium">Criar conta</a>
+    </div>
+
+    <div class="mt-8 text-center">
+      <a href="/" class="text-sm px-3 py-2 rounded-lg border border-gray-300 dark:border-white/20 hover:bg-black/5 dark:hover:bg-white/10">
+        Voltar ao início
+      </a>
+    </div>
+  </div>
+</section>

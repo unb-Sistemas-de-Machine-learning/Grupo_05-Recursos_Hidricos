@@ -7,13 +7,13 @@
 /* --- 1. HEADER BACKGROUND --- */
 /* Define a cor de fundo do cabeçalho */
 .md-header {
-  background-color: #20596C !important;
+  background-color: #CEE6F2 !important;
 }
 
 /* --- 2. LOGO IMAGE --- */
 /* Ajusta cor, altura e margin-bottom do logo */
 .md-header__button.md-logo img {
-  color: #20596C !important;
+  color: #CEE6F2 !important;
   height: 75px;
   margin-bottom: 0;
 }
@@ -30,17 +30,17 @@
 /* Redefine tipografia e cor do título */
 .md-header__title {
   font-size: 1.4rem !important;
-  color: #F5F5F5 !important;
+  color: #241164 !important;
 }
 
 /* --- 4. TABS --- */
 /* Fundo das abas */
 .md-tabs {
-  background-color: #20596C !important;
+  background-color: #CEE6F2 !important;
 }
 /* Cor dos links das abas */
 .md-tabs__link {
-  color: #F5F5F5 !important;
+  color: #241164 !important;
 }
 /* Espaçamento e peso da fonte dos itens */
 .md-tabs__item {
@@ -94,47 +94,67 @@
 /* --- 9. FOOTER --- */
 /* Define cor de fundo e texto do rodapé */
 .md-footer {
-  background-color: #20596C !important;
-  color: #FFFFFF !important;
+  background-color: #CEE6F2 !important;
+  color: #241164 !important;
 }
 /* Ajusta cor dos links do rodapé */
 .md-footer a {
-  color: #FFFFFF !important;
+  color: #241164 !important;
 }
 /* Garante contraste em elementos SVG do rodapé (ex: ícones) */
 .md-footer svg {
-  fill: #FFFFFF !important;
+  fill: #241164 !important;
+}
+
+
+/* Botão do menu hambúrguer (controla a cor herdada pelo SVG) */
+.md-header__button.md-icon {
+  color: #241164 !important;
+}
+
+/* Garante que o ícone use a cor acima, mesmo se o tema definir outra */
+.md-header__button.md-icon svg {
+  fill: currentColor !important;
+  stroke: currentColor !important; /* cobre ícones desenhados com stroke */
+}
+
+/* Ícone/link de repositório no header */
+.md-header__source,
+.md-header__source .md-source,
+.md-header__source .md-source svg {
+  color: #241164 !important;
+  fill: #241164 !important;
 }
 
 /* ============================================================================
    MOBILE NAV CUSTOMIZATION
    - Personaliza o título do menu mobile e o botão "View source"
-   - Aplica fundo #20596C e texto branco
+   - Aplica fundo #CEE6F2 e texto branco
 ============================================================================ */
 
 @media screen and (max-width: 76.2344em) {
   /* Título do menu (hambúrguer) */
   .md-nav--primary .md-nav__title[for=__drawer] {
-    background-color: #20596C !important;
-    color: #FFFFFF !important;
+    background-color: #CEE6F2 !important;
+    color: #241164 !important;
   }
 
   /* Botão "View source" no menu mobile */
   .md-nav__source {
-    background-color: #20596C !important;
-    color: #FFFFFF !important;
+    background-color: #CEE6F2 !important;
+    color: #241164 !important;
   }
 
   /* (Opcional) Links ou ícones internos podem precisar de cor branca também */
   .md-nav__source a,
   .md-nav__source svg {
-    color: #FFFFFF !important;
-    fill: #FFFFFF !important;
+    color: #241164 !important;
+    fill: #241164 !important;
   }
   /* Define cor de fundo e texto do título lateral no modo mobile */
   .md-nav__title {
-    background-color: #20596C !important;
-    color: #FFFFFF !important;
+    background-color: #CEE6F2 !important;
+    color: #241164 !important;
   }
 }
 
@@ -209,8 +229,8 @@ body {
 
 /* --- CARD PADRÃO --- */
 .card {
-  background: #20596C !important;          /* fundo igual ao navbar */
-  color: #FFFFFF !important;               /* texto branco para contraste */
+  background: #CEE6F2 !important;          /* fundo igual ao navbar */
+  color: #241164 !important;               /* texto branco para contraste */
   border-radius: 0.375rem;                 /* cantos levemente arredondados */
   overflow: hidden;                        /* esconde transbordamentos */
   display: flex;
@@ -243,7 +263,7 @@ body {
   width: 40px;
   height: 40px;
   border-radius: 50%;                      /* círculo */
-  background: #FFFFFF;                     /* fundo branco para destaque */
+  background: #241164;                     /* fundo branco para destaque */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -270,7 +290,7 @@ body {
 .card-title a {
   font-size: 0.9rem;                       /* tamanho de fonte ajustado */
   line-height: 1.2;
-  color: #FFFFFF !important;               /* título em branco */
+  color: #241164 !important;               /* título em branco */
   text-decoration: none;                   /* sem sublinhado padrão */
 }
 .card-title a:hover {
