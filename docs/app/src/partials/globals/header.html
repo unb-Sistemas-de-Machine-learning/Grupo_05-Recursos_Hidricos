@@ -1,0 +1,191 @@
+<!-- /src/partials/globals/header.html -->
+
+<!-- HEADER fixo (acompanha a página) + spacer dinâmico -->
+<header id="site-header" class="fixed left-0 right-0 top-2 sm:top-4 z-[60] w-full flex justify-center px-4">
+  <div
+    data-header-shell
+    class="w-full max-w-[1358px] flex items-center justify-between py-4 px-6 sm:py-5 sm:px-8 lg:py-6 lg:px-10
+           rounded-3xl border border-black/5 bg-white/90 backdrop-blur-md
+           shadow-[0_4px_6px_-1px_rgba(0,0,0,0.10),0_2px_4px_-1px_rgba(0,0,0,0.06)]
+           dark:border-white/10 dark:bg-[#0E1A2B]/85 transition-all duration-300 ease-in-out">
+
+    <!-- LOGO -->
+    <a href="/" class="flex items-center">
+      <img src="home/logo.png" alt="AguaPrev"
+          class="h-16 w-auto select-none transition-all duration-300" />
+    </a>
+
+
+    <!-- 🔥 AÇÕES do MENU ANTIGO (idioma compacto + tema + hambúrguer) -->
+    <div class="flex items-center gap-2 sm:gap-3">
+      <!-- Idioma compacto -->
+      <div class="relative">
+        <button
+          id="lang-compact"
+          class="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 dark:border-white/15
+                 text-sm text-gray-700 dark:text-gray-200 bg-white/60 dark:bg-white/10 hover:bg-white dark:hover:bg-white/5
+                 focus:outline-none focus:ring-2 focus:ring-[#0A5C67] focus:ring-offset-2 dark:focus:ring-offset-[#0E1A2B]
+                 transition-all duration-200"
+          aria-haspopup="true" aria-expanded="false">
+          <span class="font-medium" data-i18n="Header.cta_lang">PT-BR</span>
+          <svg viewBox="0 0 20 20" class="w-4 h-4" fill="currentColor"><path d="M5.5 7.5l4.5 4.5 4.5-4.5"></path></svg>
+        </button>
+
+        <div id="lang-compact-menu"
+             class="hidden absolute right-0 mt-2 w-36 rounded-xl border border-gray-200 dark:border-white/15
+                    bg-white/95 dark:bg-[#0E1A2B]/95 backdrop-blur-xl shadow-lg overflow-hidden z-50">
+          <button class="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 dark:hover:bg-white/10" data-lang="pt-BR">Português (BR)</button>
+          <button class="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 dark:hover:bg-white/10" data-lang="en">English</button>
+          <button class="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 dark:hover:bg-white/10" data-lang="es">Español</button>
+        </div>
+      </div>
+
+      <!-- Tema -->
+      <button id="theme-toggle"
+              class="p-2 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/10
+                     focus:outline-none focus:ring-2 focus:ring-[#0A5C67] focus:ring-offset-2 dark:focus:ring-offset-[#0E1A2B]
+                     transition-all duration-200"
+              aria-label="Alternar modo escuro">
+        <svg id="icon-sun" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+             class="w-5 h-5 hidden dark:block">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+        <svg id="icon-moon" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+             class="w-5 h-5 dark:hidden">
+          <path d="M21 12.79A9 9 0 0 1 12.21 3 7 7 0 0 0 12 17a7 7 0 0 0 9-4.21z"/>
+        </svg>
+      </button>
+
+      <!-- Hambúrguer (abre overlay) -->
+      <button id="menu-toggle"
+              class="ml-1 p-2 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/10
+                     focus:outline-none focus:ring-2 focus:ring-[#0A5C67] focus:ring-offset-2 dark:focus:ring-offset-[#0E1A2B]
+                     transition-all duration-200"
+              aria-label="Abrir menu" aria-expanded="false" aria-controls="menu-overlay">
+        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- OVERLAY MENU (o seu antigo: nav + cartões + idioma grande) -->
+  <div id="menu-overlay" class="hidden fixed inset-0 z-[70]">
+    <div class="absolute inset-0 bg-black/45 backdrop-blur-sm"></div>
+
+    <div data-overlay-panel
+         class="relative mx-auto mt-8 w-[min(92vw,1100px)] rounded-3xl overflow-hidden
+                border border-white/15 bg-white/90 dark:bg-[#0B182B]/90
+                shadow-[0_30px_80px_-20px_rgba(0,0,0,0.45)]">
+
+      <!-- topo -->
+      <div class="flex items-center justify-between px-6 sm:px-10 py-4 border-b border-black/5 dark:border-white/10">
+        <div class="flex items-center gap-3">
+          <img src="home/logo.png" alt="" class="h-8 w-auto select-none" />
+        </div>
+        <div class="flex items-center gap-2">
+          <!-- Tema no overlay -->
+          <button id="theme-toggle-overlay"
+                  class="p-2 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/10
+                         focus:outline-none focus:ring-2 focus:ring-[#0A5C67]">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 12.79A9 9 0 0 1 12.21 3 7 7 0 0 0 12 17a7 7 0 0 0 9-4.21z"/></svg>
+          </button>
+          <button id="menu-close"
+                  class="p-2 rounded-xl text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/10
+                         focus:outline-none focus:ring-2 focus:ring-[#0A5C67]">
+            <span class="sr-only">Fechar</span>
+            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- conteúdo -->
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-0 md:gap-8 p-6 sm:p-10">
+        <!-- Navegação -->
+        <nav class="md:col-span-3">
+          <ul class="space-y-2 text-2xl sm:text-3xl font-semibold">
+            <li><a href="#app-hero" class="group block rounded-2xl px-4 py-3 hover:bg-black/[.04] dark:hover:bg-white/5">
+              <span class="bg-gradient-to-r from-[#0A5C67] to-[#6BAAC9] bg-clip-text text-transparent group-hover:opacity-90 transition"
+                    data-i18n="Header.Nav.home">Início</span></a></li>
+            <li><a href="#app-how" class="group block rounded-2xl px-4 py-3 hover:bg-black/[.04] dark:hover:bg-white/5">
+              <span class="text-gray-800 dark:text-gray-100 group-hover:text-[#6BAAC9]"
+                    data-i18n="Header.Nav.how">Como Funciona</span></a></li>
+            <li><a href="#app-highlights" class="group block rounded-2xl px-4 py-3 hover:bg-black/[.04] dark:hover:bg-white/5">
+              <span class="text-gray-800 dark:text-gray-100 group-hover:text-[#6BAAC9]"
+                    data-i18n="Header.Nav.features">Recursos</span></a></li>
+            <li><a href="#app-partners" class="group block rounded-2xl px-4 py-3 hover:bg-black/[.04] dark:hover:bg-white/5">
+              <span class="text-gray-800 dark:text-gray-100 group-hover:text-[#6BAAC9]"
+                    data-i18n="Header.Nav.partners">Parceiros</span></a></li>
+            <li><a href="#app-faq" class="group block rounded-2xl px-4 py-3 hover:bg-black/[.04] dark:hover:bg-white/5">
+              <span class="text-gray-800 dark:text-gray-100 group-hover:text-[#6BAAC9]"
+                    data-i18n="Header.Nav.faq">FAQ</span></a></li>
+          </ul>
+
+          <div class="mt-6 flex flex-wrap items-center gap-3">
+            <a href="login.html"
+               class="inline-flex items-center gap-2 rounded-2xl px-5 py-3 text-base font-semibold
+                      bg-[#0A5C67] text-white hover:brightness-110 shadow-sm"
+               data-i18n="Header.cta">Login</a>
+            <a href="../../como-funciona/como-contribuir/"
+               class="inline-flex items-center gap-2 rounded-2xl px-5 py-3 text-base font-semibold
+                      border border-[#0A5C67]/60 text-[#0A5C67] hover:bg-[#0A5C67]/5
+                      dark:border-white/40 dark:text-white dark:hover:bg-white/10">Docs</a>
+          </div>
+        </nav>
+
+        <!-- Cartões + idioma (overlay) -->
+        <div class="md:col-span-2 space-y-6">
+          <div class="grid grid-cols-2 gap-3">
+            <a href="#app-map-preview"
+               class="rounded-2xl border border-black/5 dark:border-white/10 p-4 bg-white/60 dark:bg-white/5 hover:shadow-md transition">
+              <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Preview</p>
+              <p class="text-base font-semibold text-[#0A5C67] dark:text-white">Mapa e Forecast</p>
+            </a>
+            <a href="#app-usecases"
+               class="rounded-2xl border border-black/5 dark:border-white/10 p-4 bg-white/60 dark:bg-white/5 hover:shadow-md transition">
+              <p class="text-sm text-gray-500 dark:text-gray-400 mb-1">Para quem é</p>
+              <p class="text-base font-semibold text-[#0A5C67] dark:text-white">Casos de uso</p>
+            </a>
+          </div>
+
+          <!-- Idioma (dropdown amplo) -->
+          <div class="rounded-2xl border border-black/5 dark:border-white/10 p-4 bg-white/60 dark:bg-white/5">
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">Idioma</p>
+            <div class="relative">
+              <button id="lang-dropdown"
+                      class="w-full flex items-center justify-between gap-2 rounded-xl px-4 py-3
+                             border border-gray-200 dark:border-white/15
+                             text-gray-800 dark:text-gray-100 bg-white/60 dark:bg-white/10
+                             hover:bg-white dark:hover:bg-white/5">
+                <span id="lang-current" class="font-semibold">Português (BR)</span>
+                <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor"><path d="M5.5 7.5l4.5 4.5 4.5-4.5"></path></svg>
+              </button>
+              <div id="lang-menu"
+                   class="hidden absolute left-0 right-0 mt-2 rounded-xl border border-gray-200 dark:border-white/15
+                          bg-white/95 dark:bg-[#0E1A2B]/95 backdrop-blur-xl shadow-lg overflow-hidden z-10">
+                <button class="w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-white/10" data-lang="pt-BR">Português (BR)</button>
+                <button class="w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-white/10" data-lang="en">English</button>
+                <button class="w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-white/10" data-lang="es">Español</button>
+              </div>
+            </div>
+          </div>
+
+          <p class="text-xs text-gray-500 dark:text-gray-400">© 2025 AguaPrev — Universidade de Brasília</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Spacer reservado pelo JS para o header fixo -->
+<div id="header-spacer" style="height: var(--header-spacer, 112px);"></div>

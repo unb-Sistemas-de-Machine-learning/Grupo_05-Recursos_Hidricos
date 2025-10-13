@@ -1,0 +1,148 @@
+<!-- src/partials/reports/history.html -->
+<section class="w-full">
+  <div class="w-full max-w-[1358px] mx-auto px-5 sm:px-6 lg:px-10">
+    <!-- Título + breadcrumb -->
+    <div class="flex items-center justify-between gap-4 mb-6">
+      <div>
+        <h1 class="text-2xl sm:text-3xl font-semibold text-[#031E21] dark:text-white">
+          Histórico de Relatórios
+        </h1>
+        <p id="rep-subtitle" class="mt-1 text-sm text-gray-600 dark:text-gray-300">
+          Acesse relatórios das suas sessões de exercício.
+        </p>
+      </div>
+      <div class="hidden md:flex items-center gap-2">
+        <a href="/dashboard.html"
+           class="text-xs px-3 py-2 rounded-lg border border-gray-300 dark:border-white/20 hover:bg-black/5 dark:hover:bg-white/10">Dashboard</a>
+        <a href="/login.html"
+           class="text-xs px-3 py-2 rounded-lg border border-gray-300 dark:border-white/20 hover:bg-black/5 dark:hover:bg-white/10">Sair</a>
+      </div>
+    </div>
+
+    <!-- Filtros (elevado e sem clip para o dropdown) -->
+    <div
+      class="relative z-20 overflow-visible rounded-2xl border border-black/5 dark:border-white/10 bg-white/70 dark:bg-white/5 backdrop-blur p-4 shadow mb-6">
+      <div id="rep-filters" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+        <!-- Início -->
+        <div>
+          <label class="text-[11px] text-gray-500 dark:text-gray-400">Período — Início</label>
+          <input id="f-start" type="date"
+                 class="mt-1 w-full rounded-lg border border-gray-300 dark:border-white/20 bg-transparent px-2 py-1 text-sm" />
+        </div>
+
+        <!-- Fim -->
+        <div>
+          <label class="text-[11px] text-gray-500 dark:text-gray-400">Período — Fim</label>
+          <input id="f-end" type="date"
+                 class="mt-1 w-full rounded-lg border border-gray-300 dark:border-white/20 bg-transparent px-2 py-1 text-sm" />
+        </div>
+
+        <!-- Dropdown Status (custom) -->
+        <div class="relative">
+          <label class="text-[11px] text-gray-500 dark:text-gray-400">Status</label>
+
+          <div id="dd-status" class="relative mt-1">
+            <!-- Botão -->
+            <button id="dd-status-btn" type="button"
+              class="w-full flex justify-between items-center rounded-lg border border-gray-300 dark:border-white/20 bg-transparent px-3 py-2 text-sm">
+              <span id="dd-status-label" class="truncate">Todos</span>
+              <svg id="dd-status-caret" class="w-4 h-4 ml-2 transition-transform"
+                   xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+
+            <!-- Lista: z MUITO alto + pointer events controlados pelo JS -->
+            <ul id="dd-status-list"
+                class="absolute left-0 mt-1 w-full rounded-lg border border-gray-300 dark:border-white/20
+                       bg-white dark:bg-[#0E1A2B] shadow-lg transition
+                       invisible opacity-0 pointer-events-none z-[9999]">
+              <li class="dd-opt px-3 py-2 text-sm cursor-pointer hover:bg-black/5 dark:hover:bg-white/10" data-value="">
+                Todos
+              </li>
+              <li class="dd-opt px-3 py-2 text-sm cursor-pointer hover:bg-black/5 dark:hover:bg-white/10" data-value="ok">
+                Concluído
+              </li>
+              <li class="dd-opt px-3 py-2 text-sm cursor-pointer hover:bg-black/5 dark:hover:bg-white/10" data-value="warn">
+                Com alerta
+              </li>
+              <li class="dd-opt px-3 py-2 text-sm cursor-pointer hover:bg-black/5 dark:hover:bg-white/10" data-value="emg">
+                Parada de emergência
+              </li>
+            </ul>
+
+            <!-- Campo oculto lido pelo effects -->
+            <input id="f-status" type="hidden" value="">
+          </div>
+        </div>
+
+        <!-- Buscar por nome -->
+        <div>
+          <label class="text-[11px] text-gray-500 dark:text-gray-400">Buscar por nome</label>
+          <input id="f-q" type="text" placeholder="ex.: Ana, João, Hugo..."
+                 class="mt-1 w-full rounded-lg border border-gray-300 dark:border-white/20 bg-transparent px-3 py-2 text-sm" />
+        </div>
+
+        <!-- Paciente (só médico/admin) -->
+        <div id="f-patient-wrap" class="hidden">
+          <label class="text-[11px] text-gray-500 dark:text-gray-400">Paciente</label>
+          <select id="f-patient"
+                  class="mt-1 w-full rounded-lg border border-gray-300 dark:border-white/20 bg-transparent px-2 py-1 text-sm"></select>
+        </div>
+      </div>
+
+      <!-- Ações filtros -->
+      <div class="mt-3 flex items-center gap-2">
+        <button id="f-apply"
+                class="rounded-lg bg-emerald-600 text-white text-xs px-3 py-2 hover:brightness-110">
+          Aplicar Filtros
+        </button>
+        <button id="f-clear"
+                class="rounded-lg border border-gray-300 dark:border-white/20 text-xs px-3 py-2 hover:bg-black/5 dark:hover:bg-white/10">
+          Limpar
+        </button>
+      </div>
+    </div>
+
+    <!-- Tabela (z menor para ficar abaixo do dropdown) -->
+    <div class="relative z-10 rounded-2xl border border-black/5 dark:border-white/10 bg-white/70 dark:bg-white/5 backdrop-blur p-4 shadow">
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-sm">
+          <thead>
+            <tr class="text-left text-gray-500 dark:text-gray-400 border-b border-black/5 dark:border-white/10">
+              <th id="th-patient" class="py-2 pr-4 hidden">Paciente</th>
+              <th class="py-2 pr-4">Data</th>
+              <th class="py-2 pr-4">Duração</th>
+              <th class="py-2 pr-4">Alvo (°)</th>
+              <th class="py-2 pr-4">Reps</th>
+              <th class="py-2 pr-4">Status</th>
+              <th class="py-2 pr-4">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="rep-list"></tbody>
+        </table>
+      </div>
+
+      <!-- vazio -->
+      <div id="rep-empty" class="hidden text-center text-sm text-gray-500 dark:text-gray-400 py-10">
+        Nenhum relatório encontrado para os filtros selecionados.
+      </div>
+
+      <!-- paginação -->
+      <div id="rep-pager" class="mt-4 flex items-center justify-between text-xs">
+        <div id="rep-count" class="opacity-70"></div>
+        <div class="flex items-center gap-2">
+          <button id="pg-prev"
+                  class="px-3 py-1 rounded border border-gray-300 dark:border-white/20 hover:bg-black/5 dark:hover:bg-white/10">
+            Anterior
+          </button>
+          <span id="pg-info" class="opacity-70"></span>
+          <button id="pg-next"
+                  class="px-3 py-1 rounded border border-gray-300 dark:border-white/20 hover:bg-black/5 dark:hover:bg-white/10">
+            Próxima
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

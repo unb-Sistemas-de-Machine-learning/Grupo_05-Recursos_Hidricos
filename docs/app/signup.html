@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pt-br" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Criar conta — AguaPrev</title>
+    <meta name="description" content="Crie sua conta para acessar o AguaPrev." />
+    <meta name="theme-color" content="#0A5C67" />
+
+    <!-- Favicons e fontes -->
+    <link rel="icon" type="image/png" href="/src/assets/aguaprev/favicon.png" />
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/src/css/style.css" />
+  </head>
+
+  <body class="font-sans antialiased bg-white text-gray-800 dark:bg-[#0E1A2B] dark:text-gray-100">
+    <!-- Acessibilidade -->
+    <a
+      href="#conteudo"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[999] px-3 py-2 rounded bg-[#0A5C67] text-white"
+    >
+      Ir para o conteúdo
+    </a>
+
+    <div class="min-h-screen flex flex-col items-center w-full">
+      <!-- ================= HEADER ================= -->
+      <header id="app-header" class="w-full sticky top-0 z-40"></header>
+
+      <!-- ================= MAIN =================== -->
+      <main id="conteudo" class="flex-1 w-full flex flex-col items-center">
+        <!-- 🔹 Partial de cadastro será montado aqui -->
+        <section id="app-auth-register" class="w-full"></section>
+      </main>
+
+      <!-- ================= FOOTER ================= -->
+      <div id="app-footer" class="w-full"></div>
+    </div>
+
+    <!-- 🔹 Widget social fixo -->
+    <div id="app-social-floating"></div>
+
+    <!-- Script principal -->
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

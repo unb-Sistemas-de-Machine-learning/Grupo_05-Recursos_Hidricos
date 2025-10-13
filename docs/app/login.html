@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="pt-br" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Entrar — AguaPrev</title>
+    <meta name="description" content="Acesse sua conta para abrir o dashboard do AguaPrev." />
+    <meta name="theme-color" content="#0A5C67" />
+
+    <!-- Favicons e fontes -->
+    <link rel="icon" type="image/png" href="/src/assets/aguaprev/favicon.png" />
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/src/css/style.css" />
+  </head>
+
+  <body class="font-sans antialiased bg-white text-gray-800 dark:bg-[#0E1A2B] dark:text-gray-100">
+    <!-- Acessibilidade -->
+    <a href="#conteudo" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[999] px-3 py-2 rounded bg-[#0A5C67] text-white">
+      Ir para o conteúdo
+    </a>
+
+    <div class="min-h-screen flex flex-col items-center w-full">
+      <!-- ================= HEADER ================= -->
+      <header id="app-header" class="w-full sticky top-0 z-40"></header>
+
+      <!-- ================= MAIN =================== -->
+      <main id="conteudo" class="flex-1 w-full flex flex-col items-center">
+        <section class="w-full">
+          <!-- 🔹 Título (mesmo estilo do "Criar conta") -->
+          <div class="w-full max-w-[960px] mx-auto px-5 sm:px-6 lg:px-10 py-10 sm:py-12 text-center">
+            <h1
+              class="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#031E21] dark:text-white flex items-center justify-center gap-3"
+              data-i18n="Login.title"
+            >
+              <!-- Ícone de login (mantido) -->
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="w-7 h-7 sm:w-8 sm:h-8 text-[#0A5C67] dark:text-[#6BAAC9]"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="8" r="4" />
+                <path d="M6 21v-2a6 6 0 0 1 12 0v2" />
+              </svg>
+              Entrar
+            </h1>
+            <p class="mt-2 text-sm sm:text-base text-gray-600 dark:text-gray-300" data-i18n="Login.page_subtitle">
+              Acesse sua conta para abrir o dashboard do AguaPrev.
+            </p>
+          </div>
+
+          <!-- 🔹 Partial de login montado dinamicamente (usa Login.form_subtitle dentro do card) -->
+          <div id="app-auth-login" class="w-full"></div>
+        </section>
+      </main>
+
+      <!-- ================= FOOTER ================= -->
+      <div id="app-footer" class="w-full"></div>
+    </div>
+
+    <!-- 🔹 Widget social fixo -->
+    <div id="app-social-floating"></div>
+
+    <!-- Script principal -->
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

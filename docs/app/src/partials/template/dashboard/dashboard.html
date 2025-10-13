@@ -1,0 +1,185 @@
+<section class="w-full">
+  <div class="w-full max-w-[1358px] mx-auto px-5 sm:px-6 lg:px-10">
+    <!-- Título + breadcrumb -->
+    <div class="flex items-center justify-between gap-4 mb-6">
+      <div>
+        <h1 class="text-2xl sm:text-3xl font-semibold text-[#031E21] dark:text-white">Dashboard de Monitoramento</h1>
+        <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">Órtese motorizada de joelho — protótipo UnB/FCTE</p>
+      </div>
+      <div class="hidden md:flex items-center gap-2">
+        <a href="/" class="text-xs px-3 py-2 rounded-lg border border-gray-300 dark:border-white/20 hover:bg-black/5 dark:hover:bg-white/10">Início</a>
+        <a href="/reports.html" class="text-xs px-3 py-2 rounded-lg border border-emerald-500 text-emerald-600 dark:border-emerald-400 dark:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/20">
+          Relatórios
+        </a>
+        <a href="/login.html" class="text-xs px-3 py-2 rounded-lg border border-gray-300 dark:border-white/20 hover:bg-black/5 dark:hover:bg-white/10">Logout</a>
+      </div>
+    </div>
+
+    <!-- GRID PRINCIPAL -->
+    <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+      <!-- Coluna 1: Monitoramento em tempo real -->
+      <div class="xl:col-span-4">
+        <div class="rounded-2xl border border-black/5 dark:border-white/10 bg-white/70 dark:bg-white/5 backdrop-blur p-4 shadow">
+          <div class="flex items-center gap-2 mb-3">
+            <svg class="h-5 w-5 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="1.8" d="M3 12h4l2-6 4 12 2-6h6"/></svg>
+            <h2 class="text-sm font-semibold">Monitoramento Tempo Real</h2>
+          </div>
+
+          <ul class="space-y-3">
+            <!-- card metric -->
+            <li class="rounded-xl p-3 border border-emerald-200/50 dark:border-emerald-400/20 bg-emerald-50/60 dark:bg-emerald-400/10">
+              <div class="flex items-center justify-between text-xs">
+                <span>Ângulo do Joelho</span>
+                <strong id="m-angle" class="text-emerald-700 dark:text-emerald-300">0°</strong>
+              </div>
+              <div class="mt-2 h-2 w-full rounded-full bg-emerald-100 dark:bg-emerald-900/40 overflow-hidden">
+                <div id="b-angle" class="h-full w-[0%] rounded-full bg-emerald-500 dark:bg-emerald-400"></div>
+              </div>
+            </li>
+
+            <li class="rounded-xl p-3 border border-blue-200/50 dark:border-blue-400/20 bg-blue-50/60 dark:bg-blue-400/10">
+              <div class="flex items-center justify-between text-xs">
+                <span>Velocidade Angular</span>
+                <strong id="m-vel" class="text-blue-700 dark:text-blue-300">0 °/s</strong>
+              </div>
+              <div class="mt-2 h-2 w-full rounded-full bg-blue-100 dark:bg-blue-900/40 overflow-hidden">
+                <div id="b-vel" class="h-full w-[0%] rounded-full bg-blue-500 dark:bg-blue-400"></div>
+              </div>
+            </li>
+
+            <li class="rounded-xl p-3 border border-orange-200/50 dark:border-orange-400/20 bg-orange-50/60 dark:bg-orange-400/10">
+              <div class="flex items-center justify-between text-xs">
+                <span>Corrente do Motor</span>
+                <strong id="m-cur" class="text-orange-700 dark:text-orange-300">0 A</strong>
+              </div>
+              <div class="mt-2 h-2 w-full rounded-full bg-orange-100 dark:bg-orange-900/40 overflow-hidden">
+                <div id="b-cur" class="h-full w-[0%] rounded-full bg-orange-500 dark:bg-orange-400"></div>
+              </div>
+            </li>
+
+            <li class="rounded-xl p-3 border border-rose-200/50 dark:border-rose-400/20 bg-rose-50/60 dark:bg-rose-400/10">
+              <div class="flex items-center justify-between text-xs">
+                <span>Temperatura</span>
+                <strong id="m-temp" class="text-rose-700 dark:text-rose-300">0 °C</strong>
+              </div>
+              <div class="mt-2 h-2 w-full rounded-full bg-rose-100 dark:bg-rose-900/40 overflow-hidden">
+                <div id="b-temp" class="h-full w-[0%] rounded-full bg-rose-500 dark:bg-rose-400"></div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Coluna 2: Gráficos -->
+      <div class="xl:col-span-5">
+        <div class="rounded-2xl border border-black/5 dark:border-white/10 bg-white/70 dark:bg-white/5 backdrop-blur p-4 shadow">
+          <div class="flex items-center gap-2 mb-3">
+            <svg class="h-5 w-5 text-violet-600" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="1.8" d="M4 19V5m5 14V9m5 10V4m5 15v-7"/></svg>
+            <h2 class="text-sm font-semibold">Gráficos</h2>
+          </div>
+
+          <div class="grid grid-cols-1 gap-4">
+            <div class="rounded-xl border border-black/5 dark:border-white/10 p-3">
+              <div class="text-xs mb-2 text-gray-500 dark:text-gray-400">Ângulo (°) vs Tempo</div>
+              <canvas id="chart-angle" height="120"></canvas>
+            </div>
+            <div class="rounded-xl border border-black/5 dark:border-white/10 p-3">
+              <div class="text-xs mb-2 text-gray-500 dark:text-gray-400">Velocidade (°/s) vs Tempo</div>
+              <canvas id="chart-vel" height="120"></canvas>
+            </div>
+          </div>
+
+          <div class="mt-4 text-xs text-gray-500 dark:text-gray-400">
+            *Dados demonstrativos — substitua pelo stream do seu backend quando integrar.
+          </div>
+        </div>
+      </div>
+
+      <!-- Coluna 3: Controle -->
+      <div class="xl:col-span-3">
+        <div class="rounded-2xl border border-black/5 dark:border-white/10 bg-white/70 dark:bg-white/5 backdrop-blur p-4 shadow">
+          <div class="flex items-center gap-2 mb-3">
+            <svg class="h-5 w-5 text-sky-600" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="1.8" d="M12 3v3m0 12v3m9-9h-3M6 12H3m13.95 5.95l-2.12-2.12M8.17 8.17 6.05 6.05m11.9 0-2.12 2.12M8.17 15.83 6.05 17.95"/></svg>
+            <h2 class="text-sm font-semibold">Controle e Configuração</h2>
+          </div>
+
+          <div class="space-y-4">
+            <div class="rounded-xl border border-black/5 dark:border-white/10 p-3">
+              <div class="text-xs font-medium mb-2">Modo de Operação</div>
+              <!-- IMPORTANTE: name="modo" (para casar com o JS atual) -->
+              <fieldset class="space-y-2 text-sm">
+                <label class="flex items-center gap-2"><input type="radio" name="modo" class="accent-[#094559]" value="detec" checked /> Detecção e manutenção</label>
+                <label class="flex items-center gap-2"><input type="radio" name="modo" class="accent-[#094559]" value="assistido" /> Assistido</label>
+                <label class="flex items-center gap-2"><input type="radio" name="modo" class="accent-[#094559]" value="resistido" /> Resistido</label>
+              </fieldset>
+            </div>
+
+            <div class="rounded-xl border border-black/5 dark:border-white/10 p-3 bg-emerald-500/5">
+              <div class="text-xs font-medium mb-3">Parâmetros</div>
+              <div class="grid grid-cols-3 gap-2 items-end">
+                <div>
+                  <label class="text-[11px] text-gray-500 dark:text-gray-400">Ângulo Alvo (°)</label>
+                  <input id="p-angle" type="number" value="45" class="mt-1 w-full rounded-lg border border-gray-300 dark:border-white/20 bg-transparent px-2 py-1 text-sm" />
+                </div>
+                <div>
+                  <label class="text-[11px] text-gray-500 dark:text-gray-400">Repetições</label>
+                  <input id="p-reps" type="number" value="8" class="mt-1 w-full rounded-lg border border-gray-300 dark:border-white/20 bg-transparent px-2 py-1 text-sm" />
+                </div>
+                <div class="flex items-end">
+                  <button id="p-zero" class="w-full rounded-lg bg-emerald-600 text-white text-xs py-2 hover:brightness-110">Zerar Posição</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="rounded-xl border border-black/5 dark:border-white/10 p-3">
+              <div class="text-xs font-medium mb-2">Limites de Segurança</div>
+              <dl class="grid grid-cols-2 gap-2 text-sm">
+                <div class="flex items-center justify-between"><dt class="text-gray-500 dark:text-gray-400">Ângulo máx.</dt><dd>90°</dd></div>
+                <div class="flex items-center justify-between"><dt class="text-gray-500 dark:text-gray-400">Corrente máx.</dt><dd>4A</dd></div>
+                <div class="flex items-center justify-between"><dt class="text-gray-500 dark:text-gray-400">Temp. máx.</dt><dd>65°C</dd></div>
+                <div class="flex items-center justify-between"><dt class="text-gray-500 dark:text-gray-400">Timeout</dt><dd>10s</dd></div>
+              </dl>
+            </div>
+
+            <!-- CONTROLES: linha 1 (Iniciar/Pausar/Retomar | Parar) -->
+            <div class="grid grid-cols-2 gap-2">
+              <button id="btn-start" class="rounded-xl bg-emerald-600 text-white py-2 text-sm font-semibold hover:brightness-110">Iniciar</button>
+              <button id="btn-stop" class="rounded-xl bg-slate-600 text-white py-2 text-sm font-semibold hover:brightness-110 disabled:opacity-50" disabled>Parar</button>
+            </div>
+            <!-- CONTROLES: linha 2 (full width) -->
+            <div>
+              <button id="btn-emg" class="w-full rounded-xl bg-rose-600 text-white py-2 text-sm font-semibold hover:brightness-110 disabled:opacity-50" disabled>⚠ Parada de Emergência</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- cards inferiores -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+      <div class="rounded-2xl border border-black/5 dark:border-white/10 bg-white/70 dark:bg-white/5 backdrop-blur p-5">
+        <div class="flex items-center gap-2 text-sm font-semibold mb-1">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="1.6" d="M12 8v8m-4-4h8"/></svg>
+          Sessões
+        </div>
+        <p class="text-sm text-gray-600 dark:text-gray-300">Últimas 24h: <span id="stat-sessions" class="font-semibold">0</span></p>
+      </div>
+
+      <div class="rounded-2xl border border-black/5 dark:border-white/10 bg-white/70 dark:bg-white/5 backdrop-blur p-5">
+        <div class="flex items-center gap-2 text-sm font-semibold mb-1">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="1.6" d="M12 6v6l4 2"/></svg>
+          Tempo total
+        </div>
+        <p class="text-sm text-gray-600 dark:text-gray-300"><span id="stat-time" class="font-semibold">0</span></p>
+      </div>
+
+      <div class="rounded-2xl border border-black/5 dark:border-white/10 bg-white/70 dark:bg-white/5 backdrop-blur p-5">
+        <div class="flex items-center gap-2 text-sm font-semibold mb-1">
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-width="1.6" d="M4 7h16M4 12h16M4 17h16"/></svg>
+          Logs
+        </div>
+        <p id="stat-log" class="text-xs text-gray-500 dark:text-gray-400">Aguardando…</p>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="pt-br" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>AguaPrev — Previsão Hídrica do DF</title>
+    <meta name="description" content="AguaPrev: monitoramento e previsão da situação hídrica no Distrito Federal com mapas, indicadores e insights acessíveis." />
+    <meta name="theme-color" content="#0A5C67" />
+
+    <!-- Favicons / OpenGraph -->
+    <link rel="icon" type="image/png" href="/src/assets/aguaprev/favicon.png" />
+    <meta property="og:title" content="AguaPrev — Previsão Hídrica do DF" />
+    <meta property="og:description" content="Mapas, indicadores e previsões hí­dricas com foco no DF." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/src/assets/aguaprev/og-image.png" />
+
+    <!-- Fonte & CSS global (Tailwind é importado via JS; manter este link é ok) -->
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/src/css/style.css" />
+  </head>
+
+  <body class="font-sans antialiased bg-white text-gray-800 dark:bg-[#0E1A2B] dark:text-gray-100">
+    <!-- Skip link / A11y -->
+    <a href="#conteudo" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[999] px-3 py-2 rounded bg-[#0A5C67] text-white">
+      Ir para o conteúdo
+    </a>
+
+    <div class="min-h-screen flex flex-col items-center w-full">
+      <!-- ================= HEADER ================= -->
+      <!-- /src/partials/globals/header.html -->
+      <header id="app-header" class="w-full sticky top-0 z-40"></header>
+
+      <!-- ================= MAIN =================== -->
+      <main id="conteudo" class="flex-1 w-full flex flex-col items-center">
+        <!-- ===== HERO ===== -->
+        <!-- /src/partials/home/hero.html -->
+        <section id="app-hero" class="w-full"></section>
+
+        <!-- ===== TRUST STRIP ===== -->
+        <!-- /src/partials/home/trust-strip.html -->
+        <section id="app-truststrip" class="w-full"></section>
+
+        <!-- ===== HIGHLIGHTS ===== -->
+        <!-- /src/partials/home/highlights-pills.html -->
+        <section id="app-highlights" class="w-full"></section>
+
+        <!-- ===== MAP/FORECAST PREVIEW ===== -->
+        <!-- /src/partials/home/section-map-preview.html -->
+        <section id="app-map-preview" class="w-full"></section>
+
+        <!-- ===== COMO FUNCIONA ===== -->
+        <!-- /src/partials/home/section-how-it-works.html -->
+        <section id="app-how" class="w-full"></section>
+
+        <!-- ===== INSIGHTS (opcional) ===== -->
+        <!-- /src/partials/home/section-insights.html -->
+        <section id="app-insights" class="w-full"></section>
+
+        <!-- ===== CASOS DE USO ===== -->
+        <!-- /src/partials/home/section-use-cases.html -->
+        <section id="app-usecases" class="w-full"></section>
+
+        <!-- ===== PARCEIROS ===== -->
+        <!-- /src/partials/home/partners.html -->
+        <section id="app-partners" class="w-full"></section>
+
+        <!-- ===== CTA FINAL ===== -->
+        <!-- /src/partials/home/section-cta.html -->
+        <section id="app-cta" class="w-full"></section>
+
+        <!-- ===== FAQ ===== -->
+        <!-- /src/partials/home/faq.html -->
+        <section id="app-faq" class="w-full"></section>
+
+        <!-- ===== BLOG / NOVIDADES (opcional) ===== -->
+        <!-- /src/partials/home/section-news.html -->
+        <section id="app-news" class="w-full hidden"></section>
+      </main>
+
+      <!-- ================= FOOTER ================= -->
+      <div id="app-footer" class="w-full"></div>
+    </div>
+
+    <!-- ================= SOCIAL FLOATING WIDGET ================= -->
+    <!-- Montado via partial /src/partials/globals/social-floating.html -->
+    <div id="app-social-floating"></div>
+
+    <!-- ===== JSON-LD mínimo (Org + Site) ===== -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "AguaPrev",
+        "url": "https://aguaprev.example",
+        "description": "Monitoramento e previsão da situação hídrica no DF."
+      }
+    </script>
+
+    <!-- Montagem dos partials (via Vite ?raw) -->
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
