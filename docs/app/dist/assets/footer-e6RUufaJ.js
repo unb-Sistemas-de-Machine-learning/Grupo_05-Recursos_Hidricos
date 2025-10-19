@@ -1,0 +1,1 @@
+function r(e){if(!e||e.dataset.boundFooter==="1")return;e.dataset.boundFooter="1";const t=e.querySelector("#footer-year");t&&(t.textContent=new Date().getFullYear());const o=e.querySelector("#footer-top-link");o&&o.addEventListener("click",n=>{n.preventDefault(),window.scrollTo({top:0,behavior:"smooth"})})}export{r as initFooter};

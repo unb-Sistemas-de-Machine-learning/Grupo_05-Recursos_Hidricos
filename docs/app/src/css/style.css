@@ -10,6 +10,7 @@
 @import './globals/footer.css';
 @import './globals/utilities.css';
 @import './globals/social-floating.css'; /* ⬅️ IMPORTANTE: CSS do widget */
+@import './globals/sidebar.css';
 
 /* 3) Estilos específicos de páginas/seções */
 @import './home/hero.css';
