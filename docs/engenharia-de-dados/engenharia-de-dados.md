@@ -10,115 +10,86 @@ Prever níveis dos reservatórios do DF (Descoberto e Santa Maria) e precipitaç
 
 ## Requisitos de ML (Essenciais)
 
-## Critério de Classificação de Prioridade
+Requisitos funcionais específicos do subsistema de ML: ingestão para modelos, pipelines de features, treino, inferência, incerteza e alertas.
 
-Método: MoSCoW (Must/Should/Could).
+| ID       | Requisito                     | Descrição                                                                                   | Prioridade | Métrica / Critério de Aceitação (resumo)                    |
+| -------- | ----------------------------- | ------------------------------------------------------------------------------------------- | ---------: | ----------------------------------------------------------- |
+| RF-ML-01 | Ingestão INMET                | Coletar dados hora a hora de precipitação, temperatura, umidade, pressão, vento e radiação. |       Must | Cobertura ≥95% horas; atraso <15 min; logs.                 |
+| RF-ML-02 | Ingestão Níveis               | Ingerir telemetria de nível (LAI/Power BI) e consolidar diário.                             |       Must | Carga diária ≥99%; validações físicas.                      |
+| RF-ML-03 | Padronização e Limpeza        | Unidades, timezone; remoção de sentinelas/outliers; validações DQ.                          |       Must | Schemas validados; 0 sentinelas em serving.                 |
+| RF-ML-04 | Engenharia de Atributos       | Lags, janelas móveis, acumulados (3h..30d), codificação cíclica; reproducibilidade.         |       Must | Feature build reproducível; execução <10 min.               |
+| RF-ML-05 | Estimativa de Evaporação      | Cálculo Penman‑Monteith ou proxy com INMET.                                                 |     Should | Cobertura ≥90% dias; sem valores negativos.                 |
+| RF-ML-06 | Chuva (classificação)         | Modelo binário para ocorrência de chuva (1h/6h/24h).                                        |       Must | ROC‑AUC(1h) ≥0.80; CSI ≥0.40 em eventos relevantes.         |
+| RF-ML-07 | Chuva (regressão)             | Previsão de volume (mm) para 1h/6h/24h.                                                     |     Should | RMSE24h <5 mm; MAE24h <3 mm (meta).                         |
+| RF-ML-08 | Nível (híbrido)               | Modelo de nível: balanço hídrico + ML sobre resíduos para D+1/7/14/30.                      |       Must | MAE D+1 <0.10m; D+7 <0.30m; D+14 <0.50m.                    |
+| RF-ML-09 | Incerteza                     | Calcular intervalos de predição (PI50/PI90) e calibração.                                   |       Must | PI90 cobertura 85–95%.                                      |
+| RF-ML-10 | Alertas Operacionais (ML)     | Scores e regras para gerar alertas probabilísticos e tendências.                            |       Must | Antecedência ≥14 dias quando aplicável; taxa de FP ≤ 1/mês. |
+| RF-ML-11 | Disponibilização de previsões | Expor previsões, metadados e PIs via API para consumo autenticado.                          |       Must | Latência P95 ≤2s; versionamento de modelos.                 |
+| RF-ML-12 | Monitoramento & Re-treino     | Métricas on‑line, detecção de drift (dados/perf.) e pipelines de re‑treino.                 |       Must | PSI>0.2 ou ΔMAE>20% → trigger; logs e histórico de retrain. |
+| RF-ML-13 | Explicabilidade               | SHAP/feature importance e justificativa do alerta.                                          |     Should | Disponível via API/painel; geração <2s para amostra.        |
+| RF-ML-14 | Feature Store e Pipelines     | Feature store versionada e pipelines reproducíveis para treino/serving.                     |       Must | Features versionadas; snapshots para treino.                |
 
-Regras de decisão:
+### Requisitos Não‑Funcionais
 
-1. Impacto na decisão operacional e na segurança hídrica (alto, médio, baixo).
-2. Contribuição direta para as métricas-alvo do modelo (chuva e nível).
-3. Dependência/crítica de dados (disponível hoje vs. lacunas) e esforço de implementação.
+#### Objetivo
 
-Mapeamento:
+Definir requisitos não‑funcionais específicos do subsistema ML: reprodutibilidade, governança de modelos, observabilidade ML, latência de inferência, throughput, segurança de dados para treino e inferência, gestão de versões e políticas de retrain.
 
-- Must: Alto impacto + contribuição direta + dados viáveis de curto prazo.
-- Should: Alto/médio impacto, contribui indiretamente ou requer dado/impl. adicional moderado.
-- Could: Valor contextual, não crítico para a 1ª versão operacional.
+#### RNF-ML (Lista detalhada)
 
----
+| ID        | Categoria                       | Requisito                                                                  | Meta / Critério de Aceitação                                                                  |
+| --------- | ------------------------------- | -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| RNF-ML-01 | Disponibilidade                 | Serviços de inferência e pipelines ML devem ter SLA alto.                  | SLA serviços ML ≥ 99.5% mensal; monitoramento de jobs; alerts.                                |
+| RNF-ML-02 | Desempenho                      | Latência e tempo de construção de features devem atender SLAs.             | P95 inferência ≤ 2 s; feature build batch < 10 min para janelas diárias; throughput definido. |
+| RNF-ML-03 | Freshness                       | Features e dados de entrada atualizados conforme necessidade do modelo.    | Chuva: hourly; Nível: daily — garantido por pipelines; metricas de freshnes.                  |
+| RNF-ML-04 | Escalabilidade                  | Suporte a aumento do número de estações, reservatórios e volume histórico. | Escalar horizontalmente ≥5× volume; testes de carga para training/inference.                  |
+| RNF-ML-05 | Segurança                       | Proteção de dados de treino/inferência e controle de acesso a modelos.     | Criptografia dados sensíveis; RBAC para model registry; logs de acesso a modelos.             |
+| RNF-ML-06 | Conformidade                    | Garantir privacidade e compliance nos datasets usados para treino.         | PII removido/anonimizado; aprovações de dataset; retenção e auditoria.                        |
+| RNF-ML-07 | Qualidade de Dados              | Validações rigorosas antes de usar dados em treino/serving.                | Regras DQ aplicadas; quórum de validação; bloqueio automático em caso de quebra de esquema.   |
+| RNF-ML-08 | Reprodutibilidade               | Experimentos e runs devem ser reprodutíveis.                               | Versionamento dataset/features/model; seeds definidos; artefatos armazenados.                 |
+| RNF-ML-09 | Observabilidade ML              | Métricas de performance, confiança e drift expostas.                       | Dashboards de MAE/RMSE, ROC, PSI; alertas para thresholds.                                    |
+| RNF-ML-10 | MLOps / CI-CD                   | Pipelines para treino, validação e deployment automatizados.               | Pipelines automatizados com testes (unit/integration/regression); aprovações para deploy.     |
+| RNF-ML-11 | Re-treinamento                  | Estratégias, frequência e gatilhos de retrain definidos.                   | Retrain mensal (chuva) e trimestral/por drift (nível) ou por gatilho; logs de retrain.        |
+| RNF-ML-12 | Latência e Throughput           | Performance para servir previsões em produção.                             | Latência P95 ≤2s; suportar X requests/s (definir com base em uso); autoscaling.               |
+| RNF-ML-13 | Explicabilidade e Transparência | Modelos devem fornecer mecanismos de explicação e justificativas.          | SHAP/feature importance disponível; relatórios de fairness e viés (se aplicável).             |
+| RNF-ML-14 | Governança de Modelos           | Versionamento, aprovação e ciclo de vida do modelo.                        | Model registry; aprovação manual/automática; políticas de retirement e rollback.              |
+| RNF-ML-15 | Testabilidade                   | Testes automatizados para modelos e pipelines.                             | Testes unitários e integração para transformações; testes de regressão de performance.        |
+| RNF-ML-16 | Custo & Recursos                | Monitoring de custos e limites de recursos.                                | Budget alerts; otimização de training (spot/preemptible); quotas por projeto.                 |
+| RNF-ML-17 | Documentação                    | Documentação técnica e de modelos disponível.                              | Artefatos de model card; descrição de features; OpenAPI para endpoints.                       |
+| RNF-ML-18 | Backup & Recovery               | Recuperação de artefatos de treino e modelos.                              | Artefatos armazenados com backup; RTO/RPO definidos; testes periódicos.                       |
 
-## Requisitos Funcionais de ML (Essenciais)
+#### Métricas e Thresholds recomendados
 
-| ID    | Requisito                       | Descrição                                                                                                                              | Prioridade | Métrica de Aceitação                                                                                | Dependências/Notas                                                |
-| ----- | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ---------- | --------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| RF-01 | Ingestão INMET                  | Coletar dados hora a hora de precipitação, temperatura, umidade, pressão, vento e radiação das estações relevantes às bacias.          | Must       | Cobertura ≥ 95% das horas; atraso de ingestão < 15 min.                                             | Conectores INMET; seleção de estações por proximidade das bacias. |
-| RF-02 | Ingestão Níveis                 | Ingerir telemetria de nível (LAI/Power BI) e consolidar em granularidade diária.                                                       | Must       | Sucesso de carga ≥ 99% dos dias; validações físicas sem erros críticos.                             | Santa Maria (PDF→CSV) e Descoberto (Power BI/LAI).                |
-| RF-03 | Padronização e Limpeza          | Unidades (mm, °C, m, m³), timezone (UTC+local); remoção de sentinelas (-9999), nulos e outliers.                                       | Must       | 0 sentinelas em treino/serving; schemas validados; testes de qualidade aprovados.                   | Regras de validação e dicionário de dados.                        |
-| RF-04 | Engenharia de Atributos         | Cálculo de lags, janelas móveis, tendência, acumulados (3h, 6h, 12h, 24h, 7d, 30d), dias secos e codificação cíclica (hora, mês, DOY). | Must       | Reprodutibilidade entre treino e serving (PSI < 0,2); execução diária < 10 min.                     | Feature store/pipeline de features.                               |
-| RF-05 | Estimativa de Evaporação        | Estimar evaporação (Penman-Monteith) com INMET (temp, umidade, radiação, vento).                                                       | Should     | Cobertura ≥ 90% dos dias; sem valores negativos.                                                    | Radiação pode ter lacunas — prever imputação.                     |
-| RF-06 | Modelo de Chuva (Classificação) | “Vai chover?” para 1h, 6h, 24h.                                                                                                        | Must       | ROC-AUC (1h) ≥ 0,80; CSI ≥ 0,40 para eventos > 20 mm/24h.                                           | Baselines superados; validação temporal.                          |
-| RF-07 | Modelo de Chuva (Regressão)     | Volume de precipitação (mm) 1h/6h/24h.                                                                                                 | Should     | RMSE 24h < 5 mm; MAE 24h < 3 mm; PI90 calibrado (85–95%).                                           | Ensemble LSTM + XGBoost opcional.                                 |
-| RF-08 | Modelo de Nível (Híbrido)       | Balanço hídrico + ML de resíduos para horizontes 1/7/14/30 dias.                                                                       | Must       | MAE: D+1 < 0,10 m; D+7 < 0,30 m; D+14 < 0,50 m; tendência correta D+30 ≥ 80%.                       | Requer chuva agregada por bacia, evaporação e demanda proxy.      |
-| RF-09 | Incerteza                       | Intervalos de predição 50% e 90% para chuva e nível.                                                                                   | Must       | PI90 com cobertura 85–95% em validação; curva de calibração estável.                                | Quantile models/ensembles ou conformal prediction.                |
-| RF-10 | Alertas Operacionais            | Alertas por limiar (atenção/alerta/emergência) e tendência, com antecedência configurável.                                             | Must       | Alerta emitido com ≥ 14 dias de antecedência para cruzar limiar; ≤ 1 falso-alarme/mês/reservatório. | Webhook/e-mail; histerese de gatilhos.                            |
-| RF-11 | API de Previsões                | Endpoints REST: /forecast/rain, /forecast/reservoir, /scenarios, /metrics, /health.                                                    | Must       | Latência P95 ≤ 2 s; documentação OpenAPI; versionamento v1.                                         | Cache p/ horizontes padrão.                                       |
-| RF-12 | Monitoramento e Re-treino       | Métricas on-line, detecção de drift (dados/performance) e re-treino automático.                                                        | Must       | PSI > 0,2 ou ΔMAE>20% dispara re-treino; logs e relatórios mensais.                                 | MLflow/observabilidade; agendador.                                |
-| RF-13 | Explicabilidade                 | Importância de variáveis (SHAP/feature importance) e justificativa do alerta.                                                          | Should     | Disponível via API e painel; inferência de explicação < 2 s por previsão.                           | Cálculo amostral para lotes.                                      |
-| RF-14 | Painéis                         | Painel público (dados abertos) e painel interno (avançado).                                                                            | Should     | Atualização automática (chuva: hora; nível: diária); RBAC no interno.                               | Exportação para Power BI/CSV.                                     |
+- PSI threshold para drift: 0.1 alerta; 0.2 ação (retrain).
+- ΔMAE threshold: 10% alerta; 20% ação.
+- Cobertura de teste de integração: >80% para transforms críticos.
+- Latência inferência (P95) ≤ 2s; Throughput conforme expectativa de consumidores.
 
----
+#### Observabilidade e Monitoramento ML
 
-## Requisitos Não Funcionais de ML (Essenciais)
+- Métricas por modelo: MAE/RMSE, ROC‑AUC, calibration (PI coverage), uptime, latência.
+- Métricas de dados: missing rate, distribution shifts (PSI/KL), feature nulls.
+- Logs de inferência: input hashes, model version, latency, error codes (para auditoria).
+- Alertas automáticos e runbook para investigação de drift / queda de performance.
 
-| ID     | Categoria          | Requisito                                         | Meta/Alvo                                                        | Escopo                         | Validação                         |
-| ------ | ------------------ | ------------------------------------------------- | ---------------------------------------------------------------- | ------------------------------ | --------------------------------- |
-| RNF-01 | Disponibilidade    | SLA de serviço (APIs e painéis)                   | ≥ 99,5% mensal                                                   | Previsões e UIs                | Monitor de uptime/SLA.            |
-| RNF-02 | Desempenho         | Latência de inferência on-demand                  | P95 ≤ 2 s                                                        | Endpoints /forecast            | Teste de carga/APM.               |
-| RNF-03 | Freshness          | Atualização operacional                           | Chuva: hora a hora; Nível: diária                                | Pipelines de produção          | SLIs de atraso.                   |
-| RNF-04 | Escalabilidade     | Suporte a multiestações e múltiplos reservatórios | ≥ 5× a carga atual                                               | ETL e inferência               | Stress tests horizontais.         |
-| RNF-05 | Segurança          | HTTPS/TLS, RBAC e rotação de chaves               | 100% tráfego criptografado                                       | APIs internas e painel interno | Pentest e revisão de políticas.   |
-| RNF-06 | Conformidade       | LGPD e dados públicos                             | Sem PII; termos e limites de uso                                 | Painel público/API aberta      | Revisão jurídica/documental.      |
-| RNF-07 | Qualidade de Dados | Contratos de esquema e validações físicas         | Quebra de esquema bloqueia carga; 0 sentinelas em serving        | Camada de dados                | Testes DQ automatizados.          |
-| RNF-08 | Reprodutibilidade  | Versionamento de dados/modelos                    | Runs rastreáveis; seeds definidos                                | Treino/serving                 | Rebuild reprodutível do artefato. |
-| RNF-09 | Observabilidade    | Logs, métricas e tracing                          | Dashboards + alertas de falhas/degradação                        | Serviços e modelos             | SLOs e alertas configurados.      |
-| RNF-10 | MLOps              | CI/CD, orquestração e testes E2E                  | Pipelines declarativas; build verde                              | ETL, treino, deploy            | Gate de release com testes.       |
-| RNF-11 | Re-treinamento     | Cadência e gatilhos                               | Chuva: mensal; Nível: trimestral ou por drift (PSI>0,2/ΔMAE>20%) | Modelos principais             | Agendador + relatório.            |
-| RNF-12 | Documentação       | OpenAPI e guias de uso/limites                    | Atualizada a cada release                                        | APIs e painéis                 | Checagem em release gate.         |
+#### Reprodutibilidade e Experiment Tracking
 
----
+- Ferramentas sugeridas: MLflow/Weights&Biases para tracking; DVC para versionamento de dados; S3/Blob para artefatos.
+- Registrar hyperparams, seeds, metrics e ambiente (docker image, libs).
+- Snapshots da feature store para treino e validação.
 
-## Metas-Chave do Produto (ligadas aos RF/RNF)
+#### Políticas de Segurança e Privacidade para ML
 
-- Chuva: ROC-AUC (1h) ≥ 0,80; RMSE (24h) < 5 mm; CSI ≥ 0,40 (≥ 20 mm/24h).
-- Nível: MAE D+1 < 0,10 m; D+7 < 0,30 m; D+14 < 0,50 m; tendência correta D+30 ≥ 80%.
-- Alertas: antecedência média ≥ 14 dias para cruzar limiar crítico com PI90 exibido e calibrado.
+- Treino com dados anonimizados quando possível.
+- Acesso controlado ao data lake e feature store.
+- Encriptação de artefatos sensíveis e logs.
+- Revisão de compliance antes de liberar modelos para produção (model card).
 
-## Critérios de aceitação
+#### Operações e Runbooks
 
-- Chuva: ROC-AUC > 0,80 (1h); RMSE < 5 mm (24h); CSI ≥ 0,4 para >20 mm/24h.
-- Nível: MAE < 0,10 m (D+1); < 0,30 m (D+7); < 0,50 m (D+14); sinal correto ≥ 80% em D+30.
-- Limiar crítico previsto com 14 dias de antecedência.
-
-## Variáveis — Barragem (nível)
-
-| Variável                          | Tipo             | Importância | O que faz                            |
-| --------------------------------- | ---------------- | ----------- | ------------------------------------ |
-| Nível do reservatório (histórico) | Numérica (m/cm)  | Crítica     | Alvo e componente autoregressiva.    |
-| Precipitação na bacia             | Numérica (mm)    | Crítica     | Principal entrada (inflow).          |
-| Chuva acumulada (3, 7, 30d)       | Derivada (mm)    | Crítica     | Satura solo, aumenta runoff.         |
-| Dias desde última chuva           | Derivada (dias)  | Alta        | Proxy de umidade do solo.            |
-| Tendência do nível (1, 7, 30d)    | Derivada (m/dia) | Alta        | Velocidade/aceleração de enchimento. |
-| Consumo/retirada estimada         | Numérica (m³/d)  | Alta        | Saída do balanço hídrico.            |
-| Evaporação estimada               | Derivada (mm/d)  | Alta        | Perda por superfície.                |
-| Temperatura                       | Numérica (°C)    | Alta        | Evaporação/demanda.                  |
-| Umidade relativa                  | Numérica (%)     | Alta        | Evaporação e ligação com chuva.      |
-| Vento (velocidade)                | Numérica (m/s)   | Alta        | Aumenta evaporação.                  |
-| Radiação solar                    | Numérica (kJ/m²) | Média       | Evaporação e sazonalidade.           |
-| Produção ETA por manancial        | Numérica (m³/d)  | Média       | Retirada efetiva.                    |
-| Perdas na distribuição            | Numérica (%)     | Média       | Ajusta consumo efetivo.              |
-| População atendida                | Numérica         | Média       | Proxy de demanda.                    |
-| Indicadores sazonais              | Categ/deriv.     | Alta        | Estação seca/úmida.                  |
-| Eventos/regulações                | Categórica       | Baixa       | Restrições históricas.               |
-
-## Variáveis — Previsão de chuva
-
-| Variável                       | Tipo             | Importância | O que faz                    |
-| ------------------------------ | ---------------- | ----------- | ---------------------------- |
-| Precipitação (alvo)            | Numérica (mm)    | Crítica     | Probabilidade e volume.      |
-| Umidade relativa               | Numérica (%)     | Crítica     | Disponibilidade de umidade.  |
-| Temperatura do ar              | Numérica (°C)    | Crítica     | Convecção/estabilidade.      |
-| Ponto de orvalho               | Numérica (°C)    | Crítica     | Proximidade da saturação.    |
-| Pressão atmosférica            | Numérica (mB)    | Alta        | Sistemas de alta/baixa.      |
-| Vento (velocidade)             | Numérica (m/s)   | Alta        | Transporte de umidade.       |
-| Vento (direção)                | Numérica (graus) | Alta        | Padrões regionais.           |
-| Radiação global                | Numérica (kJ/m²) | Média       | Energia para convecção.      |
-| Chuva acumulada (3–24h; 7/30d) | Derivada (mm)    | Crítica     | Persistência do sistema.     |
-| Tendência de umidade           | Derivada         | Alta        | Aumento/queda de umidade.    |
-| Tendência de pressão           | Derivada         | Alta        | Aproximação de sistemas.     |
-| DTR (amplitude térmica)        | Derivada (°C)    | Média       | Estabilidade da CLP.         |
-| Codificação cíclica            | Derivada         | Alta        | Ciclo diurno e sazonalidade. |
-| ENSO/MJO (opcional)            | Numérica         | Benéfica    | Padrões de grande escala.    |
+- Runbooks para incidentes de inferência, drift, falhas de feature pipeline e retrain.
+- Playbooks para rollback de modelos (imediato) e rollout canary.
+- Planos de capacidade e testes de escalonamento (training/inference).
 
 ## Riscos e mitigação
 

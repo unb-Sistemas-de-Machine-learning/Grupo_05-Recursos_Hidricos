@@ -10,6 +10,8 @@ O Aguaprev é uma plataforma de código aberto projetada para analisar dados com
 
 Nossa missão é democratizar o acesso à informação sobre a segurança hídrica, permitindo que técnicos, gestores e cidadãos possam entender melhor a situação dos reservatórios e tomar decisões mais informadas.
 
+![Site](assets/home-page.png)
+
 ## Funcionalidades
 
 - **Análise de Dados Hídricos:** Coleta e processamento de dados de diversas fontes, como níveis de barragens e índices de chuva.

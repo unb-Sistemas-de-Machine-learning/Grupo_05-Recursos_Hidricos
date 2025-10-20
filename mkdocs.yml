@@ -8,9 +8,10 @@ nav:
   - Cronograma: cronograma/cronograma.md
   - Engenharia de Requisitos:
       - engenharia-de-requisitos/personas.md
+      - engenharia-de-requisitos/historias-de-usuario.md
       - engenharia-de-requisitos/engenharia-de-requisitos.md
   - Engenharia de Dados: engenharia-de-dados/engenharia-de-dados.md
-  - Arquitetura: arquitetura/arquitetura.md
+  - Sobre: sobre/sobre-o-projeto.md
   #- Como Funciona:
   #  - como-funciona/como-contribuir.md
   #  - como-funciona/codigo-de-conduta.md
