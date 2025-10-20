@@ -1,128 +1,247 @@
-# DermAlert
+# 💧 ÁguaPrev
 
-## 🚀 Como rodar a documentação localmente e publicar no GitHub Pages
+**ÁguaPrev** é uma plataforma web interativa para **monitoramento e previsão da situação hídrica do Distrito Federal**.
+O sistema combina um **backend em Python** e um **frontend moderno com Vite + TailwindCSS**, oferecendo visualização de dados ambientais, gráficos e interface responsiva.
+A documentação técnica é mantida em **MkDocs**.
 
-### 1. Pré-requisitos
+## 🏗️ Estrutura Geral
 
-| Requisito | Descrição |
-|-----------|-----------|
-| [Python 3.x](https://www.python.org/downloads/) | Interpretador da linguagem Python |
-| [Git](https://git-scm.com/downloads) | Sistema de versionamento |
-| Chave SSH configurada no GitHub | Para clonar e fazer push com segurança |
+```
+.
+├── backend/                  # API e lógica de negócio (Python)
+│   ├── app.py                # Entrada principal da API
+│   ├── auth.py               # Autenticação e controle de sessão
+│   ├── db.py                 # Conexão com banco de dados
+│   ├── models.sql            # Script SQL de criação de tabelas
+│   ├── uploads/              # Pasta para arquivos enviados
+│   ├── .env.example          # Modelo de variáveis de ambiente
+│   └── requirements.txt      # Dependências Python
+│
+├── frontend/                 # Aplicação web (Vite + Tailwind)
+│   ├── src/                  # Código-fonte principal
+│   ├── public/               # Arquivos públicos
+│   ├── index.html            # Página inicial
+│   ├── dashboard.html        # Dashboard principal
+│   ├── login.html            # Tela de login
+│   ├── signup.html           # Tela de cadastro
+│   ├── package.json          # Scripts npm
+│   ├── tailwind.config.js    # Configuração do Tailwind
+│   ├── vite.config.js        # Configuração do Vite
+│   └── .env.example          # Exemplo de configuração do front
+│
+├── docs/                     # Documentação fonte (MkDocs)
+├── site/                     # Build estático do MkDocs
+├── mkdocs.yml                # Configuração da documentação
+├── LICENSE
+└── README.md
+```
 
-### 2. Configurar chave SSH (caso necessário)
+## ⚙️ Requisitos
 
-Se ainda não possui uma chave SSH configurada no GitHub, siga os guias oficiais:
+| Tipo            | Ferramenta    | Versão Requerida     |
+| --------------- | ------------- | -------------------- |
+| 🐍 Backend      | Python        | ≥ 3.10               |
+| 🧱 Frontend     | Node.js / npm | Node ≥ 18 / npm ≥ 9  |
+| 📚 Documentação | MkDocs        | `pip install mkdocs` |
 
-| Etapa | Link |
-|-------|------|
-| 🔑 Gerar uma nova chave SSH | [Gerar chave e adicionar ao agente](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) |
-| ➕ Adicionar a chave ao GitHub | [Adicionar chave ao GitHub](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) |
+## 🚀 Como executar o projeto
 
-### 3. Instalação
+A ordem **correta de execução** é:
 
-Clone o repositório e instale as dependências do projeto:
+1️⃣ **Iniciar o backend (Python)**
+2️⃣ **Iniciar o frontend (Vite)**
+3️⃣ (Opcional) **Rodar a documentação (MkDocs)**
+
+### 🐍 1. Iniciar o Backend (API)
+
+#### 📂 Entrar na pasta
 
 ```bash
-git clone git@github.com:DermAlert/dermalert.github.io.git
-cd dermalert.github.io
+cd backend
+```
+
+#### 📦 Criar ambiente virtual e instalar dependências
+
+**Windows (PowerShell):**
+
+```bash
+python -m venv .venv
+.venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-> O arquivo `requirements.txt` já inclui o MkDocs, o tema Material e extensões necessárias.
+**Linux/macOS (bash/zsh):**
 
-### 4. Executar servidor local
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
 
-Para visualizar a documentação com a landing page integrada:
+#### ⚙️ Configurar variáveis de ambiente
+
+Copie o arquivo de exemplo:
+
+```bash
+cp .env.example .env
+```
+
+Abra o `.env` e ajuste valores como:
+
+```
+PORT=5000
+DB_URL=sqlite:///app.db
+SECRET_KEY=sua_chave_segura_aqui
+```
+
+#### 🗃️ (Opcional) Criar o banco de dados SQLite
+
+```bash
+sqlite3 app.db < models.sql
+```
+
+#### ▶️ Rodar o servidor da API
+
+**Windows:**
+
+```bash
+python app.py
+```
+
+**Linux/macOS:**
+
+```bash
+python3 app.py
+```
+
+O backend ficará disponível em:
+👉 **[http://127.0.0.1:5000](http://127.0.0.1:5000)**
+
+### 🧱 2. Iniciar o Frontend
+
+#### 📂 Entrar na pasta
+
+```bash
+cd frontend
+```
+
+#### 📦 Instalar dependências
+
+```bash
+npm install
+```
+
+#### ⚙️ Configurar URL da API
+
+Crie um arquivo `.env` na pasta `frontend` com o conteúdo:
+
+```
+VITE_API_URL=http://127.0.0.1:5000
+```
+
+> Isso garante que o front se conecte corretamente ao backend local.
+
+#### ▶️ Rodar o servidor de desenvolvimento
+
+**Windows / Linux / macOS:**
+
+```bash
+npm run dev
+```
+
+O frontend ficará disponível em:
+👉 **[http://localhost:5173](http://localhost:5173)**
+
+#### 🧪 Rodar build de produção (opcional)
+
+```bash
+npm run build
+npm run preview
+```
+
+### 📚 3. Rodar a documentação (MkDocs)
+
+#### 📦 Instalar MkDocs
+
+```bash
+pip install mkdocs
+```
+
+#### ▶️ Servir a documentação localmente
 
 ```bash
 mkdocs serve
 ```
 
-Acesse no navegador:
+Acesse em:
+👉 **[http://127.0.0.1:8000](http://127.0.0.1:8000)**
 
-```
-http://127.0.0.1:8000/land/dist/index.html
-```
-
-### 5. Deploy para o GitHub Pages
-
-Para publicar o site no GitHub Pages:
+#### 🏗️ Gerar build estático
 
 ```bash
-mkdocs gh-deploy
+mkdocs build
 ```
 
-Isso irá:
+Os arquivos serão gerados na pasta `/site`.
 
-- Gerar os arquivos estáticos com `mkdocs build`
-- Atualizar automaticamente a branch `gh-pages`
-- Publicar a documentação + landing no GitHub Pages
+## 🌍 Variáveis de Ambiente (exemplos)
 
-O site ficará acessível em:
+### Backend (`backend/.env`)
 
 ```
-https://dermalert.github.io/land/dist/index.html
+PORT=5000
+DB_URL=sqlite:///app.db
+SECRET_KEY=agua-prev-key
 ```
 
----
-
-## 🧭 Sobre a landing page
-
-A landing page do projeto foi construída com **Vite + TailwindCSS** e está localizada em `docs/land`.  
-Ela é compilada com `npm run build` e integrada diretamente ao MkDocs, sendo servida como parte do site final.
-
-> 📌 Para instruções completas de desenvolvimento e manutenção da landing, consulte o [README da pasta `docs/land`](https://github.com/DermAlert/dermalert.github.io/blob/main/docs/land/README.md).
-
----
-
-## 📝 Sobre o blog do projeto
-
-O blog foi construído com o plugin `mkdocs-blog` e permite registrar publicações, diários técnicos e tutoriais.
-
-### 🧱 Estrutura dos posts
-
-Os posts ficam organizados em `docs/blog/posts`, onde cada pasta representa um post.
-
-Exemplo de estrutura:
-```
-docs/
-└── blog/
-    └── posts/
-        └── 2025-05-06-exemplo-de-colina/
-            ├── 2025-05-06-exemplo-de-colina.md
-            └── image.png
-```
-
-### ✏️ Formato dos arquivos `.md`
-
-Cada post deve conter um **front-matter** no início do arquivo, como este:
-
-```yaml
----
-title: Exemplo de Colina
-date: 2025-05-06
-image: /assets/posts/bg/montanha_bg.png
-description: Um breve olhar sobre uma trilha bucólica.
-icon: /assets/posts/icons/montanha_icon.png
----
-```
-
-- Os caminhos de `image` e `icon` são relativos à pasta `docs/assets/posts/`.
-- As mídias usadas **dentro do post** devem estar na mesma pasta do `.md` e referenciadas com caminho relativo, como `./image.png`.
-
-### 🧪 Visualizar localmente
-
-Para testar o blog em tempo real:
-
-```bash
-mkdocs serve
-```
-
-E acesse:
+### Frontend (`frontend/.env`)
 
 ```
-http://127.0.0.1:8000/blog/
+VITE_API_URL=http://127.0.0.1:5000
 ```
 
-Você verá os cards de cada publicação com imagem, título, descrição e data.
+## 📈 Roadmap
+
+* [ ] Conectar dashboard a dados reais (chuvas, reservatórios — Adasa/ANA)
+* [ ] Implementar gráficos e indicadores (Chart.js / ECharts)
+* [ ] Autenticação completa entre backend e frontend
+* [ ] Deploy em ambiente de produção (API + Front)
+* [ ] Documentação expandida (MkDocs + endpoints)
+
+## 🤝 Contribuindo
+
+1. Crie uma branch:
+
+   ```bash
+   git checkout -b feature/nome-da-feature
+   ```
+2. Faça suas alterações e commit:
+
+   ```bash
+   git commit -m "feat: descrição da mudança"
+   ```
+3. Envie a branch:
+
+   ```bash
+   git push origin feature/nome-da-feature
+   ```
+4. Abra um **Pull Request** 🚀
+
+## 🪪 Licença
+
+Distribuído sob a **MIT License**.
+Consulte o arquivo `LICENSE` para mais detalhes.
+
+## 👨‍💻 Autor
+
+**Gustavo Martins**
+Desenvolvedor & Designer de Interfaces
+📍 Brasília - DF
+🌐 [github.com/lxgustxl](https://github.com/lxgustxl)
+
+> 💡 **Dica rápida**
+> Se o frontend retornar “Invalid Token” ou erro de conexão:
+>
+> * Verifique se o **backend está rodando** antes do front.
+> * Confirme se o `.env` do front tem a variável correta (`VITE_API_URL`).
+> * Evite misturar **HTTP e HTTPS** (bloqueio CORS no navegador).
