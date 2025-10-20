@@ -1,0 +1,17 @@
+/* /src/css/style.css
+   Mantém a organização modular e agrada o PostCSS: imports primeiro. */
+
+/* 1) Núcleo do Tailwind (base/components/utilities) */
+@import './core.css';
+
+/* 2) Estilos globais */
+@import './globals/base.css';
+@import './globals/components.css';
+@import './globals/footer.css';
+@import './globals/utilities.css';
+@import './globals/social-floating.css'; /* ⬅️ IMPORTANTE: CSS do widget */
+@import './globals/sidebar.css';
+
+/* 3) Estilos específicos de páginas/seções */
+@import './home/hero.css';
+@import './home/about.css';

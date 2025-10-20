@@ -1,0 +1,73 @@
+/* /src/css/globals/base.css */
+
+/* ===== Tokens herdados (utilizados pelo header antigo) ===== */
+:root{
+  --da-header-bg: 9,69,89;
+  --da-header-bg-alpha: .92;
+  --da-shadow: 0,0,0;
+  --da-shadow-alpha: .18;
+}
+
+/* ===== Lexend – pesos 100–900 ===== */
+@font-face{font-family:'Lexend';src:url('../../fonts/Lexend-Thin.ttf') format('truetype');font-weight:100;font-style:normal;font-display:swap}
+@font-face{font-family:'Lexend';src:url('../../fonts/Lexend-ExtraLight.ttf') format('truetype');font-weight:200;font-style:normal;font-display:swap}
+@font-face{font-family:'Lexend';src:url('../../fonts/Lexend-Light.ttf') format('truetype');font-weight:300;font-style:normal;font-display:swap}
+@font-face{font-family:'Lexend';src:url('../../fonts/Lexend-Regular.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'Lexend';src:url('../../fonts/Lexend-Medium.ttf') format('truetype');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'Lexend';src:url('../../fonts/Lexend-SemiBold.ttf') format('truetype');font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:'Lexend';src:url('../../fonts/Lexend-Bold.ttf') format('truetype');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'Lexend';src:url('../../fonts/Lexend-ExtraBold.ttf') format('truetype');font-weight:800;font-style:normal;font-display:swap}
+@font-face{font-family:'Lexend';src:url('../../fonts/Lexend-Black.ttf') format('truetype');font-weight:900;font-style:normal;font-display:swap}
+
+/* ===== Tipografia global ===== */
+body{
+  font-family:'Lexend',ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol';
+}
+
+/* ===== Acessibilidade (reduzir movimento) ===== */
+@media (prefers-reduced-motion:reduce){
+  *{
+    -webkit-animation:none!important;animation:none!important;
+    -webkit-transition:none!important;transition:none!important;
+  }
+}
+
+/* ===== Tokens de cor e sombra globais ===== */
+:root {
+  --ap-surface-0-light: #ffffff;
+  --ap-surface-0-dark:  #0E1A2B;
+
+  --ap-glow-a-light: 10,92,103;    /* #0A5C67 */
+  --ap-glow-b-light: 255,165,130;  /* #FFA582 */
+
+  --ap-glow-a-dark:  107,170,201;  /* #6BAAC9 */
+  --ap-glow-b-dark:  247,172,146;  /* #F7AC92 */
+
+  --ap-card-shadow: 0 14px 28px rgba(0,0,0,.08), 0 10px 10px rgba(0,0,0,.04);
+}
+
+/* ===== Superfície global sólida ===== */
+body { background-color: var(--ap-surface-0-light); }
+.dark body { background-color: var(--ap-surface-0-dark); }
+
+/* ===== Canvas decorativo (fundo sutil) ===== */
+body::before{
+  content:"";
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(900px 600px at -10% -10%,
+      rgba(var(--ap-glow-a-light), .10) 0%,
+      rgba(255,255,255,0) 62%),
+    radial-gradient(900px 520px at 110% 80%,
+      rgba(var(--ap-glow-b-light), .12) 0%,
+      rgba(255,255,255,0) 72%);
+}
+.dark body::before{
+  background:
+    radial-gradient(900px 600px at -10% -10%,
+      rgba(var(--ap-glow-a-dark), .16) 0%,
+      rgba(0,0,0,0) 62%),
+    radial-gradient(900px 520px at 110% 80%,
+      rgba(var(--ap-glow-b-dark), .14) 0%,
+      rgba(0,0,0,0) 72%);
+}

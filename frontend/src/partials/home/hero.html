@@ -1,0 +1,113 @@
+<!-- /src/partials/home/hero.html -->
+<section id="hero" class="relative z-0">
+  <div class="relative w-full max-w-[1358px] mx-auto px-5 sm:px-6 lg:px-10 pt-14 sm:pt-16 lg:pt-20 pb-14">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+
+      <!-- TEXTO -->
+      <div class="lg:col-span-6 xl:col-span-5">
+        <span
+          class="inline-flex items-center gap-2 text-xs font-medium
+                 px-3 py-1 rounded-full bg-white/70 text-[#0A5C67] border border-black/5
+                 dark:bg-white/10 dark:text-white dark:border-white/10"
+          data-i18n="Hero.badge">
+          Previsão Hídrica do DF
+        </span>
+
+        <h1
+          class="mt-5 text-4xl sm:text-5xl font-extrabold tracking-tight
+                 text-[#031E21] dark:text-white"
+          data-i18n="Hero.title">
+          Antecipe cheias e escassez com<br class="hidden sm:block" />
+          mapas e previsões confiáveis
+        </h1>
+
+        <p
+          class="mt-4 text-base sm:text-lg text-gray-600 dark:text-gray-300 max-w-prose"
+          data-i18n="Hero.subtitle">
+          O <strong>AguaPrev</strong> integra dados hidrometeorológicos e modelos de previsão
+          para oferecer <em>insights acionáveis</em> a gestores, produtores e cidadãos no Distrito Federal.
+        </p>
+
+        <!-- CTAs -->
+        <div class="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+          <a
+            href="login.html"
+            class="inline-flex justify-center items-center gap-2
+                   rounded-2xl px-6 py-3 text-base font-semibold
+                   bg-[#0A5C67] text-white shadow hover:shadow-md hover:brightness-110
+                   focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0A5C67]
+                   dark:focus:ring-offset-[#0E1A2B]"
+            data-i18n="Hero.cta_primary">
+            Abrir Dashboard
+          </a>
+
+          <a
+            href="#app-how"
+            class="inline-flex justify-center items-center gap-2
+                   rounded-2xl px-6 py-3 text-base font-semibold
+                   border border-[#0A5C67] text-[#0A5C67] bg-transparent
+                   hover:bg-[#0A5C67]/5
+                   dark:border-white/70 dark:text-white dark:hover:bg-white/10
+                   focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0A5C67]
+                   dark:focus:ring-offset-[#0E1A2B]"
+            data-i18n="Hero.cta_secondary">
+            Como funciona
+          </a>
+        </div>
+
+        <ul class="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-gray-500 dark:text-gray-400">
+          <li data-i18n="Hero.trust_1">Dados ANA/INMET/Adasa</li>
+          <li class="hidden sm:block">•</li>
+          <li data-i18n="Hero.trust_2">Atualização diária</li>
+          <li class="hidden sm:block">•</li>
+          <li data-i18n="Hero.trust_3">Modelos validados</li>
+        </ul>
+      </div>
+
+      <!-- ILUSTRAÇÃO -->
+      <div class="lg:col-span-6 xl:col-span-7">
+        <div
+          class="relative aspect-[16/11] w-full rounded-3xl overflow-hidden
+                 bg-white/70 dark:bg-white/5 backdrop-blur
+                 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.25)]"
+          data-hero-visual>
+          <img
+            src="home/hero/mapa_preview.png"
+            alt="Prévia do mapa e previsão hídrica do AguaPrev"
+            class="h-full w-full object-cover" />
+
+          <!-- Card flutuante -->
+          <div
+            class="absolute bottom-4 right-4 sm:bottom-6 sm:right-6
+                   rounded-2xl backdrop-blur-md bg-white/70 dark:bg-[#0E1A2B]/70
+                   px-4 py-3 shadow-md border border-black/5 dark:border-white/10
+                   max-w-[85%] sm:max-w-[60%]"
+            data-hero-float>
+            <p class="text-xs uppercase tracking-wide text-gray-600 dark:text-gray-300 mb-1" data-i18n="Hero.float_title">
+              TENDÊNCIA 7 DIAS — BACIA DESCOBERTO
+            </p>
+            <div class="flex items-center gap-3">
+              <svg viewBox="0 0 120 30" class="h-8 w-24 md:w-32" aria-hidden="true">
+                <polyline fill="none" stroke="currentColor" stroke-width="2"
+                          points="0,20 20,18 40,15 60,17 80,10 100,12 120,8"
+                          class="text-[#0A5C67] dark:text-[#6BAAC9]" />
+              </svg>
+              <div class="text-sm text-gray-700 dark:text-gray-200">
+                <strong>+12%</strong>
+                <span class="ml-1" data-i18n="Hero.float_label">volume esperado</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Anchors -->
+        <div class="mt-6 flex flex-wrap gap-4 text-sm">
+          <a href="#app-map-preview" class="underline decoration-dotted underline-offset-2 text-gray-600 dark:text-gray-300" data-i18n="Hero.anchor_map">Ver mapa/forecast</a>
+          <a href="#app-usecases" class="underline decoration-dotted underline-offset-2 text-gray-600 dark:text-gray-300" data-i18n="Hero.anchor_usecases">Casos de uso</a>
+          <a href="/docs/" class="underline decoration-dotted underline-offset-2 text-gray-600 dark:text-gray-300" data-i18n="Hero.anchor_docs">Documentação</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

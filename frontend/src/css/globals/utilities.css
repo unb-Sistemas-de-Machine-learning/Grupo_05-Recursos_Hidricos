@@ -1,0 +1,13 @@
+/* /src/css/globals/utilities.css */
+
+/* body lock quando overlay aberto */
+.no-scroll{ overflow: hidden; }
+
+/* ===== Utilitários customizados ===== */
+.ap-text-gradient {
+  @apply bg-gradient-to-r from-[#0A5C67] to-[#6BAAC9] bg-clip-text text-transparent;
+}
+
+.ap-divider {
+  @apply w-full h-px bg-black/10 dark:bg-white/10;
+}
