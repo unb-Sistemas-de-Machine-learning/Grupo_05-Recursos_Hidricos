@@ -1,0 +1,38 @@
+/* /src/css/globals/footer.css */
+
+/* link com micro-underline animado e transição suave */
+.footer-link{
+  @apply relative inline-flex justify-center text-sm text-gray-700 dark:text-gray-300 hover:text-[#0A5C67] dark:hover:text-white transition-colors;
+}
+.footer-link span{ position:relative; }
+.footer-link span::after{
+  content:""; position:absolute; left:50%; bottom:-2px; width:0; height:2px;
+  background: linear-gradient(90deg,#0A5C67,#6BAAC9);
+  border-radius:999px; transform:translateX(-50%); transition:width .25s ease;
+}
+.footer-link:hover span::after{ width:100%; }
+
+/* borda gradiente “clean” */
+.ap-gradient-border{
+  background: conic-gradient(from 180deg,#0A5C67,#6BAAC9,#0A5C67,#FFAD5B 80%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  padding:1px; opacity:.14;
+}
+
+/* sombra suave do painel */
+.ap-footer-panel{ box-shadow:0 26px 60px -20px rgba(0,0,0,.18); }
+
+/* textura sutil (sem imagem externa) */
+.ap-soft-noise{
+  background:
+    radial-gradient(1200px 300px at 70% 120%, rgba(255,173,91,.06), transparent 60%),
+    radial-gradient(1000px 280px at 0% -20%, rgba(107,170,201,.08), transparent 55%);
+  opacity:.7;
+}
+
+/* faixa luminosa de destaque na base do painel */
+.ap-glow{
+  background: radial-gradient(60% 100% at 50% 0%, rgba(107,170,201,.32), rgba(255,255,255,0) 70%);
+  filter: blur(18px);
+}
