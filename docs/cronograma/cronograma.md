@@ -1,5 +1,3 @@
-### Cronograma
-
 Este cronograma organiza as atividades do projeto entre 10/09 e 20/10 (parcial), com foco nas entregas exigidas: Produto, Arquitetura/Engenharia de Dados e MVP.
 
 A execução é dividida em etapas com responsáveis e revisores definidos para cada tarefa.
