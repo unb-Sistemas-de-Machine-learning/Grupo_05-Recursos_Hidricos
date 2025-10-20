@@ -5,27 +5,28 @@ docs_dir: docs
 
 nav:
   - Home: app/dist/index.html
+  - Cronograma: cronograma/cronograma.md
   - Como Funciona:
-    - como-funciona/como-contribuir.md
-    - como-funciona/codigo-de-conduta.md
-    - como-funciona/guia-de-contribuicao.md
-  - Ajuda e Suporte: 
-    - ajuda-e-suporte/problemas-comuns.md
-    - Documentação técnica:
-      - Frontend: ajuda-e-suporte/documentacao-tecnica/frontend.md
-      - Backend: ajuda-e-suporte/documentacao-tecnica/backend.md
-    - Documentação GCES: 
-      - Equipe: ajuda-e-suporte/documentacao-gces/equipe.md
-      - Atas de Reunião: ajuda-e-suporte/documentacao-gces/atas-reunioes.md
-      - Checklists: ajuda-e-suporte/documentacao-gces/checklist.md
-      - Backlog do projeto: ajuda-e-suporte/documentacao-gces/backlog.md
+      - como-funciona/como-contribuir.md
+      - como-funciona/codigo-de-conduta.md
+      - como-funciona/guia-de-contribuicao.md
+  - Ajuda e Suporte:
+      - ajuda-e-suporte/problemas-comuns.md
+      - Documentação técnica:
+          - Frontend: ajuda-e-suporte/documentacao-tecnica/frontend.md
+          - Backend: ajuda-e-suporte/documentacao-tecnica/backend.md
+      - Documentação GCES:
+          - Equipe: ajuda-e-suporte/documentacao-gces/equipe.md
+          - Atas de Reunião: ajuda-e-suporte/documentacao-gces/atas-reunioes.md
+          - Checklists: ajuda-e-suporte/documentacao-gces/checklist.md
+          - Backlog do projeto: ajuda-e-suporte/documentacao-gces/backlog.md
   - Dashboards:
-    - curso-de-extensao/sobre-o-curso.md
+      - curso-de-extensao/sobre-o-curso.md
   - Sobre:
-    - sobre/sobre-o-projeto.md
+      - sobre/sobre-o-projeto.md
   - Blog:
-    - blog/index.md
-    
+      - blog/index.md
+
 markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
@@ -50,14 +51,14 @@ theme:
       toggle:
         icon: material/weather-night
         name: Mudar para o modo escuro
-      primary: "#1A4568" 
+      primary: "#1A4568"
       accent: "#1A4568"
 
     - scheme: slate
       toggle:
         icon: material/weather-sunny
         name: Mudar para o modo claro
-      primary: "#1A4568" 
+      primary: "#1A4568"
       accent: "#1A4568"
 
 plugins:
@@ -76,9 +77,9 @@ plugins:
       caption_position: bottom
   - exclude:
       glob:
-        - 'app/node_modules/**'
-        - 'app/**/CHANGELOG.md'
-        - 'app/**/README*.md'
+        - "app/node_modules/**"
+        - "app/**/CHANGELOG.md"
+        - "app/**/README*.md"
   - blog:
       # habilita/desabilita o cálculo automático
       post_readtime: true
