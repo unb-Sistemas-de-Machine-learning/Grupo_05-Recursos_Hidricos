@@ -1,23 +1,25 @@
 ### Cronograma
 
-Este cronograma organiza as atividades do projeto entre 10/09 e 20/10, com foco nas entregas exigidas: Produto, Arquitetura/Engenharia de Dados e MVP. A execução é dividida em etapas com responsáveis e revisores definidos para cada tarefa. Integrantes do grupo: Hugo Rocha, Gabriel Ferreira e Gustavo Martins.
+Este cronograma organiza as atividades do projeto entre 10/09 e 20/10 (parcial), com foco nas entregas exigidas: Produto, Arquitetura/Engenharia de Dados e MVP.
+
+A execução é dividida em etapas com responsáveis e revisores definidos para cada tarefa.
 
 #### Etapa 1 – Planejamento e Descoberta
 
 Período: 10/09 a 22/09  
-Entrega: Visão do Produto (Fishbone), backlog inicial de US, catálogo de dados preliminar.
+Entrega: Visão do Produto (AguaPrev), backlog inicial de US, catálogo de dados preliminar.
 
 - Semana 1 (10/09 a 15/09)
 
   - Tarefas:
-    - Visão do Produto – Fishbone (problema, causas, hipóteses)
-      - Responsável: Hugo | Revisor: Gabriel
+    - Visão do Produto – Diagrama de Ishikawa 8D (problema, causas, hipóteses)
+      - Responsável: Gabriel | Revisor: Hugo
     - Levantamento de fontes de dados e catálogo preliminar
-      - Responsável: Gustavo | Revisor: Hugo
+      - Responsável: Gabriel | Revisor: Hugo
     - Rascunho de requisitos de produto (funcionais e não funcionais) – brainstorming + Miro
       - Responsável: Gabriel | Revisor: Gustavo
   - Entregáveis:
-    - Fishbone documentado
+    - Diagrama de Ishikawa documentado
     - Lista de datasets e dicionário de dados preliminar
     - Rascunho de RF/RNF
 
@@ -55,7 +57,7 @@ Entrega: Requisitos do Produto e de ML na GitPage, desenho de arquitetura e plan
 
 - Semana 4 (30/09 a 06/10)
   - Tarefas:
-    - Mapeamento de dados detalhado (tabela para o modelo), referenciando o catálogo (pág. 7–15)
+    - Mapeamento de dados detalhado (tabela para o modelo), referenciando o catálogo
       - Responsável: Gustavo | Revisor: Hugo
     - Plano de rotulagem (horizontes: 1h, 1d; como gerar labels) e balanceamento (nível de reserva)
       - Responsável: Hugo | Revisor: Gabriel
@@ -101,8 +103,8 @@ Entrega: MVP definido e planejado, cronograma parcial, publicação na GitPage.
 
 | Tarefa                                                   | Responsável(is) | Revisor(es)      | Início | Fim   |
 | -------------------------------------------------------- | --------------- | ---------------- | ------ | ----- |
-| Visão do Produto – Fishbone                              | Hugo            | Gabriel          | 10/09  | 15/09 |
-| Catálogo de dados (pág. 7–15)                            | Gustavo         | Hugo             | 10/09  | 22/09 |
+| Visão do Produto – AguaPrev                              | Hugo            | Gabriel          | 10/09  | 15/09 |
+| Catálogo de dados                                        | Gustavo         | Hugo             | 10/09  | 22/09 |
 | Requisitos do Produto (RF/RNF) – GitPage                 | Gabriel         | Hugo             | 23/09  | 29/09 |
 | Requisitos de ML + métricas + ML Canvas                  | Hugo            | Gustavo          | 23/09  | 29/09 |
 | Arquitetura de Dados (coleta/armazenamento/orquestração) | Gustavo         | Gabriel          | 23/09  | 29/09 |
