@@ -1,0 +1,26 @@
+/* /src/css/maps/maps.css */
+
+#map-container { min-height: 520px; }
+.f-select,
+.f-input {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(0,0,0,.1);
+  background: var(--tw-white, #fff);
+  padding: .5rem .75rem;
+}
+.btn-aguaprev {
+  border-radius: 0.75rem;
+  padding: .5rem 1rem;
+  background: #0A5C67;
+  color: #fff;
+  font-weight: 600;
+}
+.btn-aguaprev-outline {
+  border-radius: 0.75rem;
+  padding: .5rem 1rem;
+  border: 1px solid rgba(0,0,0,.1);
+  background: #fff;
+  color: #031E21;
+  font-weight: 600;
+}

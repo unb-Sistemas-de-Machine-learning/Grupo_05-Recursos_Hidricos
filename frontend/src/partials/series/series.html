@@ -1,0 +1,117 @@
+<!-- Séries Temporais (partial) -->
+<section class="w-full">
+  <!-- HERO -->
+  <div class="max-w-[1200px] mx-auto px-5 sm:px-6 lg:px-10 py-8 sm:py-10">
+    <div class="flex items-start justify-between gap-4 flex-col md:flex-row">
+      <div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#031E21] dark:text-white" data-i18n="Series.title">
+          Séries temporais
+        </h1>
+        <p class="mt-2 text-sm sm:text-base text-gray-600 dark:text-gray-300" data-i18n="Series.subtitle">
+          Explore séries de chuva, nível de reservatórios e outros indicadores hídricos.
+        </p>
+      </div>
+      <div class="flex items-center gap-2 mt-4 md:mt-0">
+        <button id="btn-refresh" class="btn-aguaprev" data-i18n="Common.refresh">Atualizar</button>
+        <button id="btn-export-png" class="btn-aguaprev-outline" data-i18n="Common.export_png">Exportar PNG</button>
+        <button id="btn-export-csv" class="btn-aguaprev-outline" data-i18n="Common.export_csv">Exportar CSV</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTEÚDO -->
+  <div class="max-w-[1200px] mx-auto px-5 sm:px-6 lg:px-10 pb-12" id="series-root">
+    <!-- FILTROS -->
+    <div class="series-filters">
+      <div class="filters-row">
+        <label class="f-item">
+          <span data-i18n="Filters.basin">Bacia</span>
+          <select id="f-basin" class="f-select">
+            <option value="descoberto">Descoberto</option>
+            <option value="santamaria">Santa Maria</option>
+            <option value="corumba">Corumbá</option>
+          </select>
+        </label>
+
+        <label class="f-item">
+          <span data-i18n="Filters.station">Estação/Reservatório</span>
+          <select id="f-station" class="f-select">
+            <option value="reservatorio_a">Reservatório A</option>
+            <option value="reservatorio_b">Reservatório B</option>
+            <option value="posto_pluviometro">Pluviômetro</option>
+          </select>
+        </label>
+
+        <label class="f-item">
+          <span data-i18n="Filters.variable">Variável</span>
+          <select id="f-variable" class="f-select">
+            <option value="chuva">Chuva (mm)</option>
+            <option value="nivel">Nível (m)</option>
+            <option value="vazao">Vazão (m³/s)</option>
+          </select>
+        </label>
+
+        <label class="f-item">
+          <span data-i18n="Filters.resolution">Resolução</span>
+          <select id="f-resolution" class="f-select">
+            <option value="D">Diária</option>
+            <option value="W">Semanal</option>
+            <option value="M">Mensal</option>
+          </select>
+        </label>
+
+        <label class="f-item">
+          <span data-i18n="Filters.from">De</span>
+          <input id="f-from" type="date" class="f-input" />
+        </label>
+
+        <label class="f-item">
+          <span data-i18n="Filters.to">Até</span>
+          <input id="f-to" type="date" class="f-input" />
+        </label>
+      </div>
+
+      <button id="btn-toggle-filters" class="filters-toggle md:hidden mt-3">Mostrar/ocultar filtros</button>
+    </div>
+
+    <!-- KPIs -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+      <div class="kpi-card"><p class="kpi-label" data-i18n="Kpi.points">Pontos</p><p id="kpi-points" class="kpi-value">—</p></div>
+      <div class="kpi-card"><p class="kpi-label" data-i18n="Kpi.min">Mín</p><p id="kpi-min" class="kpi-value">—</p></div>
+      <div class="kpi-card"><p class="kpi-label" data-i18n="Kpi.max">Máx</p><p id="kpi-max" class="kpi-value">—</p></div>
+      <div class="kpi-card"><p class="kpi-label" data-i18n="Kpi.last">Último</p><p id="kpi-last" class="kpi-value">—</p></div>
+    </div>
+
+    <!-- GRÁFICO -->
+    <div class="chart-wrapper mt-6">
+      <canvas id="series-chart" class="series-canvas" height="340" aria-label="Gráfico de série temporal"></canvas>
+    </div>
+
+    <!-- TABELA -->
+    <div class="mt-8 bg-white/70 dark:bg-white/5 backdrop-blur rounded-2xl shadow-sm ring-1 ring-black/5 dark:ring-white/10 overflow-hidden">
+      <div class="p-4 border-b border-black/5 dark:border-white/10 flex items-center justify-between">
+        <h2 class="text-lg font-semibold text-[#031E21] dark:text-white" data-i18n="Series.table_title">Observações</h2>
+        <div class="text-sm text-gray-500 dark:text-gray-400"><span id="tbl-range">—</span></div>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-sm">
+          <thead class="bg-gray-50 dark:bg-white/5">
+            <tr class="text-left">
+              <th class="th-cell" data-i18n="Table.date">Data</th>
+              <th class="th-cell" data-i18n="Table.value">Valor</th>
+            </tr>
+          </thead>
+          <tbody id="tbl-body" class="divide-y divide-gray-100 dark:divide-white/10"></tbody>
+        </table>
+      </div>
+      <div class="flex items-center justify-between px-4 py-3">
+        <div class="text-xs text-gray-500 dark:text-gray-400" id="tbl-status">—</div>
+        <div class="flex items-center gap-2">
+          <button id="pg-prev" class="pg-btn" disabled>«</button>
+          <span id="pg-info" class="text-xs">1/1</span>
+          <button id="pg-next" class="pg-btn" disabled>»</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

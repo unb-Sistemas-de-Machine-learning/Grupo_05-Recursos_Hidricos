@@ -6,7 +6,13 @@ export default {
     './login.html',
     './dashboard.html',
     './register.html',
-    './src/**/*.{html,js,ts,tsx}',
+    './series.html',
+    './maps.html',
+    './compare.html',
+    './alerts.html',
+    './reports.html',
+    './tutorial.html',
+    './src/**/*.{html,js,ts,tsx}'
   ],
   theme: {
     extend: {

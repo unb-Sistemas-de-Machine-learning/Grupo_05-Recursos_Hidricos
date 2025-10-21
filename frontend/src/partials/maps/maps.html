@@ -1,0 +1,92 @@
+<!-- Mapas (partial) -->
+<section class="w-full" id="maps-partial">
+  <!-- Header -->
+  <div class="max-w-[1200px] mx-auto px-5 sm:px-6 lg:px-10 py-8 sm:py-10">
+    <div class="flex items-start justify-between gap-4 flex-col md:flex-row">
+      <div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#031E21] dark:text-white" data-i18n="Map.title">
+          Mapa & Forecast
+        </h1>
+        <p class="mt-2 text-sm sm:text-base text-gray-600 dark:text-gray-300" data-i18n="Map.subtitle">
+          Selecione a região para ver o mapa e a tendência em 7 dias. As linhas indicam a variação; os valores mostram a última leitura.
+        </p>
+      </div>
+      <div class="flex items-center gap-2 mt-4 md:mt-0">
+        <button id="map-refresh" class="btn-aguaprev" data-i18n="Common.refresh">Atualizar</button>
+        <button id="map-export-png" class="btn-aguaprev-outline" data-i18n="Common.export_png">Exportar PNG</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="max-w-[1200px] mx-auto px-5 sm:px-6 lg:px-10 pb-4">
+    <form id="map-filters" class="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 items-end">
+      <label class="md:col-span-3 text-xs font-semibold text-gray-600 dark:text-gray-300">
+        <span data-i18n="Filters.basin">Bacia</span>
+        <select id="mf-basin" class="f-select mt-1">
+          <option value="df" data-i18n="Map.region.df">DF — Geral</option>
+          <option value="descoberto" data-i18n="Map.region.desc">Bacia Descoberto</option>
+          <option value="paranoa" data-i18n="Map.region.paranoa">Bacia Paranoá</option>
+          <option value="sb" data-i18n="Map.region.sb">Bacia São Bartolomeu</option>
+        </select>
+      </label>
+
+      <label class="md:col-span-3 text-xs font-semibold text-gray-600 dark:text-gray-300">
+        <span data-i18n="Filters.variable">Variável</span>
+        <select id="mf-layer" class="f-select mt-1">
+          <option value="precip" data-i18n="Map.metric_precip">Precipitação</option>
+          <option value="flow" data-i18n="Map.metric_flow">Vazão</option>
+          <option value="storage" data-i18n="Map.metric_storage">Armazenamento</option>
+        </select>
+      </label>
+
+      <label class="md:col-span-3 text-xs font-semibold text-gray-600 dark:text-gray-300">
+        <span data-i18n="Filters.from">De</span>
+        <input id="mf-from" type="date" class="f-input mt-1" />
+      </label>
+
+      <label class="md:col-span-3 text-xs font-semibold text-gray-600 dark:text-gray-300">
+        <span data-i18n="Filters.to">Até</span>
+        <input id="mf-to" type="date" class="f-input mt-1" />
+      </label>
+    </form>
+  </div>
+
+  <!-- Mapa + legenda + série compacta -->
+  <div class="max-w-[1200px] mx-auto px-5 sm:px-6 lg:px-10 pb-12" id="maps-root">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <!-- Mapa -->
+      <article class="lg:col-span-8 rounded-3xl ring-1 ring-black/5 dark:ring-white/10 bg-white/70 dark:bg-white/5 backdrop-blur overflow-hidden">
+        <div class="h-[520px] w-full" id="map-container" aria-label="Mapa principal"></div>
+      </article>
+
+      <!-- Painel lateral -->
+      <aside class="lg:col-span-4 space-y-4">
+        <div class="rounded-2xl ring-1 ring-black/5 dark:ring-white/10 bg-white/70 dark:bg-white/5 backdrop-blur p-4">
+          <h2 class="font-semibold text-[#031E21] dark:text-white mb-2" data-i18n="Map.legend">Legenda:</h2>
+          <p class="text-xs text-gray-600 dark:text-gray-300" data-i18n="Map.legend_text">
+            Linhas indicam iso-curvas e os pontos marcam estações/locais de referência.
+          </p>
+          <ul class="mt-3 space-y-1 text-sm">
+            <li><input type="checkbox" id="lg-stations" class="align-middle mr-2" checked /> Estações</li>
+            <li><input type="checkbox" id="lg-iso" class="align-middle mr-2" checked /> Iso-curvas</li>
+            <li><input type="checkbox" id="lg-heat" class="align-middle mr-2" /> Heatmap</li>
+          </ul>
+        </div>
+
+        <div class="rounded-2xl ring-1 ring-black/5 dark:ring-white/10 bg-white/70 dark:bg-white/5 backdrop-blur p-4">
+          <h3 class="font-semibold text-[#031E21] dark:text-white mb-3" data-i18n="Map.series_title">Tendência (7 dias)</h3>
+          <canvas id="map-sparkline" height="120" aria-label="Série curta"></canvas>
+          <p class="mt-2 text-xs text-gray-600 dark:text-gray-300" data-i18n="Map.series_hint">
+            As mini-curvas mostram a tendência de 7 dias; o número ao lado é o valor mais recente.
+          </p>
+          <div id="map-last-value" class="mt-2 text-sm font-semibold">—</div>
+        </div>
+
+        <a href="/dashboard.html" class="inline-flex items-center gap-2 rounded-xl px-4 py-2 bg-[#0A5C67] text-white text-sm font-semibold hover:brightness-110" data-i18n="Map.cta">
+          Abrir no Dashboard
+        </a>
+      </aside>
+    </div>
+  </div>
+</section>

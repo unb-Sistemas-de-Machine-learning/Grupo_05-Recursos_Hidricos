@@ -15,3 +15,10 @@
 /* 3) Estilos específicos de páginas/seções */
 @import './home/hero.css';
 @import './home/about.css';
+
+/* 4) Páginas pós-auth adicionais */
+@import './series/series.css';
+@import './maps/maps.css';
+@import './compare/compare.css';
+@import './alerts/alerts.css';   /* Alertas */
+@import './reports/reports.css'; /* Relatórios */

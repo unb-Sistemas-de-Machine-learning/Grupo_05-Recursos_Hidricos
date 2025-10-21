@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="pt-br" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Alertas — AguaPrev</title>
+    <meta name="theme-color" content="#0A5C67" />
+    <link rel="icon" type="image/png" href="/src/assets/aguaprev/favicon.png" />
+    <link rel="stylesheet" href="/src/css/style.css" />
+  </head>
+
+  <body class="font-sans antialiased bg-white text-gray-800 dark:bg-[#0E1A2B] dark:text-gray-100 page-alerts" data-page="alerts">
+    <!-- Sidebar -->
+    <div id="app-sidebar-root"></div>
+
+    <!-- Conteúdo (mesmo container do dashboard) -->
+    <main id="ap-content" class="relative">
+      <div class="max-w-[1440px] mx-auto px-5 sm:px-6 lg:px-10 py-8">
+        <!-- Partial será injetado aqui -->
+        <div id="app-page" data-page-alerts></div>
+      </div>
+    </main>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

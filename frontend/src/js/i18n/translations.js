@@ -151,7 +151,7 @@ export const TRANSLATIONS = {
     "en": "Use your email and password or continue with a provider.",
     "es": "Usa tu correo y contraseña o continúa con un proveedor."
   },
-  "Login.subtitle": { // alias usado dentro do card
+  "Login.subtitle": {
     "pt-BR": "Acesse sua conta para abrir o dashboard do AguaPrev.",
     "en": "Access your account to open the AguaPrev dashboard.",
     "es": "Accede a tu cuenta para abrir el panel de AguaPrev."
@@ -181,7 +181,7 @@ export const TRANSLATIONS = {
   "Auth.Register.email_label":    { "pt-BR": "E-mail", "en": "Email", "es": "Correo" },
   "Auth.Register.password_label": { "pt-BR": "Senha", "en": "Password", "es": "Contraseña" },
 
-  // confirm password (ambos nomes para não quebrar nada)
+  // confirm password
   "Auth.Register.password2_label":        { "pt-BR": "Confirmar senha", "en": "Confirm password", "es": "Confirmar contraseña" },
   "Auth.Register.password_confirm_label": { "pt-BR": "Confirmar senha", "en": "Confirm password", "es": "Confirmar contraseña" },
 
@@ -199,7 +199,7 @@ export const TRANSLATIONS = {
   "Auth.Register.terms_link":   { "pt-BR": "Termos", "en": "Terms", "es": "Términos" },
   "Auth.Register.privacy_link": { "pt-BR": "Privacidade", "en": "Privacy", "es": "Privacidad" },
 
-  // ações (adicionadas as que faltavam no teu HTML)
+  // ações
   "Auth.Register.cta":         { "pt-BR": "Criar conta", "en": "Create account", "es": "Crear cuenta" },
   "Auth.Register.login_link":  { "pt-BR": "Entrar", "en": "Sign in", "es": "Entrar" },
   "Auth.Register.have_account":{ "pt-BR": "Já tem conta?", "en": "Already have an account?", "es": "¿Ya tienes cuenta?" },
@@ -228,7 +228,7 @@ export const TRANSLATIONS = {
   "Auth.Password.match_ok":   { "pt-BR": "Senhas conferem.", "en": "Passwords match.", "es": "Las contraseñas coinciden." },
   "Auth.Password.match_fail": { "pt-BR": "As senhas não conferem.", "en": "Passwords do not match.", "es": "Las contraseñas no coinciden." },
 
-  // Sidebar
+  // ======================= Sidebar ==========================
   "Sidebar.overview":      { "pt-BR": "Visão geral", "en": "Overview", "es": "Resumen" },
   "Sidebar.maps":          { "pt-BR": "Mapas",       "en": "Maps",     "es": "Mapas" },
   "Sidebar.series":        { "pt-BR": "Séries",      "en": "Series",   "es": "Series" },
@@ -239,7 +239,7 @@ export const TRANSLATIONS = {
   "Sidebar.section_admin": { "pt-BR": "Conta",       "en": "Account",  "es": "Cuenta" },
   "Sidebar.profile":       { "pt-BR":"Perfil", "en":"Profile", "es":"Perfil" },
 
-  // trechinho para adicionar no seu TRANSLATIONS:
+  // ======================== Dashboard =======================
   "Dash.nav.overview": {"pt-BR":"Visão geral","en":"Overview","es":"Panorama"},
   "Dash.nav.series":   {"pt-BR":"Séries","en":"Series","es":"Series"},
   "Dash.nav.alerts":   {"pt-BR":"Alertas","en":"Alerts","es":"Alertas"},
@@ -251,6 +251,48 @@ export const TRANSLATIONS = {
   "Dash.chart_risk":   {"pt-BR":"Composição de risco (próx. 7 dias)","en":"Risk composition (next 7 days)","es":"Composición de riesgo (próx. 7 días)"},
   "UI.theme":          {"pt-BR":"Tema","en":"Theme","es":"Tema"},
   "UI.theme_toggle":   {"pt-BR":"Alternar","en":"Toggle","es":"Alternar"},
-  "UI.language":       {"pt-BR":"Idioma","en":"Language","es":"Idioma"}
+  "UI.language":       {"pt-BR":"Idioma","en":"Language","es":"Idioma"},
 
+  // =========================== Common ===========================
+  "Common.refresh":    { "pt-BR": "Atualizar",    "en": "Refresh",       "es": "Actualizar" },
+  "Common.export_png": { "pt-BR": "Exportar PNG", "en": "Export PNG",    "es": "Exportar PNG" },
+  "Common.export_csv": { "pt-BR": "Exportar CSV", "en": "Export CSV",    "es": "Exportar CSV" },
+
+  // ============================ Series ===========================
+  "Series.title":    { "pt-BR": "Séries temporais", "en": "Time series", "es": "Series temporales" },
+  "Series.subtitle": {
+    "pt-BR": "Explore séries temporais de chuva, nível de reservatórios e outros indicadores hídricos.",
+    "en": "Explore time series of rainfall, reservoir levels, and other water indicators.",
+    "es": "Explora series temporales de lluvia, niveles de embalses y otros indicadores hídricos."
+  },
+  "Series.table_title":   { "pt-BR": "Observações", "en": "Observations", "es": "Observaciones" },
+  "Series.toggle_filters":{ "pt-BR": "Mostrar/ocultar filtros", "en": "Show/hide filters", "es": "Mostrar/ocultar filtros" },
+
+  // =========================== Filters ==========================
+  "Filters.basin":      { "pt-BR": "Bacia",                 "en": "Basin",               "es": "Cuenca" },
+  "Filters.station":    { "pt-BR": "Estação/Reservatório",  "en": "Station/Reservoir",   "es": "Estación/Embalse" },
+  "Filters.variable":   { "pt-BR": "Variável",              "en": "Variable",            "es": "Variable" },
+  "Filters.resolution": { "pt-BR": "Resolução",             "en": "Resolution",          "es": "Resolución" },
+  "Filters.from":       { "pt-BR": "De",                    "en": "From",                "es": "Desde" },
+  "Filters.to":         { "pt-BR": "Até",                   "en": "To",                  "es": "Hasta" },
+
+  // (opcional) nomes de variáveis para UI
+  "Var.rain":  { "pt-BR": "Chuva (mm)",                 "en": "Rain (mm)",               "es": "Lluvia (mm)" },
+  "Var.level": { "pt-BR": "Nível do reservatório (m)",  "en": "Reservoir level (m)",     "es": "Nivel del embalse (m)" },
+  "Var.flow":  { "pt-BR": "Vazão (m³/s)",               "en": "Flow (m³/s)",             "es": "Caudal (m³/s)" },
+
+  // (opcional) nomes de bacias
+  "Basin.descoberto":  { "pt-BR": "Descoberto",  "en": "Descoberto",  "es": "Descoberto" },
+  "Basin.santamaria":  { "pt-BR": "Santa Maria", "en": "Santa Maria", "es": "Santa María" },
+  "Basin.corumba":     { "pt-BR": "Corumbá",     "en": "Corumbá",     "es": "Corumbá" },
+
+  // ============================= KPI ============================
+  "Kpi.points": { "pt-BR": "Pontos", "en": "Points", "es": "Puntos" },
+  "Kpi.min":    { "pt-BR": "Mín",    "en": "Min",    "es": "Mín" },
+  "Kpi.max":    { "pt-BR": "Máx",    "en": "Max",    "es": "Máx" },
+  "Kpi.last":   { "pt-BR": "Último", "en": "Last",   "es": "Último" },
+
+  // ============================ Table ===========================
+  "Table.date":  { "pt-BR": "Data",  "en": "Date",  "es": "Fecha" },
+  "Table.value": { "pt-BR": "Valor", "en": "Value", "es": "Valor" }
 };

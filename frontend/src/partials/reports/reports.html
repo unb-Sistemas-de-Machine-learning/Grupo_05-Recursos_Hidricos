@@ -1,0 +1,179 @@
+<!-- Relatórios (partial melhorado) -->
+<section id="reports-root" class="w-full">
+  <div class="max-w-[1200px] mx-auto px-5 sm:px-6 lg:px-10 py-8 sm:py-10">
+
+    <!-- Título + ações -->
+    <div class="flex items-start justify-between gap-4 flex-col md:flex-row">
+      <div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#031E21] dark:text-white">
+          Relatórios
+        </h1>
+        <p class="mt-2 text-sm sm:text-base text-gray-600 dark:text-gray-300">
+          Gere relatórios por bacia, variável e período. Use um <em>modelo pronto</em> ou personalize.
+        </p>
+      </div>
+
+      <div class="flex items-center gap-2 mt-4 md:mt-0">
+        <select id="rep-preset" class="btn-select">
+          <option value="">Modelo: escolher…</option>
+          <option value="df_daily_overview">Resumo diário — DF</option>
+          <option value="desc_precip_30d">Chuva (30 dias) — Descoberto</option>
+          <option value="reserv_monthly_level">Reservatórios — nível mensal</option>
+        </select>
+        <button id="rep-generate" class="btn-aguaprev">Gerar</button>
+        <button id="rep-export-csv" class="btn-aguaprev-outline">Exportar CSV</button>
+        <button id="rep-print" class="btn-aguaprev-outline">Imprimir/PDF</button>
+      </div>
+    </div>
+
+    <!-- FILTROS -->
+    <div id="rep-sections" class="mt-6 space-y-4">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+        <!-- Bacia -->
+        <label class="md:col-span-3 f-item">
+          <span class="f-label">Bacia</span>
+          <select id="rep-basin" class="f-select">
+            <option>DF — Geral</option>
+            <option>Descoberto</option>
+            <option>Paranoá</option>
+            <option>São Bartolomeu</option>
+          </select>
+        </label>
+
+        <!-- Variável -->
+        <label class="md:col-span-3 f-item">
+          <span class="f-label">Variável</span>
+          <select id="rep-var" class="f-select">
+            <option>Precipitação (mm)</option>
+            <option>Nível (m)</option>
+            <option selected>Vazão (m³/s)</option>
+            <option>Armazenamento (%)</option>
+          </select>
+        </label>
+
+        <!-- Agregação -->
+        <label class="md:col-span-2 f-item">
+          <span class="f-label">Agregação</span>
+          <select id="rep-agg" class="f-select">
+            <option value="D">Diária</option>
+            <option value="W">Semanal</option>
+            <option value="M">Mensal</option>
+          </select>
+        </label>
+
+        <!-- Data de -->
+        <label class="md:col-span-2 f-item">
+          <span class="f-label">De</span>
+          <input id="rep-from" type="date" class="f-input" />
+        </label>
+
+        <!-- Data até -->
+        <label class="md:col-span-2 f-item">
+          <span class="f-label">Até</span>
+          <input id="rep-to" type="date" class="f-input" />
+        </label>
+      </div>
+
+      <!-- Períodos rápidos -->
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="text-xs font-semibold text-gray-600 dark:text-gray-300">Período rápido:</span>
+        <button class="chip" data-range="7d">Últimos 7d</button>
+        <button class="chip" data-range="30d">Últimos 30d</button>
+        <button class="chip" data-range="90d">Últimos 90d</button>
+        <button class="chip" data-range="ytd">Ano atual</button>
+      </div>
+
+      <!-- KPIs -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="kpi-card">
+          <p class="kpi-label">Observações</p>
+          <p id="rep-kpi-points" class="kpi-value">—</p>
+        </div>
+        <div class="kpi-card">
+          <p class="kpi-label">Média</p>
+          <p id="rep-kpi-mean" class="kpi-value">—</p>
+        </div>
+        <div class="kpi-card">
+          <p class="kpi-label">Mín</p>
+          <p id="rep-kpi-min" class="kpi-value">—</p>
+        </div>
+        <div class="kpi-card">
+          <p class="kpi-label">Máx</p>
+          <p id="rep-kpi-max" class="kpi-value">—</p>
+        </div>
+      </div>
+
+      <!-- Resumo + Achados + Distribuição -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        <div class="lg:col-span-6 card">
+          <p class="card-title">Resumo descritivo</p>
+          <div id="rep-summary" class="text-sm text-gray-700 dark:text-gray-200">—</div>
+        </div>
+
+        <div class="lg:col-span-6 card">
+          <p class="card-title">Achados principais</p>
+          <ul id="rep-findings" class="text-sm list-disc pl-5 space-y-1">
+            <li class="text-gray-500 dark:text-gray-400">—</li>
+          </ul>
+        </div>
+
+        <div class="lg:col-span-12 card">
+          <p class="card-title">Distribuição</p>
+          <div id="rep-distribution" class="text-sm">—</div>
+        </div>
+      </div>
+
+      <!-- Tabela -->
+      <div class="card overflow-hidden">
+        <div class="p-4 border-b border-black/5 dark:border-white/10 flex items-center justify-between">
+          <p class="text-sm font-semibold text-[#031E21] dark:text-white">Tabela de observações</p>
+          <div class="text-xs text-gray-500 dark:text-gray-400">
+            <span id="rep-status">—</span>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-sm">
+            <thead class="bg-gray-50 dark:bg-white/5">
+              <tr class="text-left">
+                <th class="th-cell">Data</th>
+                <th class="th-cell">Valor</th>
+                <th class="th-cell">Spark</th>
+              </tr>
+            </thead>
+            <tbody id="rep-tbody" class="divide-y divide-gray-100 dark:divide-white/10"></tbody>
+          </table>
+        </div>
+
+        <div class="flex items-center justify-between px-4 py-3">
+          <div class="text-xs text-gray-500 dark:text-gray-400">
+            <span id="rep-page">1/1</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="rep-prev" class="pg-btn" disabled>«</button>
+            <button id="rep-next" class="pg-btn" disabled>»</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXEMPLOS RÁPIDOS -->
+    <div class="mt-10">
+      <p class="text-xs font-semibold text-gray-600 dark:text-gray-300 mb-2">Exemplos prontos</p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <button class="preset-card" data-preset="df_daily_overview">
+          <span class="preset-title">Resumo diário — DF</span>
+          <span class="preset-desc">Visão geral dos indicadores no DF (últimos 7 dias)</span>
+        </button>
+        <button class="preset-card" data-preset="desc_precip_30d">
+          <span class="preset-title">Chuva (30 dias) — Descoberto</span>
+          <span class="preset-desc">Precipitação diária com distribuição e extremos</span>
+        </button>
+        <button class="preset-card" data-preset="reserv_monthly_level">
+          <span class="preset-title">Reservatórios — nível mensal</span>
+          <span class="preset-desc">Armazenamento (%) agregado por mês no ano atual</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

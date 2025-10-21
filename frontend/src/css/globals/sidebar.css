@@ -11,7 +11,8 @@
 }
 
 /* ===== Perfil ===== */
-.sb-profile { align-items: center; }
+.sb-profile { align-items: center; overflow: hidden; }            /* ⬅ evita vazamento do conteúdo */
+#sb-profile { overflow: hidden; }                                  /* ⬅ garante que o bloco não “sangre” */
 #ap-sidebar[data-collapsed="true"] #sb-profile,
 #ap-sidebar.collapsed #sb-profile {
   padding-inline: .5rem;
@@ -39,11 +40,16 @@
   color:#0C1A2A; text-decoration:none; border:1px solid transparent;
   transition: background .15s ease, border-color .15s ease, color .15s ease;
 }
-.dark .sb-link{ color:#eaf3ff; }
+.dark .sb-link{ color:#eaf3ff; }                                   /* ⬅ links/ícones brancos no dark */
 .sb-link:hover{ background:rgba(0,0,0,.04); border-color:rgba(0,0,0,.06); }
 .dark .sb-link:hover{ background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.12); }
 .sb-link:focus-visible{ outline:2px solid color-mix(in srgb, #0A5C67 70%, transparent); outline-offset:2px; }
 .sb-ico{ width:20px; height:20px; opacity:.95; }
+
+/* Todos SVGs herdam a cor do link/botão */
+#ap-sidebar .sb-link .sb-ico,
+#ap-sidebar .sb-ctrl svg,
+#ap-sidebar .sb-section svg { stroke: currentColor; }
 
 /* ===== Badge (alertas) ===== */
 .sb-badge{
@@ -73,7 +79,7 @@
 .dark .sb-ctrl{
   border:1px solid rgba(255,255,255,.10);
   background: color-mix(in srgb, #0C1A2A 80%, transparent);
-  color:#eaf3ff;
+  color:#eaf3ff;                                                   /* ⬅ textos e ícones brancos no dark */
 }
 .sb-ctrl svg{ stroke:currentColor; }
 .sb-ctrl:hover{ background: color-mix(in srgb, #ffffff 90%, transparent); box-shadow:0 6px 20px -8px rgba(0,0,0,.35); }
@@ -99,7 +105,11 @@ a.sb-link[data-tooltip]{ position:relative; }
 }
 
 /* ===== Largura/Overflow ===== */
-#ap-sidebar{ width: var(--ap-sb-w-expanded); transition: width .22s ease; overflow: visible; }
+#ap-sidebar{
+  width: var(--ap-sb-w-expanded);
+  transition: width .22s ease;
+  overflow: hidden;                                                /* ⬅ era visible; evita overflow no topo */
+}
 #ap-sidebar[data-collapsed="true"], #ap-sidebar.collapsed{ width: var(--ap-sb-w-collapsed); }
 
 /* Esconde labels e “PT-BR” no colapsado */

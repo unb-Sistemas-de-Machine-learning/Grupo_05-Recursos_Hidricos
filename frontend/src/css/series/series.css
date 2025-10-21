@@ -1,0 +1,25 @@
+/* /src/css/series/series.css */
+/* Botões padrão do projeto */
+.btn-aguaprev{ @apply inline-flex items-center justify-center px-4 py-2 rounded-xl text-sm font-semibold bg-[#0A5C67] text-white hover:opacity-95 active:opacity-90 shadow-sm; }
+.btn-aguaprev-outline{ @apply inline-flex items-center justify-center px-4 py-2 rounded-xl text-sm font-semibold border border-[#0A5C67] text-[#0A5C67] dark:border-[#6BAAC9] dark:text-[#6BAAC9] hover:bg-[#0A5C67]/5 dark:hover:bg-white/10; }
+
+/* Filtros */
+.series-filters{ @apply bg-white/70 dark:bg-white/5 backdrop-blur rounded-2xl p-4 ring-1 ring-black/5 dark:ring-white/10; }
+.filters-row{ @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3; }
+.f-item span{ @apply block text-xs font-medium text-gray-600 dark:text-gray-300 mb-1; }
+.f-select,.f-input{ @apply w-full rounded-xl border border-gray-300 dark:border-white/10 bg-white dark:bg-[#0E1A2B] px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-[#6BAAC9]; }
+.filters-toggle{ @apply w-full rounded-xl border border-gray-300 dark:border-white/10 px-3 py-2 text-sm; }
+
+/* KPIs */
+.kpi-card{ @apply bg-white/70 dark:bg-white/5 backdrop-blur rounded-2xl p-4 ring-1 ring-black/5 dark:ring-white/10; }
+.kpi-label{ @apply text-xs text-gray-600 dark:text-gray-300; }
+.kpi-value{ @apply text-2xl font-extrabold mt-1 text-[#031E21] dark:text-white; }
+
+/* Chart wrapper */
+.chart-wrapper{ @apply bg-white/70 dark:bg-white/5 backdrop-blur rounded-2xl p-3 ring-1 ring-black/5 dark:ring-white/10; }
+.series-canvas{ width: 100%; height: auto; display:block; }
+
+/* Tabela */
+.th-cell{ @apply px-4 py-2 font-semibold text-[#031E21] dark:text-white; }
+.td-cell{ @apply px-4 py-2 text-[#031E21] dark:text-gray-100; }
+.pg-btn{ @apply inline-flex items-center justify-center w-8 h-8 rounded-lg border border-gray-300 dark:border-white/10 text-sm disabled:opacity-50 hover:bg-gray-50 dark:hover:bg-white/10; }
