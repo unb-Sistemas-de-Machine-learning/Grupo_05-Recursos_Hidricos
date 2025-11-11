@@ -3,6 +3,7 @@ import { applyTranslations, setLanguage } from '/src/js/i18n/i18n.js';
 
 const THEME_KEY = 'ap-theme';
 const SB_COLLAPSE_KEY = 'ap-sb-collapsed';
+const PROFILE_LS_KEY = 'aguaprev.profile';
 
 const API =
   (window.API_URL) ||
@@ -14,15 +15,23 @@ const API =
 const qs  = (r, s) => r.querySelector(s);
 const qsa = (r, s) => Array.from(r.querySelectorAll(s));
 
-const getAuthUser = () => { try { return JSON.parse(localStorage.getItem('auth_user') || 'null'); } catch { return null; } };
+// ⬇️ Agora busca em localStorage e cai para sessionStorage (quando não marcou “lembrar-me”)
+const getAuthUser = () => {
+  try {
+    const ls = localStorage.getItem('auth_user');
+    const ss = sessionStorage.getItem('auth_user');
+    return JSON.parse(ls || ss || 'null');
+  } catch { return null; }
+};
 const setAuthUser = (u)  => { try { localStorage.setItem('auth_user', JSON.stringify(u || {})); } catch {} };
 
-const getTokens = () => { try { return JSON.parse(localStorage.getItem('auth_tokens') || 'null'); } catch { return null; } };
+const getTokens = () => { try { return JSON.parse(localStorage.getItem('auth_tokens') || sessionStorage.getItem('auth_tokens') || 'null'); } catch { return null; } };
 const setTokens = (t)  => { try { localStorage.setItem('auth_tokens', JSON.stringify(t || {})); } catch {} };
 
+/** Trata http(s) absoluto, data:, blob: e caminhos relativos ao API */
 const abs = (url) => {
   if (!url) return '';
-  if (/^https?:\/\//i.test(url)) return url;
+  if (/^(https?:|data:|blob:)/i.test(url)) return url;
   return `${API}${url.startsWith('/') ? '' : '/'}${url}`;
 };
 
@@ -32,7 +41,6 @@ async function refreshAccess() {
   const refresh = tokens?.refresh;
   if (!refresh) return null;
 
-  // Refresh usa Authorization: Bearer <refresh> ou body? Nosso backend espera JWT de refresh no header.
   const res = await fetch(`${API}/auth/refresh`, {
     method: 'POST',
     headers: { Authorization: `Bearer ${refresh}` }
@@ -70,10 +78,11 @@ async function apiFetch(path, options = {}, retry = true) {
       }
       return fetch(url, { ...options, headers: retryHeaders });
     } else {
-      // sessão acabou de vez
       localStorage.removeItem('auth_tokens');
       localStorage.removeItem('auth_user');
       localStorage.removeItem('auth_remember');
+      sessionStorage.removeItem('auth_tokens');
+      sessionStorage.removeItem('auth_user');
     }
   }
 
@@ -269,10 +278,18 @@ function initAccountMenu(root){
 /* ========== Perfil (render) ========== */
 function renderProfile(sidebar) {
   const user = getAuthUser();
-  const name  = user?.name  || user?.fullName || 'Usuário';
-  const email = user?.email || 'email@exemplo.com';
+
+  // Prefere dados salvos no formulário do perfil
+  let pf = {};
+  try { pf = JSON.parse(localStorage.getItem(PROFILE_LS_KEY) || '{}'); } catch {}
+
+  const name   = (pf.name || user?.name || user?.fullName || 'Usuário');
+  const email  = (pf.email || user?.email || 'email@exemplo.com');
+
+  // Avatar: prioriza o salvo no perfil
   const fallback = `${API}/avatars/svg/tone06.svg`;
-  const avatarUrl = abs(user?.avatar) || fallback;
+  const avatarFinal = (pf.avatarDataUrl || user?.avatar || fallback);
+  const avatarUrl   = /^(https?:|data:|blob:)/i.test(avatarFinal) ? avatarFinal : `${API}${avatarFinal.startsWith('/') ? '' : '/'}${avatarFinal}`;
 
   const elName  = qs(sidebar, '#sb-name');
   const elEmail = qs(sidebar, '#sb-email');
@@ -283,101 +300,11 @@ function renderProfile(sidebar) {
   if (elName)  elName.textContent = name;
   if (elEmail) elEmail.textContent = email;
 
-  const setImg = (imgEl, src) => { if (imgEl) imgEl.src = abs(src); };
+  const setImg = (imgEl, src) => { if (imgEl && src) imgEl.src = src; };
   setImg(avatar, avatarUrl);
   setImg(mini,   avatarUrl);
 
   if (miniName) miniName.textContent = name;
-}
-
-/* ========== Seletor de avatar ========== */
-let AVATAR_CACHE = null;
-async function fetchAvatars(){
-  if (AVATAR_CACHE) return AVATAR_CACHE;
-  const res = await fetch(`${API}/avatars`);
-  const data = await res.json().catch(()=>({items:[]}));
-  AVATAR_CACHE = data.items || [];
-  return AVATAR_CACHE;
-}
-
-function openAvatarPicker(sidebar){
-  const scrimId = 'ap-avatar-scrim';
-  const modalId = 'ap-avatar-modal';
-
-  let scrim = document.getElementById(scrimId);
-  let modal = document.getElementById(modalId);
-  if (!scrim){
-    scrim = document.createElement('div');
-    scrim.id = scrimId;
-    scrim.className = 'fixed inset-0 bg-black/40 z-[200]';
-    document.body.appendChild(scrim);
-  }
-  if (!modal){
-    modal = document.createElement('div');
-    modal.id = modalId;
-    modal.className = 'fixed z-[201] inset-0 grid place-items-center p-4';
-    document.body.appendChild(modal);
-  }
-
-  const close = () => { scrim.remove(); modal.remove(); };
-
-  scrim.onclick = close;
-  window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') close(); }, { once:true });
-
-  modal.innerHTML = `
-    <div class="w-full max-w-xl rounded-2xl bg-white dark:bg-[#0C1A2A] border border-black/10 dark:border-white/10 p-4 shadow-2xl">
-      <div class="flex items-center justify-between mb-3">
-        <h2 class="text-lg font-semibold text-[#031E21] dark:text-white">Escolher avatar</h2>
-        <button class="rounded-lg px-2 py-1 hover:bg-black/5 dark:hover:bg-white/10" id="ap-avatar-close">Fechar</button>
-      </div>
-      <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">Selecione um tom que te represente. Você pode mudar a qualquer momento.</p>
-      <div id="ap-avatar-grid" class="grid grid-cols-3 sm:grid-cols-4 gap-3"></div>
-    </div>
-  `;
-  qs(modal, '#ap-avatar-close')?.addEventListener('click', close);
-
-  fetchAvatars().then(items => {
-    const grid = qs(modal, '#ap-avatar-grid');
-    items.forEach(({id, label, url}) => {
-      const card = document.createElement('button');
-      card.className = 'group rounded-xl border border-black/10 dark:border-white/10 overflow-hidden hover:shadow-md focus:outline-none focus:ring-2 focus:ring-[#0A5C67]';
-      card.innerHTML = `
-        <img src="${abs(url)}" alt="${label}" class="w-full h-28 object-cover">
-        <div class="px-2 py-1 text-xs text-gray-700 dark:text-gray-200">${label}</div>
-      `;
-      card.onclick = async () => {
-        try {
-          const res = await apiFetch('/users/me/avatar-select', {
-            method: 'POST',
-            body: JSON.stringify({ id })
-          });
-          let data = {};
-          try { data = await res.json(); } catch {}
-
-          if (!res.ok) {
-            const msg = data?.message || data?.error || `Erro ${res.status}`;
-            alert(msg);
-            if (res.status === 401 || res.status === 422) {
-              // manda pro login
-              window.location.href = '/login.html';
-            }
-            return;
-          }
-
-          // sucesso
-          const user = getAuthUser() || {};
-          const updated = { ...user, ...(data.user || {}) };
-          setAuthUser(updated);
-          setTokens(getTokens()); // garante persistência
-          window.dispatchEvent(new CustomEvent('auth:login', { detail: { user: updated, tokens: getTokens() } }));
-          close();
-        } catch (e) {
-          alert('Não foi possível salvar o avatar.');
-        }
-      };
-      grid.appendChild(card);
-    });
-  });
 }
 
 /* ========== Ações de conta ========== */
@@ -396,11 +323,39 @@ function handleAccountAction(action){
       window.location.href = '/docs/';
       break;
     case 'signout':
+      // Mantém aguaprev.profile para persistir avatar/nome/email preferidos
       localStorage.removeItem('auth_tokens');
       localStorage.removeItem('auth_user');
       localStorage.removeItem('auth_remember');
+      sessionStorage.removeItem('auth_tokens');
+      sessionStorage.removeItem('auth_user');
       window.location.href = '/login.html';
       break;
+  }
+}
+
+/* ========== Prefetch inteligente do Perfil (CSS/JS) ========== */
+let __prefetchedProfile = false;
+function prefetchProfileAssets(){
+  if (__prefetchedProfile) return;
+  __prefetchedProfile = true;
+
+  const cssHref = '/src/css/profile/profile.css';
+  if (!document.querySelector(`link[rel="preload"][href="${cssHref}"]`) &&
+      !document.querySelector(`link[rel="stylesheet"][href="${cssHref}"]`)) {
+    const l = document.createElement('link');
+    l.rel = 'preload';
+    l.as  = 'style';
+    l.href = cssHref;
+    document.head.appendChild(l);
+  }
+
+  const jsHref = '/src/js/profile/profile.page.js';
+  if (!document.querySelector(`link[rel="modulepreload"][href="${jsHref}"]`)) {
+    const m = document.createElement('link');
+    m.rel = 'modulepreload';
+    m.href = jsHref;
+    document.head.appendChild(m);
   }
 }
 
@@ -422,15 +377,27 @@ export function initSidebar(root){
     closePopover();
   });
 
-  qs(sidebar, '#sb-avatar')?.addEventListener('click', () => openAvatarPicker(sidebar));
-  qs(sidebar, '#sb-mini-avatar')?.addEventListener('click', () => openAvatarPicker(sidebar));
-  qs(sidebar, '#sb-profile-btn')?.addEventListener('click', (e) => {
-    if (e.metaKey || e.ctrlKey || e.shiftKey) return;
-    e.preventDefault();
-    openAvatarPicker(sidebar);
-  });
+  // Links de perfil (prefetch no hover/focus; não bloqueia navegação nativa)
+  const addProfileA11y = (el) => {
+    if (!el) return;
+    if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '0');
+    el.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { /* navegação nativa do <a> */ }
+    });
+    el.addEventListener('mouseenter', prefetchProfileAssets, { once: true, passive: true });
+    el.addEventListener('focus', prefetchProfileAssets, { once: true });
+  };
 
+  addProfileA11y(qs(sidebar, '#sb-avatar'));
+  addProfileA11y(qs(sidebar, '#sb-mini-avatar'));
+  addProfileA11y(qs(sidebar, '#sb-profile-btn'));
+  addProfileA11y(qs(sidebar, '#sb-avatar-link'));
+
+  // Re-render quando loga ou quando avatar foi atualizado
   window.addEventListener('auth:login', () => renderProfile(sidebar));
+  window.addEventListener('profile:avatar-updated', () => renderProfile(sidebar));
+  // Re-render genérico quando perfil for salvo (caso você adicione esse dispatch)
+  window.addEventListener('profile:updated', () => renderProfile(sidebar));
 
   const mq = matchMedia('(max-width: 1023px)');
   const syncMobile = () => {

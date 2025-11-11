@@ -3,6 +3,7 @@
 // CSS (ordem importa): Tailwind core primeiro, depois o bundle modular
 import './css/core.css';
 import './css/style.css';
+import './css/profile/profile.css'; // ⬅ garante CSS do Perfil no bundle (mata FOUC)
 
 // ═════════════════════════════════════════════════════════════════════════════
 /* Partials HTML (via Vite ?raw) – só montam se o alvo existir na página */
@@ -38,6 +39,9 @@ import reportsHtml      from '/src/partials/reports/reports.html?raw';
 // ── Tutorial (PÁGINA / PARTIAL) ──────────────────────────────────────────────
 import tutorialHtml     from '/src/partials/tutorial/tutorial.html?raw';
 
+// ── Perfil (PÁGINA / PARTIAL) ────────────────────────────────────────────────
+import profileHtml      from '/src/partials/profile/profile.html?raw';
+
 // ═════════════════════════════════════════════════════════════════════════════
 /* JS de seções/partials */
 import { initHeroEffects }        from '/src/js/home/hero.effects.js';
@@ -58,6 +62,7 @@ import { initComparePage }        from '/src/js/compare/compare.page.js';
 import { initAlertsPage }         from '/src/js/alerts/alerts.page.js';
 import { initReportsPage }        from '/src/js/reports/reports.page.js';
 import { initTutorialPage }       from '/src/js/tutorial/tutorial.page.js';
+import { initProfilePage }        from '/src/js/profile/profile.page.js';
 
 import { applyTranslations, startI18nObserver } from '/src/js/i18n/i18n.js';
 
@@ -74,7 +79,6 @@ function mount(selector, html) {
 const PAGE  = (document.body?.dataset?.page) || '';
 const TITLE = (document.title || '').toLowerCase();
 
-// Heurística robusta para detectar páginas (sem quebrar o dashboard)
 const IS_DASHBOARD = PAGE === 'dashboard';
 
 const IS_SERIES =
@@ -113,8 +117,14 @@ const IS_TUTORIAL =
   /tutorial/.test(TITLE) ||
   !!document.querySelector('[data-page-tutorial]');
 
+const IS_PROFILE =
+  PAGE === 'profile' ||
+  document.body?.classList?.contains('page-profile') ||
+  /perfil|profile/.test(TITLE) ||
+  !!document.querySelector('[data-page-profile]');
+
 // ═════════════════════════════════════════════════════════════════════════════
-/** Montagem (landing, auth, dashboard, séries, mapas, comparar, alertas, relatórios, tutorial) */
+/** Montagem (landing, auth, dashboard e páginas pós-auth) */
 const headerRoot       = mount('#app-header', headerHtml);
 const footerRoot       = mount('#app-footer', footerHtml);
 const socialFloatRoot  = mount('#app-social-floating', socialFloatHtml);
@@ -133,33 +143,17 @@ const howRoot          = mount('#app-how', howHtml);
 const loginRoot        = mount('#app-auth-login', loginHtml);
 const registerRoot     = mount('#app-auth-register', registerHtml);
 
-// Pós-auth (injetar no mesmo container do dashboard; fallback #app-page)
-const seriesRoot = (!IS_DASHBOARD && IS_SERIES)
-  ? (mount('#ap-content', seriesHtml) || mount('#app-page', seriesHtml))
-  : null;
-
-const mapsRoot = (!IS_DASHBOARD && IS_MAPS)
-  ? (mount('#ap-content', mapsHtml) || mount('#app-page', mapsHtml))
-  : null;
-
-const compareRoot = (!IS_DASHBOARD && IS_COMPARE)
-  ? (mount('#ap-content', compareHtml) || mount('#app-page', compareHtml))
-  : null;
-
-const alertsRoot = (!IS_DASHBOARD && IS_ALERTS)
-  ? (mount('#ap-content', alertsHtml) || mount('#app-page', alertsHtml))
-  : null;
-
-const reportsRoot = (!IS_DASHBOARD && IS_REPORTS)
-  ? (mount('#ap-content', reportsHtml) || mount('#app-page', reportsHtml))
-  : null;
-
-const tutorialRoot = (!IS_DASHBOARD && IS_TUTORIAL)
-  ? (mount('#ap-content', tutorialHtml) || mount('#app-page', tutorialHtml))
-  : null;
+// Pós-auth
+const seriesRoot   = (!IS_DASHBOARD && IS_SERIES)   ? (mount('#ap-content', seriesHtml)   || mount('#app-page', seriesHtml))   : null;
+const mapsRoot     = (!IS_DASHBOARD && IS_MAPS)     ? (mount('#ap-content', mapsHtml)     || mount('#app-page', mapsHtml))     : null;
+const compareRoot  = (!IS_DASHBOARD && IS_COMPARE)  ? (mount('#ap-content', compareHtml)  || mount('#app-page', compareHtml))  : null;
+const alertsRoot   = (!IS_DASHBOARD && IS_ALERTS)   ? (mount('#ap-content', alertsHtml)   || mount('#app-page', alertsHtml))   : null;
+const reportsRoot  = (!IS_DASHBOARD && IS_REPORTS)  ? (mount('#ap-content', reportsHtml)  || mount('#app-page', reportsHtml))  : null;
+const tutorialRoot = (!IS_DASHBOARD && IS_TUTORIAL) ? (mount('#ap-content', tutorialHtml) || mount('#app-page', tutorialHtml)) : null;
+const profileRoot  = (!IS_DASHBOARD && IS_PROFILE)  ? (mount('#ap-content', profileHtml)  || mount('#app-page', profileHtml))  : null;
 
 // ═════════════════════════════════════════════════════════════════════════════
-/** Header/Footer – lazy init (evita carregar JS quando a seção não existe) */
+/** Header/Footer – lazy init */
 (async () => {
   if (headerRoot) {
     const { initHeaderNav } = await import('/src/js/globals/header-nav.js');
@@ -180,33 +174,28 @@ startI18nObserver();
 /** Efeitos por seção (duplo rAF para garantir DOM estável) */
 requestAnimationFrame(() => {
   requestAnimationFrame(() => {
-    // Dashboard
     if (sidebarRoot)      initSidebar(sidebarRoot);
 
-    // Landing
     if (heroRoot)         initHeroEffects(heroRoot);
-    if (truststripRoot)   { /* (estático por enquanto) */ }
+    if (truststripRoot)   { /* estático */ }
     if (highlightsRoot)   initHighlightsEffects(highlightsRoot);
     if (mapPrevRoot)      initMapPreviewEffects(mapPrevRoot);
     if (howRoot)          initHowEffects(howRoot);
 
-    // Auth
     if (loginRoot)        initLoginEffects(loginRoot);
     if (registerRoot)     initRegisterEffects(registerRoot);
 
-    // Pós-auth (partials sem scripts; páginas controlam lazy-load dos efeitos)
     if (seriesRoot)       initSeriesPage(seriesRoot);
     if (mapsRoot)         initMapsPage(mapsRoot);
     if (compareRoot)      initComparePage(compareRoot);
     if (alertsRoot)       initAlertsPage(alertsRoot);
     if (reportsRoot)      initReportsPage(reportsRoot);
     if (tutorialRoot)     initTutorialPage(tutorialRoot);
+    if (profileRoot)      initProfilePage(profileRoot);
 
-    // Widget social (fixo, sem auto-hide e abre no desktop)
     if (socialFloatRoot)  initSocialFloating(document);
   });
 });
 
 // ═════════════════════════════════════════════════════════════════════════════
-/** Re-aplica i18n quando navegar via hash (opcional) */
 window.addEventListener('hashchange', () => applyTranslations(document));

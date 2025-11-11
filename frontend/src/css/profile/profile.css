@@ -1,0 +1,51 @@
+/* /src/css/profile/profile.css */
+.pf-label{
+  display:block;
+  margin-bottom:.35rem;
+  font-size:.75rem;
+  font-weight:600;
+  color:#64748b; /* slate-500 */
+}
+.pf-input{
+  width:100%;
+  border-radius:.75rem;
+  border:1px solid rgba(0,0,0,.06);
+  background:#fff;
+  color:#0f172a;
+  padding:.55rem .75rem;
+  font-size:.925rem;
+}
+.dark .pf-input{
+  background: color-mix(in srgb, #ffffff 8%, transparent);
+  border-color: rgba(255,255,255,.12);
+  color:#e5e7eb;
+}
+.pf-input:focus{
+  outline:none;
+  box-shadow:0 0 0 2px rgba(10,92,103,.25);
+  border-color:rgba(10,92,103,.35);
+}
+
+/* Botões padrão */
+.btn-aguaprev{
+  border-radius:.75rem;
+  padding:.5rem .9rem;
+  font-weight:600;
+  background:#0A5C67;
+  color:#fff;
+}
+.btn-aguaprev:hover{ filter:brightness(1.08); }
+
+.btn-aguaprev-outline{
+  border-radius:.75rem;
+  padding:.5rem .9rem;
+  font-weight:600;
+  border:1px solid rgba(0,0,0,.10);
+  background:#fff;
+  color:#0A5C67;
+}
+.dark .btn-aguaprev-outline{
+  border-color:rgba(255,255,255,.12);
+  background:rgba(255,255,255,.06);
+  color:#eaf3ff;
+}

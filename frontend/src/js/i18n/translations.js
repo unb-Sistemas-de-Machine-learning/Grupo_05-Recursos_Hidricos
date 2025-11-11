@@ -237,7 +237,8 @@ export const TRANSLATIONS = {
   "Sidebar.settings":      { "pt-BR": "Configurações","en": "Settings","es": "Configuraciones" },
   "Sidebar.signout":       { "pt-BR": "Sair",        "en": "Sign out", "es": "Salir" },
   "Sidebar.section_admin": { "pt-BR": "Conta",       "en": "Account",  "es": "Cuenta" },
-  "Sidebar.profile":       { "pt-BR":"Perfil", "en":"Profile", "es":"Perfil" },
+  "Sidebar.profile":       { "pt-BR": "Perfil",      "en": "Profile",  "es": "Perfil" },
+  "Sidebar.tutorial":      { "pt-BR": "Tutorial",    "en": "Tutorial", "es": "Tutorial" },
 
   // ======================== Dashboard =======================
   "Dash.nav.overview": {"pt-BR":"Visão geral","en":"Overview","es":"Panorama"},
@@ -257,6 +258,11 @@ export const TRANSLATIONS = {
   "Common.refresh":    { "pt-BR": "Atualizar",    "en": "Refresh",       "es": "Actualizar" },
   "Common.export_png": { "pt-BR": "Exportar PNG", "en": "Export PNG",    "es": "Exportar PNG" },
   "Common.export_csv": { "pt-BR": "Exportar CSV", "en": "Export CSV",    "es": "Exportar CSV" },
+
+  /* Idiomas (dropdown) */
+  "Common.lang.ptbr": { "pt-BR": "Português (BR)", "en": "Portuguese (BR)", "es": "Portugués (BR)" },
+  "Common.lang.en":   { "pt-BR": "Inglês",         "en": "English",         "es": "Inglés" },
+  "Common.lang.es":   { "pt-BR": "Espanhol",       "en": "Spanish",         "es": "Español" },
 
   // ============================ Series ===========================
   "Series.title":    { "pt-BR": "Séries temporais", "en": "Time series", "es": "Series temporales" },
@@ -294,5 +300,56 @@ export const TRANSLATIONS = {
 
   // ============================ Table ===========================
   "Table.date":  { "pt-BR": "Data",  "en": "Date",  "es": "Fecha" },
-  "Table.value": { "pt-BR": "Valor", "en": "Value", "es": "Valor" }
+  "Table.value": { "pt-BR": "Valor", "en": "Value", "es": "Valor" },
+
+  // ============================ Profile =========================
+  "Profile.title":      { "pt-BR": "Perfil — AguaPrev", "en": "Profile — AguaPrev", "es": "Perfil — AguaPrev" },
+  "Profile.heading":    { "pt-BR": "Meu perfil", "en": "My profile", "es": "Mi perfil" },
+  "Profile.subheading": {
+    "pt-BR": "Atualize suas informações pessoais e preferências.",
+    "en":    "Update your personal information and preferences.",
+    "es":    "Actualiza tu información personal y preferencias."
+  },
+  "Profile.avatar.change": { "pt-BR": "Trocar", "en": "Change", "es": "Cambiar" },
+  "Profile.avatar.remove": { "pt-BR": "Remover foto", "en": "Remove photo", "es": "Eliminar foto" },
+
+  "Profile.field.name":         { "pt-BR": "Nome",                 "en": "Name",               "es": "Nombre" },
+  "Profile.field.email":        { "pt-BR": "E-mail",               "en": "Email",              "es": "Correo" },
+  "Profile.field.org":          { "pt-BR": "Organização",          "en": "Organization",       "es": "Organización" },
+  "Profile.field.role":         { "pt-BR": "Função",               "en": "Role",               "es": "Cargo" },
+  "Profile.field.phone":        { "pt-BR": "Telefone",             "en": "Phone",              "es": "Teléfono" },
+  "Profile.field.lang":         { "pt-BR": "Idioma",               "en": "Language",           "es": "Idioma" },
+  "Profile.field.dark":         { "pt-BR": "Usar modo escuro",     "en": "Use dark mode",      "es": "Usar modo oscuro" },
+  "Profile.field.alerts":       { "pt-BR": "Receber alertas por e-mail", "en": "Receive alerts by email", "es": "Recibir alertas por correo" },
+  "Profile.field.pass_current": { "pt-BR": "Senha atual",          "en": "Current password",   "es": "Contraseña actual" },
+  "Profile.field.pass_new":     { "pt-BR": "Nova senha",           "en": "New password",       "es": "Nueva contraseña" },
+  "Profile.field.pass_confirm": { "pt-BR": "Confirmar senha",      "en": "Confirm password",   "es": "Confirmar contraseña" },
+
+  "Profile.placeholder.name":        { "pt-BR": "Seu nome",            "en": "Your name",             "es": "Tu nombre" },
+  "Profile.placeholder.email":       { "pt-BR": "voce@exemplo.com",    "en": "you@example.com",       "es": "tu@ejemplo.com" },
+  "Profile.placeholder.org":         { "pt-BR": "Instituição/Empresa", "en": "Institution/Company",   "es": "Institución/Empresa" },
+  "Profile.placeholder.role":        { "pt-BR": "Cargo/Função",        "en": "Position/Role",         "es": "Puesto/Cargo" },
+  "Profile.placeholder.phone":       { "pt-BR": "(61) 9 9999-9999",    "en": "(+55) 61 99999-9999",   "es": "(+55) 61 99999-9999" },
+  "Profile.placeholder.pass_new":    { "pt-BR": "mín. 8 caracteres",   "en": "min. 8 characters",     "es": "mín. 8 caracteres" },
+  "Profile.placeholder.pass_confirm":{ "pt-BR": "repita a nova senha", "en": "repeat new password",   "es": "repite la nueva contraseña" },
+
+  "Profile.actions.save":  { "pt-BR": "Salvar alterações", "en": "Save changes", "es": "Guardar cambios" },
+  "Profile.actions.reset": { "pt-BR": "Descartar",         "en": "Discard",      "es": "Descartar" },
+
+  "Profile.activity.title": { "pt-BR": "Atividade recente", "en": "Recent activity", "es": "Actividad reciente" },
+
+  "Profile.msg.saved":          { "pt-BR": "Perfil atualizado.",       "en": "Profile updated.",            "es": "Perfil actualizado." },
+  "Profile.msg.discarded":      { "pt-BR": "Alterações descartadas.",  "en": "Changes discarded.",          "es": "Cambios descartados." },
+  "Profile.msg.shortPass":      { "pt-BR": "Senha muito curta.",       "en": "Password too short.",         "es": "Contraseña demasiado corta." },
+  "Profile.msg.confirmNoMatch": { "pt-BR": "Confirmação não confere.", "en": "Confirmation does not match.", "es": "La confirmación no coincide." },
+  "Profile.msg.imgTooBig":      { "pt-BR": "Imagem acima de 2MB.",     "en": "Image above 2MB.",            "es": "Imagen mayor de 2MB." },
+
+  // ============================ Tutorial =========================
+  "Tutorial.title": { "pt-BR": "Tutorial", "en": "Tutorial", "es": "Tutorial" },
+  "Tutorial.soon":  {
+    "pt-BR": "Em breve — estamos preparando um passo a passo com vídeos curtos.",
+    "en":    "Coming soon — we're preparing a step-by-step with short videos.",
+    "es":    "Próximamente — estamos preparando un paso a paso con videos cortos."
+  },
+  "Tutorial.cta.back": { "pt-BR": "Voltar ao dashboard", "en": "Back to dashboard", "es": "Volver al panel" }
 };

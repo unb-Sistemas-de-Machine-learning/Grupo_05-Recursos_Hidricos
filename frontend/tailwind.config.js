@@ -4,6 +4,7 @@ export default {
   content: [
     './index.html',
     './login.html',
+    './signup.html',
     './dashboard.html',
     './register.html',
     './series.html',
@@ -12,7 +13,9 @@ export default {
     './alerts.html',
     './reports.html',
     './tutorial.html',
-    './src/**/*.{html,js,ts,tsx}'
+    './profile.html',
+    './src/**/*.{html,js,ts,tsx}',     // cobre parciais e scripts
+    './src/partials/**/*.html',        // garante todas as parciais
   ],
   theme: {
     extend: {
@@ -32,7 +35,6 @@ export default {
       },
     },
   },
-  // ⬇ garante que as classes dinâmicas usadas no register.effects.js não sejam removidas no build
   safelist: [
     // rings/bordas de validação
     'ring-2',
@@ -51,6 +53,11 @@ export default {
     'text-rose-600',
     'dark:text-emerald-400',
     'dark:text-rose-400',
+    // utilidades usadas em layout de dashboard/sidebar
+    'has-sidebar',
+    'sb-collapsed',
+    'sr-only',
+    'hidden',
   ],
   plugins: [],
 };

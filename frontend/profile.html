@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="pt-br" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title data-i18n="Profile.title">Perfil — AguaPrev</title>
+    <meta name="theme-color" content="#0A5C67" />
+    <link rel="icon" type="image/png" href="/src/assets/aguaprev/favicon.png" />
+
+    <!-- CSS antecipado para matar FOUC (dev e build) -->
+    <link rel="preload" as="style" href="/src/css/core.css" />
+    <link rel="preload" as="style" href="/src/css/style.css" />
+    <link rel="preload" as="style" href="/src/css/profile/profile.css" />
+    <link rel="stylesheet" href="/src/css/core.css" />
+    <link rel="stylesheet" href="/src/css/style.css" />
+    <link rel="stylesheet" href="/src/css/profile/profile.css" />
+  </head>
+
+  <body class="font-sans antialiased bg-[#F7F9FB] text-gray-800 dark:bg-[#0E1A2B] dark:text-gray-100 has-sidebar" data-page="profile">
+    <!-- Sidebar -->
+    <div id="app-sidebar-root"></div>
+
+    <!-- Conteúdo -->
+    <main id="ap-content" class="pl-72">
+      <div class="min-h-[calc(100vh-0px)] flex items-center justify-center px-6 py-10">
+        <section class="w-full max-w-4xl rounded-3xl bg-white/80 dark:bg-white/5 backdrop-blur
+                        border border-black/5 dark:border-white/10 shadow-sm p-6 sm:p-8">
+
+          <!-- Cabeçalho -->
+          <header class="text-center mb-8">
+            <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#031E21] dark:text-white" data-i18n="Profile.heading">
+              Meu perfil
+            </h1>
+            <p class="mt-1 text-sm text-gray-600 dark:text-gray-300" data-i18n="Profile.subheading">
+              Atualize suas informações pessoais e preferências.
+            </p>
+          </header>
+
+          <!-- Grid avatar + formulário -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+            <!-- Avatar -->
+            <div class="md:col-span-1">
+              <div class="flex flex-col items-center gap-4">
+                <div class="relative">
+                  <img id="pf-avatar-preview" src="/src/assets/img/avatar-default.png" alt="Avatar"
+                       class="h-32 w-32 rounded-2xl object-cover ring-2 ring-[#0A5C67]/20 dark:ring-white/10">
+                  <label for="pf-avatar"
+                         class="absolute -bottom-2 -right-2 cursor-pointer rounded-xl bg-[#0A5C67] px-3 py-1.5 text-white text-xs font-semibold shadow hover:brightness-110"
+                         title="Alterar foto" data-i18n="Profile.avatar.change">
+                    Trocar
+                  </label>
+                  <input id="pf-avatar" type="file" class="hidden" accept="image/*" />
+                </div>
+                <button id="pf-avatar-remove"
+                        class="text-xs text-gray-600 dark:text-gray-300 hover:underline"
+                        type="button" data-i18n="Profile.avatar.remove">
+                  Remover foto
+                </button>
+              </div>
+            </div>
+
+            <!-- Formulário -->
+            <form class="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4" novalidate>
+              <div>
+                <label class="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1" for="pf-name" data-i18n="Profile.field.name">Nome</label>
+                <input id="pf-name" type="text" autocomplete="name"
+                       class="w-full rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#0E1A2B]/40 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#0A5C67]"
+                       placeholder="Seu nome" data-i18n-placeholder="Profile.placeholder.name">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1" for="pf-email" data-i18n="Profile.field.email">E-mail</label>
+                <input id="pf-email" type="email" autocomplete="email"
+                       class="w-full rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#0E1A2B]/40 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#0A5C67]"
+                       placeholder="voce@exemplo.com" data-i18n-placeholder="Profile.placeholder.email">
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1" for="pf-org" data-i18n="Profile.field.org">Organização</label>
+                <input id="pf-org" type="text" autocomplete="organization"
+                       class="w-full rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#0E1A2B]/40 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#0A5C67]"
+                       placeholder="Instituição/Empresa" data-i18n-placeholder="Profile.placeholder.org">
+              </div>
+
+              <!-- Função agora via dropdown (+ campo "Outro" condicional) -->
+              <div>
+                <label class="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1" for="pf-role" data-i18n="Profile.field.role">Função</label>
+                <select id="pf-role"
+                        class="w-full rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#0E1A2B]/40 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#0A5C67]">
+                  <!-- opções virão da API ou fallback estático pelo JS -->
+                </select>
+                <input id="pf-role-other" type="text"
+                       class="mt-2 w-full rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#0E1A2B]/40 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#0A5C67] hidden"
+                       placeholder="Informe sua função" />
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1" for="pf-phone" data-i18n="Profile.field.phone">Telefone</label>
+                <input id="pf-phone" type="text" autocomplete="tel"
+                       class="w-full rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#0E1A2B]/40 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#0A5C67]"
+                       placeholder="(61) 9 9999-9999" data-i18n-placeholder="Profile.placeholder.phone">
+              </div>
+
+              <div>
+                <label class="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1" for="pf-lang" data-i18n="Profile.field.lang">Idioma</label>
+                <select id="pf-lang"
+                        class="w-full rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#0E1A2B]/40 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#0A5C67]">
+                  <option value="pt-BR" data-i18n="Common.lang.ptbr">Português (BR)</option>
+                  <option value="en"    data-i18n="Common.lang.en">English</option>
+                  <option value="es"    data-i18n="Common.lang.es">Español</option>
+                </select>
+              </div>
+
+              <div class="sm:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <label class="inline-flex items-center gap-2">
+                  <input id="pf-dark" type="checkbox" class="rounded text-[#0A5C67]">
+                  <span class="text-sm" data-i18n="Profile.field.dark">Usar modo escuro</span>
+                </label>
+                <label class="inline-flex items-center gap-2">
+                  <input id="pf-alerts" type="checkbox" class="rounded text-[#0A5C67]">
+                  <span class="text-sm" data-i18n="Profile.field.alerts">Receber alertas por e-mail</span>
+                </label>
+              </div>
+
+              <div class="sm:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-4 mt-2">
+                <div>
+                  <label class="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1" for="pf-pass-current" data-i18n="Profile.field.pass_current">Senha atual</label>
+                  <input id="pf-pass-current" type="password" autocomplete="current-password"
+                         class="w-full rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#0E1A2B]/40 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#0A5C67]"
+                         placeholder="••••••••">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1" for="pf-pass-new" data-i18n="Profile.field.pass_new">Nova senha</label>
+                  <input id="pf-pass-new" type="password" autocomplete="new-password"
+                         class="w-full rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#0E1A2B]/40 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#0A5C67]"
+                         placeholder="mín. 8 caracteres" data-i18n-placeholder="Profile.placeholder.pass_new">
+                </div>
+                <div>
+                  <label class="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1" for="pf-pass-confirm" data-i18n="Profile.field.pass_confirm">Confirmar senha</label>
+                  <input id="pf-pass-confirm" type="password" autocomplete="new-password"
+                         class="w-full rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-[#0E1A2B]/40 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#0A5C67]"
+                         placeholder="repita a nova senha" data-i18n-placeholder="Profile.placeholder.pass_confirm">
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- Ações -->
+          <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <button id="pf-save"
+                    class="inline-flex items-center gap-2 rounded-xl px-4 py-2 bg-[#0A5C67] text-white text-sm font-semibold hover:brightness-110"
+                    data-i18n="Profile.actions.save">
+              Salvar alterações
+            </button>
+            <button id="pf-reset"
+                    class="inline-flex items-center gap-2 rounded-xl px-4 py-2 border border-black/10 dark:border-white/10 bg-white dark:bg-white/10 text-sm hover:bg-black/5 dark:hover:bg-white/10"
+                    data-i18n="Profile.actions.reset">
+              Descartar
+            </button>
+            <span id="pf-status" class="sr-only" aria-live="polite"></span>
+          </div>
+
+          <!-- Atividade recente -->
+          <div class="mt-8 border-t border-black/5 dark:border-white/10 pt-6">
+            <h2 class="text-base font-semibold text-[#031E21] dark:text-white mb-2" data-i18n="Profile.activity.title">Atividade recente</h2>
+            <ul id="pf-activity" class="text-sm text-gray-600 dark:text-gray-300 space-y-1"></ul>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Entry-point global -->
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
