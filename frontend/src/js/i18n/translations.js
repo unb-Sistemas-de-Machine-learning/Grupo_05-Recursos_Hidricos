@@ -254,6 +254,20 @@ export const TRANSLATIONS = {
   "UI.theme_toggle":   {"pt-BR":"Alternar","en":"Toggle","es":"Alternar"},
   "UI.language":       {"pt-BR":"Idioma","en":"Language","es":"Idioma"},
 
+  // ===================== Dashboard (filters) =====================
+  "Dash.filters.region": { "pt-BR": "Região", "en": "Region", "es": "Región" },
+  "Dash.filters.start":  { "pt-BR": "Início", "en": "Start",  "es": "Inicio" },
+  "Dash.filters.end":    { "pt-BR": "Fim",    "en": "End",    "es": "Fin" },
+  "Dash.filters.metrics":{ "pt-BR": "Métricas","en": "Metrics","es": "Métricas" },
+  "Dash.filters.apply":  { "pt-BR": "Aplicar filtros", "en": "Apply filters", "es": "Aplicar filtros" },
+  "Dash.filters.reset":  { "pt-BR": "Redefinir",       "en": "Reset",         "es": "Restablecer" },
+
+  // ======================= Dashboard (KPIs) ======================
+  "Kpi.avg_precip_label":  { "pt-BR": "Precipitação média",   "en": "Average precipitation",   "es": "Precipitación media" },
+  "Kpi.avg_flow_label":    { "pt-BR": "Vazão média",          "en": "Average flow",            "es": "Caudal medio" },
+  "Kpi.avg_storage_label": { "pt-BR": "Armazenamento médio",  "en": "Average storage",         "es": "Almacenamiento medio" },
+  "Kpi.risk_high_7d_label":{ "pt-BR": "Risco alto (próx. 7d)","en": "High risk (next 7d)",     "es": "Riesgo alto (próx. 7d)" },
+
   // =========================== Common ===========================
   "Common.refresh":    { "pt-BR": "Atualizar",    "en": "Refresh",       "es": "Actualizar" },
   "Common.export_png": { "pt-BR": "Exportar PNG", "en": "Export PNG",    "es": "Exportar PNG" },
