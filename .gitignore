@@ -30,4 +30,8 @@ site
 venv
 
 # Vite build da landing
+
+# Local backend artifacts
+backend/app.db
+backend/.env
 # dist
