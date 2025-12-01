@@ -22,6 +22,12 @@ python app.py init-db
 python app.py seed-admin
 # (ou configure ADMIN_EMAIL/ADMIN_PASSWORD no .env antes do seed-admin)
 
+# 4.a) Seed de estações validadas e ingest
+# Depois de identificar as estações válidas (ex.: `backend/valid_stations_df.json`), você pode popular
+# e testar o ingest com os novos comandos CLI adicionados:
+# - `flask seed-valid-stations --file backend/valid_stations_df.json` — faz upsert em `stations`.
+# - `flask hidro-ingest-valid --days 7` — executa ingest (últimos 7 dias) para as estações do JSON.
+
 # 5) Rodar servidor
 python app.py
 # Vai subir em http://localhost:3001

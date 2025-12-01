@@ -1,6 +1,7 @@
 # app.py — versão estável + correções de avatar, senha e função (dropdown)
 import os
 from pathlib import Path
+import datetime as dt
 from datetime import timedelta
 from typing import Dict, Any
 
@@ -531,6 +532,60 @@ def create_app():
                 print("series_vazao =", count("series_vazao"))
                 print("series_chuva =", count("series_chuva"))
                 print("harvest_log  =", count("harvest_log"))
+
+        @app.cli.command("seed-valid-stations")
+        @click.option("--file", "json_file", default="backend/valid_stations_df.json", show_default=True,
+                      help="Caminho para o JSON com estações válidas")
+        def _seed_valid_cmd(json_file):
+            """Seed (upsert) das estações listadas em um JSON para a tabela stations."""
+            hin.init_db()
+            client = HidroClient()
+            with hin.open_db() as conn:
+                try:
+                    hin.seed_valid_stations(conn, json_file)
+                except FileNotFoundError:
+                    print(f"Arquivo não encontrado: {json_file}")
+
+        @app.cli.command("hidro-ingest-valid")
+        @click.option("--days", default=7, show_default=True, type=int, help="Número de dias atrás para buscar (ex.: 7)")
+        @click.option("--series", "series", multiple=True, type=click.Choice(["cota","vazao","chuva"]),
+                      help="Series a buscar. Se omitido, busca cota, vazao e chuva")
+        @click.option("--file", "json_file", default="backend/valid_stations_df.json", show_default=True,
+                      help="JSON com as estações válidas")
+        @click.option("--sleep", default=float(os.getenv("HIDRO_INGEST_SLEEP", "0.4")), show_default=True, type=float)
+        def _hidro_ingest_valid_cmd(days, series, json_file, sleep):
+            hin.init_db()
+            client = HidroClient()
+            # load codes from json
+            try:
+                codes = [s.get('codigo') or s.get('codigoestacao') for s in __import__('json').load(open(json_file, 'r', encoding='utf-8'))]
+                codes = [c for c in codes if c]
+            except Exception as e:
+                print(f"Falha ao ler JSON {json_file}: {e}")
+                return
+
+            if not series or len(series) == 0:
+                series = ("cota", "vazao", "chuva")
+
+            end = dt.date.today()
+            start = end - dt.timedelta(days=max(1, days))
+
+            with hin.open_db() as conn:
+                for cod in codes:
+                    print(f">> Estação {cod}:")
+                    if "cota" in series:
+                        print("   - Cotas …")
+                        hin.harvest_series_period(client, conn, "HidroSerieCotas", client.route_cotas, "series_cota",
+                                                  cod, start, end, sleep=sleep)
+                    if "vazao" in series:
+                        print("   - Vazão …")
+                        hin.harvest_series_period(client, conn, "HidroSerieVazao", client.route_vazao, "series_vazao",
+                                                  cod, start, end, sleep=sleep)
+                    if "chuva" in series:
+                        print("   - Chuva …")
+                        hin.harvest_series_period(client, conn, "HidroSerieChuva", client.route_chuva, "series_chuva",
+                                                  cod, start, end, sleep=sleep)
+            print("✔ Ingest (valid stations) concluído.")
 
     return app
 
