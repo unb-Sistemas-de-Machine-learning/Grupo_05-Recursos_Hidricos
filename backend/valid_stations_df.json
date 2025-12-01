@@ -1,0 +1,26 @@
+[
+  {
+    "codigo": "60435500",
+    "tipo": "Fluviométrica",
+    "items_count": 2880,
+    "nota": "Retornou leituras válidas (ex.: Cota_Sensor, Chuva_Acumulada)"
+  },
+  {
+    "codigo": "1548054",
+    "tipo": "Pluviométrica",
+    "items_count": 2880,
+    "nota": "Retornou leituras; payload raw_sample indica campos de telemetria"
+  },
+  {
+    "codigo": "60477100",
+    "tipo": "Fluviométrica",
+    "items_count": 2860,
+    "nota": "Retornou leituras válidas"
+  },
+  {
+    "codigo": "1547092",
+    "tipo": "Pluviométrica",
+    "items_count": 2860,
+    "nota": "Retornou leituras válidas"
+  }
+]
