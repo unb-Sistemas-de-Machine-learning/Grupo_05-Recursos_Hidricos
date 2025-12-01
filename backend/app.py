@@ -534,7 +534,7 @@ def create_app():
                 print("harvest_log  =", count("harvest_log"))
 
         @app.cli.command("seed-valid-stations")
-        @click.option("--file", "json_file", default="backend/valid_stations_df.json", show_default=True,
+        @click.option("--file", "json_file", default="valid_stations_df.json", show_default=True,
                       help="Caminho para o JSON com estações válidas")
         def _seed_valid_cmd(json_file):
             """Seed (upsert) das estações listadas em um JSON para a tabela stations."""
@@ -550,7 +550,7 @@ def create_app():
         @click.option("--days", default=7, show_default=True, type=int, help="Número de dias atrás para buscar (ex.: 7)")
         @click.option("--series", "series", multiple=True, type=click.Choice(["cota","vazao","chuva"]),
                       help="Series a buscar. Se omitido, busca cota, vazao e chuva")
-        @click.option("--file", "json_file", default="backend/valid_stations_df.json", show_default=True,
+        @click.option("--file", "json_file", default="valid_stations_df.json", show_default=True,
                       help="JSON com as estações válidas")
         @click.option("--sleep", default=float(os.getenv("HIDRO_INGEST_SLEEP", "0.4")), show_default=True, type=float)
         def _hidro_ingest_valid_cmd(days, series, json_file, sleep):
