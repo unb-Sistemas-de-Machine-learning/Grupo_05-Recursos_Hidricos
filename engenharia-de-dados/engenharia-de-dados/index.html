@@ -9,7 +9,7 @@
         <link rel="prev" href="../../engenharia-de-requisitos/engenharia-de-requisitos/">
       
       
-        <link rel="next" href="../../ajuda-e-suporte/problemas-comuns/">
+        <link rel="next" href="../../resultados/validacao/">
       
       
         
@@ -282,18 +282,17 @@
   
   
   
-    
-    
-      <li class="md-tabs__item">
-        <a href="../../ajuda-e-suporte/problemas-comuns/" class="md-tabs__link">
-          
+    <li class="md-tabs__item">
+      <a href="../../resultados/validacao/" class="md-tabs__link">
+        
   
   
-  Ajuda e Suporte
+    
+  
+  Resultados e Validação
 
-        </a>
-      </li>
-    
+      </a>
+    </li>
   
 
       
@@ -302,17 +301,18 @@
   
   
   
-    <li class="md-tabs__item">
-      <a href="../../sobre/sobre-o-projeto/" class="md-tabs__link">
-        
-  
-  
     
+    
+      <li class="md-tabs__item">
+        <a href="../../ajuda-e-suporte/documentacao-tecnica/frontend/" class="md-tabs__link">
+          
   
-  Sobre
+  
+  Documentação Técnica
 
-      </a>
-    </li>
+        </a>
+      </li>
+    
   
 
       
@@ -762,65 +762,15 @@
   
   
   
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6">
-        
-          
-          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Ajuda e Suporte
-  
-
-    
-  </span>
-  
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6">
-            <span class="md-nav__icon md-icon"></span>
-            
-  
-    Ajuda e Suporte
-  
-
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
     <li class="md-nav__item">
-      <a href="../../ajuda-e-suporte/problemas-comuns/" class="md-nav__link">
+      <a href="../../resultados/validacao/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    Poblemas Comuns
+    Resultados e Validação
   
 
     
@@ -832,10 +782,9 @@
     </li>
   
 
-              
-            
-              
-                
+    
+      
+      
   
   
   
@@ -852,17 +801,17 @@
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6_2">
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7">
         
           
-          <label class="md-nav__link" for="__nav_6_2" id="__nav_6_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
             
   
   
   <span class="md-ellipsis">
     
   
-    Documentação técnica
+    Documentação Técnica
   
 
     
@@ -873,12 +822,12 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_6_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_6_2">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
             <span class="md-nav__icon md-icon"></span>
             
   
-    Documentação técnica
+    Documentação Técnica
   
 
           </label>
@@ -943,41 +892,6 @@
           </ul>
         </nav>
       
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../../sobre/sobre-o-projeto/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Sobre
-  
-
-    
-  </span>
-  
-  
-
-      </a>
     </li>
   
 
@@ -1164,19 +1078,52 @@
 <p>Esses scripts formam a fundação da <strong>Feature Store e Pipelines (RF-ML-14)</strong> mencionadas nos requisitos, onde os dados brutos são transformados em features prontas para o consumo por modelos de ML.</p>
 <h2 id="23-escolha-e-justificativa-do-modelo">2.3 Escolha e Justificativa do Modelo</h2>
 <ul>
-<li><strong>Modelo escolhido é coerente com o problema e os dados:</strong> O documento não especifica modelos concretos, mas propõe tipos (classificação/regressão para chuva, híbrido para nível). A escolha futura deverá ser justificada, provavelmente com base nos dados preparados e nas métricas definidas.</li>
-<li><strong>Comparação com baseline(s) simples:</strong> Implícito nos requisitos de métricas e na análise de resultados.</li>
-<li><strong>Justificativa clara da escolha:</strong> Os requisitos sugerem que a escolha será fundamentada em desempenho (RMSE, MAE, ROC-AUC) e considerações operacionais (incerteza, alertas).</li>
+<li>
+<p><strong>Modelo escolhido é coerente com o problema e os dados:</strong> Para a previsão da cota dos reservatórios, foram implementados e avaliados dois modelos principais:</p>
+<ol>
+<li><strong>RandomForest:</strong> Um modelo de ensemble baseado em árvores de decisão. Foi escolhido por sua robustez, capacidade de capturar interações não-lineares entre as features e bom desempenho geral.</li>
+<li><strong>SARIMA:</strong> Um modelo estatístico clássico para séries temporais que leva em conta a sazonalidade. Serve como um baseline robusto e um ponto de comparação para o modelo de machine learning.</li>
+</ol>
+</li>
+<li>
+<p><strong>Engenharia de Features Aplicada:</strong> Para alimentar o modelo RandomForest, foram criadas diversas features a partir dos dados brutos de cota e chuva:</p>
+<ul>
+<li><strong>Lags:</strong> Valores da cota em instantes passados (ex: <code>lag_1</code> para 15 min antes, <code>lag_4</code> para 1h antes, <code>lag_96</code> para 24h antes).</li>
+<li><strong>Deltas:</strong> Variação da cota entre diferentes instantes (ex: <code>delta_15m</code>, <code>delta_1h</code>).</li>
+<li><strong>Agregações de Chuva:</strong> Soma da precipitação em diferentes janelas de tempo (ex: <code>chuva_sum_1h</code>, <code>chuva_sum_24h</code>).</li>
+</ul>
+</li>
+<li>
+<p><strong>Justificativa clara da escolha:</strong> O RandomForest foi priorizado pela sua flexibilidade em incorporar diversas features exógenas (como chuva e seus derivados), o que é mais complexo em modelos SARIMA puros. A comparação entre eles permite validar a eficácia da abordagem de machine learning.</p>
+</li>
 </ul>
 <h2 id="24-analise-de-resultados-e-erros">2.4 Análise de Resultados e Erros</h2>
 <ul>
-<li><strong>Interpretação dos resultados obtidos:</strong> Os requisitos de <strong>Monitoramento &amp; Re-treino (RF-ML-12)</strong> e <strong>Observabilidade ML (RNF-ML-09)</strong> destacam a necessidade de dashboards de métricas (MAE/RMSE, ROC, PSI), alertas e logs de inferência. Isso permite uma análise contínua dos resultados.</li>
-<li><strong>Identificação de principais erros/limitações:</strong> Os <strong>Riscos e Mitigação</strong> listados (Descoberto sem série estruturada, SINISA anual, Evaporação) já indicam um reconhecimento das limitações e desafios de dados. A <strong>Explicabilidade (RF-ML-13)</strong> via SHAP/feature importance também auxiliará na compreensão de erros.</li>
-<li><strong>Discussão de possíveis melhorias futuras:</strong> O roadmap de ML (RF-MLs) é, em si, uma discussão de melhorias contínuas.</li>
+<li>
+<p><strong>Interpretação dos resultados obtidos:</strong> A performance dos modelos é monitorada principalmente pelo <strong>Erro Absoluto (MAE)</strong> e <strong>Erro Absoluto Percentual (MAPE)</strong>.</p>
+<ul>
+<li>Nos testes realizados, o modelo <strong>RandomForest demonstrou uma performance excelente para horizontes de previsão curtos</strong>, mantendo um erro absoluto percentual abaixo de 5% para previsões de até 7 dias no futuro.</li>
+</ul>
+</li>
+<li>
+<p><strong>Identificação de principais erros/limitações:</strong></p>
+<ul>
+<li><strong>Degradação da Acurácia:</strong> Após o horizonte de 7 dias, a incerteza dos dados aumenta significativamente, e a acurácia do modelo diminui, tornando as previsões menos confiáveis.</li>
+<li><strong>Necessidade de Re-treino:</strong> O modelo RandomForest, por sua natureza, não extrapola tendências futuras e depende dos padrões aprendidos nos dados de treino. Por isso, para manter sua acurácia, ele <strong>precisa ser re-treinado diariamente</strong> com os dados mais recentes. Em contraste, o modelo SARIMA pode se adaptar melhor a tendências ao longo do tempo, mas apresenta menor acurácia geral em curtos prazos.</li>
+</ul>
+</li>
+<li>
+<p><strong>Discussão de possíveis melhorias futuras:</strong></p>
+<ul>
+<li><strong>Alertas e Tendências:</strong> Implementar um sistema de alertas que use a previsão para classificar a tendência futura da cota (subindo, descendo, estável).</li>
+<li><strong>Feature Engineering Avançada:</strong> Incorporar novas features que possam capturar melhor a dinâmica do sistema hídrico. O <code>RELATORIO_ANALISE_BARRAGENS.pdf</code> contém estudos sobre features potenciais.</li>
+<li><strong>Automação do Re-treino:</strong> Migrar o processo de re-treino manual para um pipeline automatizado (MLOps) que execute diariamente, gere os novos artefatos e atualize o backend sem intervenção manual.</li>
+</ul>
+</li>
 </ul>
 <h2 id="conclusao-da-analise-de-ml">Conclusão da Análise de ML</h2>
-<p>Embora o código atual do backend (<code>app.py</code>) atue principalmente como um servidor de API para dados já processados e coletados, o projeto ÁguaPrev possui uma visão de Machine Learning muito bem definida e detalhada no documento de Engenharia de Dados. Os scripts de ingestão (<code>hidro_api.py</code>, <code>hidro_ingest.py</code>) são componentes essenciais para a fase de preparação de dados que alimentará futuros modelos de ML, conforme os requisitos estabelecidos.</p>
-<p>Portanto, o sistema não é <em>apenas</em> ETL e visualização; ele está construindo a infraestrutura para incorporar modelos de ML para previsão, que são o objetivo principal do subsistema de ML do projeto.</p>
+<p>O projeto ÁguaPrev evoluiu de uma plataforma de visualização de dados para um sistema completo que incorpora um pipeline de Machine Learning para previsões. O backend não apenas serve dados históricos, mas também implementa um sistema de inferência online através da rota <code>/prever</code>, utilizando modelos pré-treinados (como RandomForest) para gerar previsões de cota em tempo real.</p>
+<p>Os scripts de ingestão (<code>hidro_api.py</code>, <code>hidro_ingest.py</code>) são a base que alimenta tanto o banco de dados histórico quanto o processo de treinamento offline, fechando o ciclo de ponta a ponta do sistema de ML, desde a coleta de dados até a entrega de previsões ao usuário final.</p>
 
 
 
@@ -1229,13 +1176,13 @@
         
         
           
-          <a href="../../ajuda-e-suporte/problemas-comuns/" class="md-footer__link md-footer__link--next" aria-label="Próximo: Poblemas Comuns">
+          <a href="../../resultados/validacao/" class="md-footer__link md-footer__link--next" aria-label="Próximo: Resultados e Validação">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Próximo
               </span>
               <div class="md-ellipsis">
-                Poblemas Comuns
+                Resultados e Validação
               </div>
             </div>
             <div class="md-footer__button md-icon">
