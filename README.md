@@ -4,37 +4,25 @@
 O sistema combina um **backend em Python** e um **frontend moderno com Vite + TailwindCSS**, oferecendo visualização de dados ambientais, gráficos e interface responsiva.
 A documentação técnica é mantida em **MkDocs**.
 
-## 🏗️ Estrutura Geral
+## 🏗️ Estrutura Geral e Arquitetura
 
-```
-.
-├── backend/                  # API e lógica de negócio (Python)
-│   ├── app.py                # Entrada principal da API
-│   ├── auth.py               # Autenticação e controle de sessão
-│   ├── db.py                 # Conexão com banco de dados
-│   ├── models.sql            # Script SQL de criação de tabelas
-│   ├── uploads/              # Pasta para arquivos enviados
-│   ├── .env.example          # Modelo de variáveis de ambiente
-│   └── requirements.txt      # Dependências Python
-│
-├── frontend/                 # Aplicação web (Vite + Tailwind)
-│   ├── src/                  # Código-fonte principal
-│   ├── public/               # Arquivos públicos
-│   ├── index.html            # Página inicial
-│   ├── dashboard.html        # Dashboard principal
-│   ├── login.html            # Tela de login
-│   ├── signup.html           # Tela de cadastro
-│   ├── package.json          # Scripts npm
-│   ├── tailwind.config.js    # Configuração do Tailwind
-│   ├── vite.config.js        # Configuração do Vite
-│   └── .env.example          # Exemplo de configuração do front
-│
-├── docs/                     # Documentação fonte (MkDocs)
-├── site/                     # Build estático do MkDocs
-├── mkdocs.yml                # Configuração da documentação
-├── LICENSE
-└── README.md
-```
+O projeto ÁguaPrev é dividido em módulos principais:
+
+*   **Backend (`backend/`):** API e lógica de negócio (Python com Flask).
+*   **Frontend (`frontend/`):** Aplicação web (Vite + TailwindCSS).
+*   **Documentação (`docs/`):** Documentação técnica gerada por MkDocs.
+*   **Ingestão de Dados (`backend/hidro_ingest.py`):** Processo de coleta e tratamento de dados de fontes externas.
+
+Para uma visão detalhada da arquitetura e do fluxo de dados do sistema, consulte:
+➡️ **[Visão Detalhada da Arquitetura](docs/arquitetura/arquitetura.md)**
+
+## 📚 Documentação Técnica Detalhada
+
+Explore os aspectos técnicos do projeto nos seguintes documentos:
+
+*   **[Rotas da API do Backend](docs/ajuda-e-suporte/documentacao-tecnica/backend.md)**: Detalhes sobre os endpoints da API, métodos, parâmetros e respostas.
+*   **[Interface de Usuário (Frontend)](docs/ajuda-e-suporte/documentacao-tecnica/frontend.md)**: Descrição das telas principais, funcionalidades e fluxo de usuário.
+*   **[Engenharia de Dados e Machine Learning](docs/engenharia-de-dados/engenharia-de-dados.md)**: Informações sobre o processo de ingestão e preparação de dados, requisitos e objetivos de Machine Learning.
 
 ## ⚙️ Requisitos
 
@@ -44,7 +32,7 @@ A documentação técnica é mantida em **MkDocs**.
 | 🧱 Frontend     | Node.js / npm | Node ≥ 18 / npm ≥ 9  |
 | 📚 Documentação | MkDocs        | `pip install mkdocs` |
 
-## 🚀 Como executar o projeto
+## 🚀 Como executar o projeto (Passo a passo para execução local)
 
 A ordem **correta de execução** é:
 
@@ -202,11 +190,15 @@ VITE_API_URL=http://127.0.0.1:5000
 
 ## 📈 Roadmap
 
-* [ ] Conectar dashboard a dados reais (chuvas, reservatórios — Adasa/ANA)
-* [ ] Implementar gráficos e indicadores (Chart.js / ECharts)
-* [ ] Autenticação completa entre backend e frontend
-* [ ] Deploy em ambiente de produção (API + Front)
-* [ ] Documentação expandida (MkDocs + endpoints)
+O roadmap do ÁguaPrev está focado em evoluir a plataforma para um sistema de monitoramento e previsão hídrica robusto e inteligente.
+
+*   [ ] **Conectar dashboard a dados reais:** Implementar a integração contínua e visualização dos dados mais recentes de chuvas e reservatórios (Adasa/ANA) no dashboard.
+*   [ ] **Implementar gráficos e indicadores avançados:** Utilizar bibliotecas como Chart.js ou ECharts para visualizações dinâmicas e interativas.
+*   [ ] **Autenticação completa entre backend e frontend:** Finalizar a implementação e integração do sistema de autenticação JWT em todas as funcionalidades necessárias.
+*   [ ] **Deploy em ambiente de produção:** Configurar e implantar a API do backend e o frontend em um ambiente de produção escalável e seguro.
+*   [ ] **Desenvolvimento dos Modelos de Machine Learning:** Implementar os modelos de previsão de níveis de reservatórios e precipitação, conforme os requisitos detalhados na [documentação de Engenharia de Dados e ML](docs/engenharia-de-dados/engenharia-de-dados.md).
+*   [ ] **Integração das Previsões no Frontend:** Exibir as previsões geradas pelos modelos de ML na interface do usuário (ex: dashboards e séries temporais).
+*   [ ] **Documentação Expandida:** Continuar a aprimorar a documentação técnica com detalhes sobre os endpoints da API, diagramas de arquitetura atualizados e guias de uso.
 
 ## 🤝 Contribuindo
 

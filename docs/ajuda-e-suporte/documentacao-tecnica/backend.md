@@ -1,166 +1,87 @@
-# DermAlert | Backend
+# ÁguaPrev | Backend
 
 ## 📄 Visão Geral
 
-O backend da aplicação DermAlert foi construído em Python utilizando o framework FastAPI, que oferece alta performance, suporte a tipagem estática com Python 3.10+ e geração automática de documentação. A arquitetura foi projetada com foco na modularização. O backend é responsável por toda a lógica de negócio, autenticação, persistência de dados e integração com o aplicativo mobile.
+O backend da aplicação ÁguaPrev é construído em Python utilizando o framework **Flask**, oferecendo uma API RESTful para monitoramento e previsão da situação hídrica do Distrito Federal. A arquitetura foca na modularidade, separando a lógica de negócio, autenticação e acesso a dados.
 
-Entre os principais recursos, destacam-se a integração com banco de dados relacional via SQLAlchemy, gerenciamento de migrações com Alembic, autenticação baseada em JWT, e suporte a CORS para comunicação com o frontend. O sistema conta ainda com scripts de inicialização e popularização do banco de dados, além de rotas organizadas por responsabilidade funcional, como usuários, atendimentos e unidades de saúde.
+Ele é responsável por:
+*   Gerenciar autenticação de usuários (JWT).
+*   Manter perfis de usuário, incluindo avatares.
+*   Expor dados de estações de monitoramento e séries temporais (cota, vazão, chuva).
+*   Permitir a ingestão de dados de fontes externas (como a API da ANA) através de comandos CLI.
 
 ## 🛠️ Principais Tecnologias
 As principais ferramentas e bibliotecas empregadas são:
 
-- [FastAPI](https://fastapi.tiangolo.com/):
-Framework web moderno e de alto desempenho para a construção de APIs em Python. Destaca-se pela facilidade de uso, rapidez e suporte nativo à validação de dados e documentação automática.​
+-   **Flask:** Microframework web para a construção de APIs em Python.
+-   **Flask-Cors:** Gerenciamento de Cross-Origin Resource Sharing (CORS) para permitir comunicação com o frontend.
+-   **Flask-JWT-Extended:** Suporte para JSON Web Tokens (JWT) para autenticação segura.
+-   **SQLite:** Banco de dados leve e embarcado para persistência de dados.
+-   **python-dotenv:** Gerenciamento de variáveis de ambiente.
+-   **requests:** Biblioteca para fazer requisições HTTP a APIs externas (ex: ANA).
 
-- [SQLAlchemy](https://www.sqlalchemy.org/):
-Biblioteca de mapeamento objeto-relacional (ORM) que facilita a interação com bancos de dados relacionais, permitindo manipular dados de forma mais intuitiva e segura.​
+## 📁 Estrutura de Pastas (simplificada)
 
-- [Alembic](https://alembic.sqlalchemy.org/en/latest/):
-Ferramenta de migração de banco de dados que trabalha em conjunto com o SQLAlchemy, permitindo gerenciar versões e alterações no esquema do banco de dados de forma controlada.​
-
-- [Docker Compose](https://docs.docker.com/compose/):
-Ferramenta que facilita a definição e execução de aplicações multi-contêiner, permitindo orquestrar serviços, redes e volumes de forma declarativa.​
-
-- [Poetry](https://python-poetry.org/):
-Gerenciador de dependências e ambientes virtuais para Python, que simplifica a instalação e o gerenciamento de bibliotecas, garantindo reprodutibilidade e isolamento do ambiente.
-
-## 📁 Estrutura de Pastas
-
-```bash
-📁 backend
-│
-├── 📁 .github
-│   └── 📁 workflows
-│       └── 📝 CI/CD (GitHub Actions)
-│
-├── 📁 kubernetes
-│   └── 🧩 Manifests de implantação (YAMLs)
-│       └── 📄 deploy.yaml, service.yaml, etc.
-│
-└── 📁 project
-    │
-    ├── 📁 app
-    │   │
-    │   ├── 📁 api
-    │   │   └── 📁 routes
-    │   │       └── 🧩 Arquivos de rotas agrupadas (user_routes.py, admin_routes.py, etc.)
-    │   │
-    │   ├── 📁 core
-    │   │   └── ⚙️ Configurações centrais da aplicação (lifespan, CORS, inicialização)
-    │   │
-    │   ├── 📁 crud
-    │   │   └── 📄 Operações de Create, Read, Update, Delete
-    │   │
-    │   ├── 📁 database
-    │   │   ├── 📄 models.py (modelos ORM)
-    │   │   ├── 📄 database.py (conexão com o banco)
-    │   │   └── 📄 seed.py / populate_data.py (popular dados de exemplo)
-    │   │
-    │   └── 📁 utils
-    │       └── 🧰 Funções auxiliares e helpers
-    │
-    └── 📁 migrations
-        └── 📁 versions
-            └── 📄 Arquivos de migração gerados pelo Alembic
+```
+📁 backend/
+├── app.py                # Entrada principal da API, rotas, configuração
+├── auth.py               # Blueprint para autenticação (login, registro)
+├── db.py                 # Conexão com banco de dados SQLite
+├── models.sql            # Script SQL de criação de tabelas
+├── hidro_api.py          # Cliente para a API HidroWeb da ANA
+├── hidro_ingest.py       # Lógica de ingestão de dados da ANA para o DB
+├── .env.example          # Exemplo de variáveis de ambiente
+├── requirements.txt      # Dependências Python
+├── uploads/              # Pasta para arquivos enviados (ex: avatares)
+└── __pycache__/          # Cache de módulos Python
 ```
 
 ## 🌐 Rotas da Aplicação
 
+### Autenticação e Usuários
 
-| Rota                                             | Método | Descrição                                                                 | Permissão                            | Corpo da Requisição                                                           | Resposta                                                             |
-|--------------------------------------------------|--------|---------------------------------------------------------------------------|--------------------------------------|------------------------------------------------------------------------------|----------------------------------------------------------------------|
-| `/admin/convidar-usuario`                        | POST   | Cadastra ou reenvia convite para um novo usuário pendente                 | Apenas `ADMIN`                       | `{ cpf, email, unidade_saude_id, role_id }`                                  | `{ "message": "Convite enviado com sucesso!" }`                      |
-| `/admin/editar-usuario`                          | POST   | Edita dados de um usuário (unidade, permissão e status ativo/inativo)    | Apenas `ADMIN`                       | `{ cpf, unidade_saude, role_id, fl_ativo }`                                  | Retorna o usuário atualizado                                        |
-| `/api/eventos/`                                  | GET    | Lista todos os eventos cadastrados                                       | Qualquer usuário                     | -                                                                            | Lista de eventos                                                    |
-| `/api/eventos/`                                  | POST   | Cria um novo evento                                                       | `ADMIN`                              | `{ "titulo": "Evento A", "data": "2025-05-01", "descricao": "..." }`         | Objeto do evento criado                                             |
-| `/api/eventos/{id}/`                             | GET    | Detalha um evento específico                                              | Qualquer usuário                     | -                                                                            | Objeto do evento                                                    |
-| `/api/eventos/{id}/`                             | PUT    | Atualiza um evento                                                        | `ADMIN`                              | `{ "titulo": "Evento Atualizado", "data": "2025-05-01", "descricao": "..." }`| Objeto do evento atualizado                                         |
-| `/api/eventos/{id}/`                             | DELETE | Remove um evento                                                          | `ADMIN`                              | -                                                                            | Confirmação de remoção                                              |
-| `/redirect`                                      | GET    | Redireciona o usuário para o app DermAlert                                | Qualquer usuário                     | Parâmetros de query: `token`, `source`                                       | HTML com redirecionamento via JavaScript                           |
-| `/supervisor/convidar-usuario`                   | POST   | Envia convite para novo usuário vinculado à mesma Unidade de Saúde       | `SUPERVISOR`                         | `UserCreateSupervisorSchema`                                                 | `{ "message": "Convite enviado com sucesso!" }`                     |
-| `/supervisor/editar-usuario`                     | POST   | Edita permissão e status de usuário da mesma Unidade de Saúde            | `SUPERVISOR`                         | `SupervisorUserEdit`                                                         | `UserOut` (dados atualizados do usuário)                            |
-| `/token`                                         | POST   | Gera tokens de acesso e refresh com base em CPF e senha                  | Pública (Login)                      | `username` (CPF), `password` (OAuth2PasswordRequestForm)                     | `{ "access_token": "...", "refresh_token": "...", "token_type": "bearer" }` |
-| `/token/get-current-user`                        | GET    | Retorna as informações do usuário autenticado                            | Qualquer usuário autenticado         | -                                                                            | `UserOut` (com roles e unidadeSaude)                               |
-| `/token/refresh`                                 | POST   | Gera novos tokens a partir de um refresh token válido                     | Qualquer usuário com token válido    | `TokenRefresh` (`{"refresh_token": "..."}`)                                 | `{ "access_token": "...", "refresh_token": "...", "token_type": "bearer" }` |
-| `/cadastrar-unidade-saude`                       | POST   | Cadastra uma nova Unidade de Saúde                                        | `ADMIN`                              | `UnidadeSaudeCreateSchema`                                                   | Objeto `UnidadeSaude`                                              |
-| `/listar-unidades-saude`                         | GET    | Lista todas as Unidades de Saúde                                          | Pública                              | -                                                                            | Lista de `UnidadeSaude`                                            |
-| `/listar-unidade-saude/{unidade_id}`             | GET    | Retorna uma Unidade de Saúde com total de pacientes e profissionais       | Pública                              | -                                                                            | Dados da unidade + contagens                                       |
-| `/editar-unidade-saude/{unidade_id}`             | POST   | Atualiza os dados de uma Unidade de Saúde                                 | `ADMIN`                              | `UnidadeSaudeUpdateSchema`                                                   | Objeto `UnidadeSaude` atualizado                                   |
-| `/listar-usuarios-unidade-saude/{unidade_id}`    | GET    | Lista os usuários ativos da Unidade de Saúde com nível de acesso         | `SUPERVISOR`                         | -                                                                            | Lista de `UserResponseSchema`                                      |
-| `/completar-cadastro`                            | POST   | Completa o cadastro de um usuário usando um token e os dados fornecidos  | Usuário com token                    | -                                                                            | Confirmação do cadastro                                            |
-| `/dados-completar-cadastro`                      | GET    | Retorna dados do usuário antes de completar o cadastro                   | Usuário com token                    | -                                                                            | Dados parciais do usuário                                          |
-| `/dados-resetar-senha`                           | GET    | Retorna o e-mail do usuário a partir de um token de redefinição de senha | Usuário com token                    | -                                                                            | E-mail do usuário                                                  |
-| `/esqueci-minha-senha`                           | POST   | Envia e-mail com link/token para redefinição de senha                     | Pública                              | `email`                                                                      | Confirmação de envio do e-mail                                     |
-| `/resetar-senha`                                 | POST   | Redefine a senha do usuário usando token e nova senha                     | Usuário com token                    | `nova_senha`, `token`                                                        | Confirmação de redefinição                                         |
-| `/alterar-senha`                                 | POST   | Altera a senha do usuário autenticado, validando a senha atual           | Qualquer usuário autenticado         | `senha_atual`, `nova_senha`                                                  | Confirmação de alteração                                           |
+| Rota | Método | Descrição | Parâmetros de Requisição (JSON/Form) | Resposta (JSON) | Notas |
+| :--- | :----- | :-------- | :----------------------------------- | :-------------- | :---- |
+| `/auth/register` | `POST` | Registra um novo usuário. | `email`, `password`, `name` | `{ "message": "Usuário criado", "access_token": "...", "refresh_token": "..." }` | Cria usuário e retorna tokens JWT. |
+| `/auth/login` | `POST` | Realiza o login do usuário. | `email`, `password` | `{ "message": "Login realizado", "access_token": "...", "refresh_token": "..." }` | Retorna tokens JWT. |
+| `/auth/refresh` | `POST` | Renova os tokens de acesso e refresh. | (Necessita `refresh_token` no header ou body, dependendo da configuração JWT) | `{ "access_token": "...", "refresh_token": "..." }` | Exige um refresh token válido. |
+| `/auth/logout` | `POST` | Invalida o token de acesso (blacklist). | (Nenhum) | `{ "message": "Access token revoked" }` | Exige token de acesso. |
+| `/me` | `GET` | Retorna os dados do usuário autenticado. | (Nenhum) | `{ "user": { "id", "email", "name", "role", "avatar", ... } }` | Exige token de acesso. |
+| `/users/me/avatar-select` | `POST` | Define um avatar pré-selecionado (SVG). | `{"id": "tone01"}` | `{ "message": "Avatar definido", "user": {...} }` | Exige token de acesso. |
+| `/users/me/avatar-upload` | `POST` | Faz upload de uma imagem como avatar. | `file` (multipart/form-data) | `{ "message": "Avatar atualizado", "user": {...} }` | Exige token de acesso. |
+| `/users/me/password-change` | `POST` | Altera a senha do usuário. | `current_password`, `new_password` | `{ "message": "Senha atualizada com sucesso" }` | Exige token de acesso. |
+| `/users/me/profile` | `POST` | Atualiza dados do perfil (nome, função, etc.). | `name`, `role`, `organization`, `phone`, `lang`, `dark_mode`, `avatar` (opcional) | `{ "message": "Perfil atualizado", "user": {...} }` | Exige token de acesso. |
+| `/meta/funcoes` | `GET` | Retorna uma lista de funções/cargos para seleção. | (Nenhum) | `{ "items": [{"id": "pesquisador", "label": "Pesquisador(a)"}, ...] }` | Pública. |
 
+### Monitoramento e Dados
 
-## 🚀 Como rodar a aplicação
+| Rota | Método | Descrição | Parâmetros de Requisição (Query/Form) | Resposta (JSON) | Notas |
+| :--- | :----- | :-------- | :------------------------------------ | :-------------- | :---- |
+| `/health` | `GET` | Verifica a saúde da API. | (Nenhum) | `{ "status": "ok" }` | Pública. |
+| `/avatars` | `GET` | Lista as opções de avatares SVG disponíveis. | (Nenhum) | `{ "items": [ { "id", "label", "url" }, ... ] }` | Pública. |
+| `/avatars/svg/<avatar_id>.svg` | `GET` | Retorna um avatar SVG específico. | `<avatar_id>` (no path) | Imagem SVG | Pública. |
+| `/uploads/avatars/<filename>` | `GET` | Serve arquivos de avatar enviados. | `<filename>` (no path) | Imagem (PNG, JPG, etc.) | Pública. |
+| `/api/inventario` | `GET` | Retorna o inventário de estações de monitoramento. | `uf` (opcional), `q` (busca por nome/município, opcional), `limit` (opcional) | `{ "items": [ { "codigoestacao", "estacao_nome", ... } ], "count": N }` | Pública. Filtra por UF ou termo de busca. |
+| `/api/series/ultima` | `GET` | Retorna a última medição de uma série específica de uma estação. | `estacao`, `tipo` (`cota`, `vazao`, `chuva`) | `{ "item": { "codigoestacao", "data_hora_medicao", "valor", "qualidade" } }` | Exige `estacao` e `tipo`. |
+| `/api/series/janela` | `GET` | Retorna séries de medições em uma janela de tempo. | `estacao`, `tipo` (`cota`, `vazao`, `chuva`), `de` (data/hora início), `ate` (data/hora fim), `limit` (opcional) | `{ "items": [ {...} ], "count": N }` | Exige `estacao`, `tipo`, `de`, `ate`. |
 
-1. Clonar o repositório:
+### Rotas de Administração (Exigem `role: "admin"`)
 
-```bash
-git clone https://github.com/DermAlert/backend.git
-```
+| Rota | Método | Descrição | Parâmetros de Requisição (JSON) | Resposta (JSON) | Notas |
+| :--- | :----- | :-------- | :------------------------------ | :-------------- | :---- |
+| `/admin/metrics` | `GET` | Retorna métricas de administração. | (Nenhum) | `{ "total_users": N }` | Exige token de acesso com `role: "admin"`. |
 
-Navegar até o diretório do projeto:
+## 🚀 Comandos CLI para Ingestão de Dados
 
-```bash
-cd backend
-```
+O backend também oferece comandos via linha de comando (Flask CLI) para gerenciar o banco de dados e a ingestão de dados da ANA.
 
-2. Configurar as variáveis de ambiente:
-
-Renomeie o arquivo .env.example para .env e ajuste os valores conforme as configurações do seu ambiente (podem ser valores aleatórios).
-
-3. Construir e iniciar os contêineres Docker:
-
-```bash
-docker-compose up -d --build
-```
-
-Este comando irá construir as imagens necessárias e iniciar os serviços definidos no docker-compose.yml em segundo plano.
-
-4. Crie o banco de dados:
-
-Execute o seguinte comando para acessar o contêiner do banco de dados:
-
-```bash
-docker-compose exec db psql -U postgres
-```
-
-Depois, dentro do prompt do PostgreSQL:
-
-```bash
-CREATE DATABASE derma;
-\q
-```
-
-5. Aplicar as migrações do banco de dados:
-
-```bash
-docker-compose exec web poetry run alembic upgrade head
-```
-
-Este comando executa as migrações pendentes, garantindo que o esquema do banco de dados esteja atualizado.
-
-6. (Opcional) Criar uma nova migração:
-
-Caso sejam feitas alterações nos modelos de dados, uma nova migração pode ser gerada com:
-
-```bash
-docker-compose exec web alembic revision --autogenerate -m "descrição da migração"
-```
-
-Substitua "descrição da migração" por um resumo das mudanças efetuadas.
-
-## Repositório
-O repositório do backend pode ser acessado [aqui](https://github.com/renantfm4/backend).	
-
-## Histórico de Versões
-
-| Versão | Data | Descrição | Autor | Revisor |
-| :----: | ---- | --------- | ----- | ------- |
-| `1.0`  |05/04/2025| Cria documento e adiciona conteúdo, exceto "Como rodar a aplicação" | Izabella Alves |Davi Rodrigues  |
-| `1.1`  |08/04/2025| Adiciona tópico "Como rodar a aplicação" | Izabella Alves | [Esther Sena Martins](https://github.com/esmsena) |
-| `1.2`  |23/04/2025| Adicionando link para o repositório | [Henrique Galdino](https://github.com/hgaldino05) |[Vitor Pereira](https://github.com/vcpvitor)  |
+| Comando | Descrição | Opções |
+| :------ | :-------- | :----- |
+| `flask init-db` | Inicializa o banco de dados criando as tabelas. | - |
+| `flask seed-admin` | Cria ou atualiza o usuário administrador padrão. | - |
+| `flask hidro-inventory` | Coleta e salva o inventário de estações da ANA. | `--ufs` (filtrar por UF), `--sleep` (intervalo entre requisições) |
+| `flask hidro-list-uf` | Lista estações de uma UF específica. | `--uf` (obrigatório), `--limit` |
+| `flask hidro-ingest` | Ingestão de séries de dados para estações específicas. | `--stations` (códigos das estações), `--from`, `--to` (período), `--series` (`cota`, `vazao`, `chuva`), `--sleep` |
+| `flask hidro-check` | Verifica a contagem de registros nas tabelas de dados hídricos. | - |
+| `flask seed-valid-stations` | Carrega estações de um JSON de estações válidas. | `--file` (caminho para o JSON) |
+| `flask hidro-ingest-valid` | Ingestão de séries de dados para estações de um JSON de estações válidas para um período. | `--days` (dias atrás), `--series`, `--file`, `--sleep` |

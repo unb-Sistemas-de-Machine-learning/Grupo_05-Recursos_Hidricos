@@ -22,5 +22,12 @@ export default defineConfig({
         profile:   resolve(__dirname, 'profile.html'),
       },
     },
+  }, // <-- This is the closing bracket for the build object
+  server: {
+    port: 5174, // Tentar uma porta diferente
+    host: true, // Permitir acesso externo
+    hmr: {
+      overlay: false, // Desabilitar overlay de erro HMR para depuração inicial
+    },
   },
 });

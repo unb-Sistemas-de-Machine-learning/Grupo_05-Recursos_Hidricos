@@ -1,104 +1,63 @@
-# ML-CANVA, Requisitos de ML, variáveis e especificações
+# Engenharia de Dados e Machine Learning (ML)
 
-## Objetivo
+## Objetivo do ML no ÁguaPrev
 
-Prever níveis dos reservatórios do DF (Descoberto e Santa Maria) e precipitação (curto e médio prazo) para apoiar decisões e informar a sociedade. Horizontes: diário/semanal/mensal (nível) e 1h/6h/24h (chuva).
+O principal objetivo do subsistema de Machine Learning no ÁguaPrev é **prever os níveis dos reservatórios do Distrito Federal** (como Descoberto e Santa Maria) e a **precipitação** (chuva) em diferentes horizontes de tempo. Essas previsões visam apoiar a tomada de decisões na gestão hídrica e informar a sociedade, abordando horizontes diários, semanais e mensais para níveis, e horários para precipitação.
 
-## ML CANVA
+## ML CANVA e Requisitos de ML
 
-<iframe width="768" height="496" src="https://miro.com/app/live-embed/uXjVJJuUkZ0=/?focusWidget=3458764644976172989&embedMode=view_only_without_ui&embedId=872430688640" frameborder="0" scrolling="no" allow="fullscreen; clipboard-read; clipboard-write" allowfullscreen></iframe>
+O projeto detalha um **ML CANVA** e uma série de **Requisitos Funcionais de ML (RF-ML)** e **Requisitos Não-Funcionais (RNF-ML)**. Esses requisitos abrangem todo o ciclo de vida de um sistema de ML, desde a ingestão e preparação de dados, engenharia de atributos, escolha e avaliação de modelos, até o monitoramento em produção, explicabilidade e governança.
 
-## Requisitos de ML (Essenciais)
+Alguns requisitos chave incluem:
+*   **RF-ML-01 (Ingestão INMET):** Coleta de dados horários de precipitação, temperatura, umidade, etc.
+*   **RF-ML-02 (Ingestão Níveis):** Ingestão de telemetria de nível e consolidação diária.
+*   **RF-ML-03 (Padronização e Limpeza):** Tratamento de unidades, timezone, remoção de outliers.
+*   **RF-ML-04 (Engenharia de Atributos):** Criação de features como lags, janelas móveis, acumulados.
+*   **RF-ML-06 (Chuva - classificação) e RF-ML-07 (Chuva - regressão):** Modelos para prever ocorrência e volume de chuva.
+*   **RF-ML-08 (Nível - híbrido):** Modelos de nível utilizando balanço hídrico + ML.
+*   **RF-ML-11 (Disponibilização de previsões):** Exposição das previsões via API.
+*   **RNF-MLs:** Cobrem aspectos como Disponibilidade, Desempenho, Freshness dos dados, Escalabilidade, Segurança, Reprodutibilidade, Observabilidade e MLOps.
 
-Requisitos funcionais específicos do subsistema de ML: ingestão para modelos, pipelines de features, treino, inferência, incerteza e alertas.
+## 2.1 Formulação do Problema e Escolha de Métricas
 
-| ID       | Requisito                     | Descrição                                                                                   | Prioridade | Métrica / Critério de Aceitação (resumo)                    |
-| -------- | ----------------------------- | ------------------------------------------------------------------------------------------- | ---------: | ----------------------------------------------------------- |
-| RF-ML-01 | Ingestão INMET                | Coletar dados hora a hora de precipitação, temperatura, umidade, pressão, vento e radiação. |       Must | Cobertura ≥95% horas; atraso <15 min; logs.                 |
-| RF-ML-02 | Ingestão Níveis               | Ingerir telemetria de nível (LAI/Power BI) e consolidar diário.                             |       Must | Carga diária ≥99%; validações físicas.                      |
-| RF-ML-03 | Padronização e Limpeza        | Unidades, timezone; remoção de sentinelas/outliers; validações DQ.                          |       Must | Schemas validados; 0 sentinelas em serving.                 |
-| RF-ML-04 | Engenharia de Atributos       | Lags, janelas móveis, acumulados (3h..30d), codificação cíclica; reproducibilidade.         |       Must | Feature build reproducível; execução <10 min.               |
-| RF-ML-05 | Estimativa de Evaporação      | Cálculo Penman‑Monteith ou proxy com INMET.                                                 |     Should | Cobertura ≥90% dias; sem valores negativos.                 |
-| RF-ML-06 | Chuva (classificação)         | Modelo binário para ocorrência de chuva (1h/6h/24h).                                        |       Must | ROC‑AUC(1h) ≥0.80; CSI ≥0.40 em eventos relevantes.         |
-| RF-ML-07 | Chuva (regressão)             | Previsão de volume (mm) para 1h/6h/24h.                                                     |     Should | RMSE24h <5 mm; MAE24h <3 mm (meta).                         |
-| RF-ML-08 | Nível (híbrido)               | Modelo de nível: balanço hídrico + ML sobre resíduos para D+1/7/14/30.                      |       Must | MAE D+1 <0.10m; D+7 <0.30m; D+14 <0.50m.                    |
-| RF-ML-09 | Incerteza                     | Calcular intervalos de predição (PI50/PI90) e calibração.                                   |       Must | PI90 cobertura 85–95%.                                      |
-| RF-ML-10 | Alertas Operacionais (ML)     | Scores e regras para gerar alertas probabilísticos e tendências.                            |       Must | Antecedência ≥14 dias quando aplicável; taxa de FP ≤ 1/mês. |
-| RF-ML-11 | Disponibilização de previsões | Expor previsões, metadados e PIs via API para consumo autenticado.                          |       Must | Latência P95 ≤2s; versionamento de modelos.                 |
-| RF-ML-12 | Monitoramento & Re-treino     | Métricas on‑line, detecção de drift (dados/perf.) e pipelines de re‑treino.                 |       Must | PSI>0.2 ou ΔMAE>20% → trigger; logs e histórico de retrain. |
-| RF-ML-13 | Explicabilidade               | SHAP/feature importance e justificativa do alerta.                                          |     Should | Disponível via API/painel; geração <2s para amostra.        |
-| RF-ML-14 | Feature Store e Pipelines     | Feature store versionada e pipelines reproducíveis para treino/serving.                     |       Must | Features versionadas; snapshots para treino.                |
+*   **Problema claramente formulado:** Sim, o objetivo é prever níveis de reservatórios e precipitação para auxiliar na gestão de recursos hídricos.
+*   **Métricas de avaliação:** O documento especifica métricas apropriadas para cada tipo de previsão:
+    *   **Classificação de Chuva:** ROC-AUC e CSI.
+    *   **Regressão de Chuva:** RMSE e MAE.
+    *   **Previsão de Nível:** MAE para diferentes horizontes (D+1, D+7, etc.).
+    *   **Incerteza:** Cobertura de Intervalos de Predição (PI50/PI90).
+    *   **Alertas Operacionais:** Taxa de Falsos Positivos (FP).
+*   **Conexão com objetivo de negócio/produto:** As previsões impactam diretamente as decisões operacionais (gestão de reservatórios) e informam a sociedade sobre a situação hídrica.
 
-### Requisitos Não‑Funcionais
+## 2.2 Preparação e Divisão dos Dados
 
-#### Objetivo
+A preparação de dados é uma etapa crucial e está diretamente ligada aos scripts de ingestão e ao backend.
 
-Definir requisitos não‑funcionais específicos do subsistema ML: reprodutibilidade, governança de modelos, observabilidade ML, latência de inferência, throughput, segurança de dados para treino e inferência, gestão de versões e políticas de retrain.
+*   **Tratamento básico de dados:** Os scripts `hidro_ingest.py` e `hidro_api.py` são responsáveis por extrair dados da API da ANA. A etapa de **Padronização e Limpeza (RF-ML-03)** garante que os dados sejam tratados (unidades, timezone, remoção de outliers/sentinelas) antes de serem utilizados pelos modelos.
+*   **Divisão adequada em treino/validação/teste:** Embora não explicitamente detalhado na implementação atual do `app.py` (que foca na API), os **RNF-MLs** (como RNF-ML-08 Reprodutibilidade) indicam a intenção de versionar datasets e features para garantir a reprodutibilidade dos experimentos de ML.
+*   **Cuidados com vazamento de dados e equilíbrio de classes:** Os requisitos de ML implicam a necessidade de validações de DQ (Data Quality) e a proteção de dados, conforme **RNF-ML-07 (Qualidade de Dados)** e **RNF-ML-05 (Segurança)**.
 
-#### RNF-ML (Lista detalhada)
+### Papel dos scripts `hidro_ingest.py` e `hidro_api.py`:
 
-| ID        | Categoria                       | Requisito                                                                  | Meta / Critério de Aceitação                                                                  |
-| --------- | ------------------------------- | -------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| RNF-ML-01 | Disponibilidade                 | Serviços de inferência e pipelines ML devem ter SLA alto.                  | SLA serviços ML ≥ 99.5% mensal; monitoramento de jobs; alerts.                                |
-| RNF-ML-02 | Desempenho                      | Latência e tempo de construção de features devem atender SLAs.             | P95 inferência ≤ 2 s; feature build batch < 10 min para janelas diárias; throughput definido. |
-| RNF-ML-03 | Freshness                       | Features e dados de entrada atualizados conforme necessidade do modelo.    | Chuva: hourly; Nível: daily — garantido por pipelines; metricas de freshnes.                  |
-| RNF-ML-04 | Escalabilidade                  | Suporte a aumento do número de estações, reservatórios e volume histórico. | Escalar horizontalmente ≥5× volume; testes de carga para training/inference.                  |
-| RNF-ML-05 | Segurança                       | Proteção de dados de treino/inferência e controle de acesso a modelos.     | Criptografia dados sensíveis; RBAC para model registry; logs de acesso a modelos.             |
-| RNF-ML-06 | Conformidade                    | Garantir privacidade e compliance nos datasets usados para treino.         | PII removido/anonimizado; aprovações de dataset; retenção e auditoria.                        |
-| RNF-ML-07 | Qualidade de Dados              | Validações rigorosas antes de usar dados em treino/serving.                | Regras DQ aplicadas; quórum de validação; bloqueio automático em caso de quebra de esquema.   |
-| RNF-ML-08 | Reprodutibilidade               | Experimentos e runs devem ser reprodutíveis.                               | Versionamento dataset/features/model; seeds definidos; artefatos armazenados.                 |
-| RNF-ML-09 | Observabilidade ML              | Métricas de performance, confiança e drift expostas.                       | Dashboards de MAE/RMSE, ROC, PSI; alertas para thresholds.                                    |
-| RNF-ML-10 | MLOps / CI-CD                   | Pipelines para treino, validação e deployment automatizados.               | Pipelines automatizados com testes (unit/integration/regression); aprovações para deploy.     |
-| RNF-ML-11 | Re-treinamento                  | Estratégias, frequência e gatilhos de retrain definidos.                   | Retrain mensal (chuva) e trimestral/por drift (nível) ou por gatilho; logs de retrain.        |
-| RNF-ML-12 | Latência e Throughput           | Performance para servir previsões em produção.                             | Latência P95 ≤2s; suportar X requests/s (definir com base em uso); autoscaling.               |
-| RNF-ML-13 | Explicabilidade e Transparência | Modelos devem fornecer mecanismos de explicação e justificativas.          | SHAP/feature importance disponível; relatórios de fairness e viés (se aplicável).             |
-| RNF-ML-14 | Governança de Modelos           | Versionamento, aprovação e ciclo de vida do modelo.                        | Model registry; aprovação manual/automática; políticas de retirement e rollback.              |
-| RNF-ML-15 | Testabilidade                   | Testes automatizados para modelos e pipelines.                             | Testes unitários e integração para transformações; testes de regressão de performance.        |
-| RNF-ML-16 | Custo & Recursos                | Monitoring de custos e limites de recursos.                                | Budget alerts; otimização de training (spot/preemptible); quotas por projeto.                 |
-| RNF-ML-17 | Documentação                    | Documentação técnica e de modelos disponível.                              | Artefatos de model card; descrição de features; OpenAPI para endpoints.                       |
-| RNF-ML-18 | Backup & Recovery               | Recuperação de artefatos de treino e modelos.                              | Artefatos armazenados com backup; RTO/RPO definidos; testes periódicos.                       |
+*   **`hidro_api.py`**: Atua como um cliente Python para a API HidroWeb da ANA, encapsulando as chamadas e a lógica para obter dados brutos de inventário de estações e séries temporais (cota, vazão, chuva). Ele é a **camada de extração (Extract)**.
+*   **`hidro_ingest.py`**: Este script utiliza o `hidro_api.py` para coletar os dados e é responsável pela **transformação e carga (Transform, Load)**. Ele processa os dados brutos, aplica alguma lógica de tratamento (mesmo que básica inicialmente) e os armazena no banco de dados SQLite do projeto. Ele também contém comandos CLI (`flask hidro-inventory`, `flask hidro-ingest`, etc.) para gerenciar essa ingestão de forma programática.
 
-#### Métricas e Thresholds recomendados
+Esses scripts formam a fundação da **Feature Store e Pipelines (RF-ML-14)** mencionadas nos requisitos, onde os dados brutos são transformados em features prontas para o consumo por modelos de ML.
 
-- PSI threshold para drift: 0.1 alerta; 0.2 ação (retrain).
-- ΔMAE threshold: 10% alerta; 20% ação.
-- Cobertura de teste de integração: >80% para transforms críticos.
-- Latência inferência (P95) ≤ 2s; Throughput conforme expectativa de consumidores.
+## 2.3 Escolha e Justificativa do Modelo
 
-#### Observabilidade e Monitoramento ML
+*   **Modelo escolhido é coerente com o problema e os dados:** O documento não especifica modelos concretos, mas propõe tipos (classificação/regressão para chuva, híbrido para nível). A escolha futura deverá ser justificada, provavelmente com base nos dados preparados e nas métricas definidas.
+*   **Comparação com baseline(s) simples:** Implícito nos requisitos de métricas e na análise de resultados.
+*   **Justificativa clara da escolha:** Os requisitos sugerem que a escolha será fundamentada em desempenho (RMSE, MAE, ROC-AUC) e considerações operacionais (incerteza, alertas).
 
-- Métricas por modelo: MAE/RMSE, ROC‑AUC, calibration (PI coverage), uptime, latência.
-- Métricas de dados: missing rate, distribution shifts (PSI/KL), feature nulls.
-- Logs de inferência: input hashes, model version, latency, error codes (para auditoria).
-- Alertas automáticos e runbook para investigação de drift / queda de performance.
+## 2.4 Análise de Resultados e Erros
 
-#### Reprodutibilidade e Experiment Tracking
+*   **Interpretação dos resultados obtidos:** Os requisitos de **Monitoramento & Re-treino (RF-ML-12)** e **Observabilidade ML (RNF-ML-09)** destacam a necessidade de dashboards de métricas (MAE/RMSE, ROC, PSI), alertas e logs de inferência. Isso permite uma análise contínua dos resultados.
+*   **Identificação de principais erros/limitações:** Os **Riscos e Mitigação** listados (Descoberto sem série estruturada, SINISA anual, Evaporação) já indicam um reconhecimento das limitações e desafios de dados. A **Explicabilidade (RF-ML-13)** via SHAP/feature importance também auxiliará na compreensão de erros.
+*   **Discussão de possíveis melhorias futuras:** O roadmap de ML (RF-MLs) é, em si, uma discussão de melhorias contínuas.
 
-- Ferramentas sugeridas: MLflow/Weights&Biases para tracking; DVC para versionamento de dados; S3/Blob para artefatos.
-- Registrar hyperparams, seeds, metrics e ambiente (docker image, libs).
-- Snapshots da feature store para treino e validação.
+## Conclusão da Análise de ML
 
-#### Políticas de Segurança e Privacidade para ML
+Embora o código atual do backend (`app.py`) atue principalmente como um servidor de API para dados já processados e coletados, o projeto ÁguaPrev possui uma visão de Machine Learning muito bem definida e detalhada no documento de Engenharia de Dados. Os scripts de ingestão (`hidro_api.py`, `hidro_ingest.py`) são componentes essenciais para a fase de preparação de dados que alimentará futuros modelos de ML, conforme os requisitos estabelecidos.
 
-- Treino com dados anonimizados quando possível.
-- Acesso controlado ao data lake e feature store.
-- Encriptação de artefatos sensíveis e logs.
-- Revisão de compliance antes de liberar modelos para produção (model card).
-
-#### Operações e Runbooks
-
-- Runbooks para incidentes de inferência, drift, falhas de feature pipeline e retrain.
-- Playbooks para rollback de modelos (imediato) e rollout canary.
-- Planos de capacidade e testes de escalonamento (training/inference).
-
-## Riscos e mitigação
-
-- Descoberto sem série estruturada: extrair Power BI/LAI.
-- SINISA anual: servir como contexto; solicitar produção diária à CAESB.
-- Evaporação: estimar com Penman-Monteith e buscar dados regionais.
-
-### Histórico de Versão
-
-| Versão | Data       | Descrição            | Autor   | Revisor |
-| :----: | ---------- | -------------------- | ------- | ------- |
-| `1.0`  | 20/10/2025 | Criação do documento | Gabriel | Hugo    |
+Portanto, o sistema não é *apenas* ETL e visualização; ele está construindo a infraestrutura para incorporar modelos de ML para previsão, que são o objetivo principal do subsistema de ML do projeto.
