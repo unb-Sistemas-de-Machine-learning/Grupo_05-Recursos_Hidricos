@@ -12,12 +12,10 @@ nav:
       - engenharia-de-requisitos/historias-de-usuario.md
       - engenharia-de-requisitos/engenharia-de-requisitos.md
   - Engenharia de Dados: engenharia-de-dados/engenharia-de-dados.md
-  - Ajuda e Suporte:
-    - ajuda-e-suporte/problemas-comuns.md
-    - Documentação técnica:
+  - 'Resultados e Validação': resultados/validacao.md
+  - Documentação Técnica:
         - Frontend: ajuda-e-suporte/documentacao-tecnica/frontend.md
         - Backend: ajuda-e-suporte/documentacao-tecnica/backend.md
-  - Sobre: sobre/sobre-o-projeto.md
 
 markdown_extensions:
   - pymdownx.tasklist:

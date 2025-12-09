@@ -46,18 +46,33 @@ Esses scripts formam a fundação da **Feature Store e Pipelines (RF-ML-14)** me
 
 ## 2.3 Escolha e Justificativa do Modelo
 
-*   **Modelo escolhido é coerente com o problema e os dados:** O documento não especifica modelos concretos, mas propõe tipos (classificação/regressão para chuva, híbrido para nível). A escolha futura deverá ser justificada, provavelmente com base nos dados preparados e nas métricas definidas.
-*   **Comparação com baseline(s) simples:** Implícito nos requisitos de métricas e na análise de resultados.
-*   **Justificativa clara da escolha:** Os requisitos sugerem que a escolha será fundamentada em desempenho (RMSE, MAE, ROC-AUC) e considerações operacionais (incerteza, alertas).
+*   **Modelo escolhido é coerente com o problema e os dados:** Para a previsão da cota dos reservatórios, foram implementados e avaliados dois modelos principais:
+    1.  **RandomForest:** Um modelo de ensemble baseado em árvores de decisão. Foi escolhido por sua robustez, capacidade de capturar interações não-lineares entre as features e bom desempenho geral.
+    2.  **SARIMA:** Um modelo estatístico clássico para séries temporais que leva em conta a sazonalidade. Serve como um baseline robusto e um ponto de comparação para o modelo de machine learning.
+
+*   **Engenharia de Features Aplicada:** Para alimentar o modelo RandomForest, foram criadas diversas features a partir dos dados brutos de cota e chuva:
+    *   **Lags:** Valores da cota em instantes passados (ex: `lag_1` para 15 min antes, `lag_4` para 1h antes, `lag_96` para 24h antes).
+    *   **Deltas:** Variação da cota entre diferentes instantes (ex: `delta_15m`, `delta_1h`).
+    *   **Agregações de Chuva:** Soma da precipitação em diferentes janelas de tempo (ex: `chuva_sum_1h`, `chuva_sum_24h`).
+
+*   **Justificativa clara da escolha:** O RandomForest foi priorizado pela sua flexibilidade em incorporar diversas features exógenas (como chuva e seus derivados), o que é mais complexo em modelos SARIMA puros. A comparação entre eles permite validar a eficácia da abordagem de machine learning.
 
 ## 2.4 Análise de Resultados e Erros
 
-*   **Interpretação dos resultados obtidos:** Os requisitos de **Monitoramento & Re-treino (RF-ML-12)** e **Observabilidade ML (RNF-ML-09)** destacam a necessidade de dashboards de métricas (MAE/RMSE, ROC, PSI), alertas e logs de inferência. Isso permite uma análise contínua dos resultados.
-*   **Identificação de principais erros/limitações:** Os **Riscos e Mitigação** listados (Descoberto sem série estruturada, SINISA anual, Evaporação) já indicam um reconhecimento das limitações e desafios de dados. A **Explicabilidade (RF-ML-13)** via SHAP/feature importance também auxiliará na compreensão de erros.
-*   **Discussão de possíveis melhorias futuras:** O roadmap de ML (RF-MLs) é, em si, uma discussão de melhorias contínuas.
+*   **Interpretação dos resultados obtidos:** A performance dos modelos é monitorada principalmente pelo **Erro Absoluto (MAE)** e **Erro Absoluto Percentual (MAPE)**.
+    *   Nos testes realizados, o modelo **RandomForest demonstrou uma performance excelente para horizontes de previsão curtos**, mantendo um erro absoluto percentual abaixo de 5% para previsões de até 7 dias no futuro.
+
+*   **Identificação de principais erros/limitações:**
+    *   **Degradação da Acurácia:** Após o horizonte de 7 dias, a incerteza dos dados aumenta significativamente, e a acurácia do modelo diminui, tornando as previsões menos confiáveis.
+    *   **Necessidade de Re-treino:** O modelo RandomForest, por sua natureza, não extrapola tendências futuras e depende dos padrões aprendidos nos dados de treino. Por isso, para manter sua acurácia, ele **precisa ser re-treinado diariamente** com os dados mais recentes. Em contraste, o modelo SARIMA pode se adaptar melhor a tendências ao longo do tempo, mas apresenta menor acurácia geral em curtos prazos.
+
+*   **Discussão de possíveis melhorias futuras:**
+    *   **Alertas e Tendências:** Implementar um sistema de alertas que use a previsão para classificar a tendência futura da cota (subindo, descendo, estável).
+    *   **Feature Engineering Avançada:** Incorporar novas features que possam capturar melhor a dinâmica do sistema hídrico. O `RELATORIO_ANALISE_BARRAGENS.pdf` contém estudos sobre features potenciais.
+    *   **Automação do Re-treino:** Migrar o processo de re-treino manual para um pipeline automatizado (MLOps) que execute diariamente, gere os novos artefatos e atualize o backend sem intervenção manual.
 
 ## Conclusão da Análise de ML
 
-Embora o código atual do backend (`app.py`) atue principalmente como um servidor de API para dados já processados e coletados, o projeto ÁguaPrev possui uma visão de Machine Learning muito bem definida e detalhada no documento de Engenharia de Dados. Os scripts de ingestão (`hidro_api.py`, `hidro_ingest.py`) são componentes essenciais para a fase de preparação de dados que alimentará futuros modelos de ML, conforme os requisitos estabelecidos.
+O projeto ÁguaPrev evoluiu de uma plataforma de visualização de dados para um sistema completo que incorpora um pipeline de Machine Learning para previsões. O backend não apenas serve dados históricos, mas também implementa um sistema de inferência online através da rota `/prever`, utilizando modelos pré-treinados (como RandomForest) para gerar previsões de cota em tempo real.
 
-Portanto, o sistema não é *apenas* ETL e visualização; ele está construindo a infraestrutura para incorporar modelos de ML para previsão, que são o objetivo principal do subsistema de ML do projeto.
+Os scripts de ingestão (`hidro_api.py`, `hidro_ingest.py`) são a base que alimenta tanto o banco de dados histórico quanto o processo de treinamento offline, fechando o ciclo de ponta a ponta do sistema de ML, desde a coleta de dados até a entrega de previsões ao usuário final.

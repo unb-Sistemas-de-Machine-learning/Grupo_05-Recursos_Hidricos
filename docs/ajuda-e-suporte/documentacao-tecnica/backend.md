@@ -71,6 +71,51 @@ As principais ferramentas e bibliotecas empregadas são:
 | :--- | :----- | :-------- | :------------------------------ | :-------------- | :---- |
 | `/admin/metrics` | `GET` | Retorna métricas de administração. | (Nenhum) | `{ "total_users": N }` | Exige token de acesso com `role: "admin"`. |
 
+### Rotas de Machine Learning
+
+| Rota | Método | Descrição | Parâmetros de Requisição (JSON) | Resposta (JSON) | Notas |
+| :--- | :----- | :-------- | :------------------------------ | :-------------- | :---- |
+| `/prever` | `POST` | Executa o modelo de previsão com base nos dados recentes fornecidos. | `{ "dados_recentes": [...] }` | Exemplo de resposta abaixo | Os dados de previsão são salvos no banco de dados. |
+
+**Exemplo de resposta da rota `/prever`:**
+```json
+{
+  "modelo": {
+    "horizonte": "24h",
+    "tipo_modelo": "RandomForest"
+  },
+  "resultados": [
+    {
+      "instante_previsao": "2025-01-05T23:45:00Z",
+      "timestamp_alvo": "2025-01-06T23:45:00Z",
+      "cota_prevista": 102.80,
+      "features_usadas": {
+        "cota": 102.30,
+        "chuva": 0.0,
+        "lag_1": 102.25,
+        "lag_4": 102.10
+      }
+    }
+  ]
+}
+```
+
+## Estrutura do Banco de Dados de ML
+
+Para monitorar e armazenar os resultados das previsões, uma tabela dedicada é utilizada.
+
+| Tabela | Coluna | Tipo | Descrição |
+| :--- | :--- | :--- | :--- |
+| `previsoes` | `id` | INTEGER | Identificador único da previsão. |
+| | `instante_previsao` | DATETIME | Data e hora em que a previsão foi gerada. |
+| | `timestamp_alvo` | DATETIME | O momento no futuro para o qual a previsão foi feita. |
+| | `horizonte` | TEXT | O horizonte de tempo da previsão (ex: "24h", "7d"). |
+| | `tipo_modelo` | TEXT | O nome do modelo usado (ex: "RandomForest", "SARIMA"). |
+| | `cota_prevista`| REAL | O valor da cota previsto pelo modelo. |
+| | `cota_real` | REAL | O valor real, a ser preenchido posteriormente para comparação. (Opcional) |
+| | `erro` | REAL | A diferença calculada entre `cota_prevista` e `cota_real`. (Opcional) |
+| | `features_usadas` | TEXT (JSON)| Um objeto JSON contendo as features e seus valores usados para gerar a previsão. (Opcional) |
+
 ## 🚀 Comandos CLI para Ingestão de Dados
 
 O backend também oferece comandos via linha de comando (Flask CLI) para gerenciar o banco de dados e a ingestão de dados da ANA.
