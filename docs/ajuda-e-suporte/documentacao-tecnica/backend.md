@@ -1,6 +1,6 @@
 # ÁguaPrev | Backend
 
-## 📄 Visão Geral
+## Visão Geral
 
 O backend da aplicação ÁguaPrev é construído em Python utilizando o framework **Flask**, oferecendo uma API RESTful para monitoramento e previsão da situação hídrica do Distrito Federal. A arquitetura foca na modularidade, separando a lógica de negócio, autenticação e acesso a dados.
 
@@ -10,7 +10,7 @@ Ele é responsável por:
 *   Expor dados de estações de monitoramento e séries temporais (cota, vazão, chuva).
 *   Permitir a ingestão de dados de fontes externas (como a API da ANA) através de comandos CLI.
 
-## 🛠️ Principais Tecnologias
+## Principais Tecnologias
 As principais ferramentas e bibliotecas empregadas são:
 
 -   **Flask:** Microframework web para a construção de APIs em Python.
@@ -20,7 +20,7 @@ As principais ferramentas e bibliotecas empregadas são:
 -   **python-dotenv:** Gerenciamento de variáveis de ambiente.
 -   **requests:** Biblioteca para fazer requisições HTTP a APIs externas (ex: ANA).
 
-## 📁 Estrutura de Pastas (simplificada)
+## Estrutura de Pastas (simplificada)
 
 ```
 📁 backend/
@@ -36,7 +36,7 @@ As principais ferramentas e bibliotecas empregadas são:
 └── __pycache__/          # Cache de módulos Python
 ```
 
-## 🌐 Rotas da Aplicação
+## Rotas da Aplicação
 
 ### Autenticação e Usuários
 
@@ -116,7 +116,7 @@ Para monitorar e armazenar os resultados das previsões, uma tabela dedicada é 
 | | `erro` | REAL | A diferença calculada entre `cota_prevista` e `cota_real`. (Opcional) |
 | | `features_usadas` | TEXT (JSON)| Um objeto JSON contendo as features e seus valores usados para gerar a previsão. (Opcional) |
 
-## 🚀 Comandos CLI para Ingestão de Dados
+## Comandos CLI para Ingestão de Dados
 
 O backend também oferece comandos via linha de comando (Flask CLI) para gerenciar o banco de dados e a ingestão de dados da ANA.
 
