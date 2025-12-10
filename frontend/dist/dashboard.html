@@ -3,70 +3,252 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
     <title>Dashboard — AguaPrev</title>
-    <meta name="description" content="Visão geral do AguaPrev para usuários autenticados." />
     <meta name="theme-color" content="#0A5C67" />
-
     <link rel="icon" type="image/png" href="/src/assets/aguaprev/favicon.png" />
-    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet" />
-    <script type="module" crossorigin src="./assets/main-Dd-yUimy.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/main-zkW5csLT.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+    <script type="module" crossorigin src="./assets/dashboard-Cxzya55N.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/main-ANOAag5g.js">
+    <link rel="stylesheet" crossorigin href="./assets/style-Ctv5GHdc.css">
   </head>
 
   <body class="font-sans antialiased bg-white text-gray-800 dark:bg-[#0E1A2B] dark:text-gray-100">
-    <a href="#conteudo" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[999] px-3 py-2 rounded bg-[#0A5C67] text-white">
-      Ir para o conteúdo
-    </a>
+    <!-- Sidebar montada pelo main.js -->
+    <div id="app-sidebar-root"></div>
 
-    <div class="min-h-screen w-full flex">
-      <!-- ========= SIDEBAR (partial) ========= -->
-      <aside id="app-sidebar-root" class="shrink-0"></aside>
+    <!-- Conteúdo -->
+    <main id="ap-content" class="relative">
+      <div class="max-w-[1440px] mx-auto px-5 sm:px-6 lg:px-10 py-8">
+        
+        <!-- Header (acima dos filtros) -->
+        <header class="mb-6">
+          <h1
+            class="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#031E21] dark:text-white"
+            data-i18n="Dash.title"
+          >
+            Visão geral hídrica
+          </h1>
+          <p
+            class="mt-1 text-sm text-gray-600 dark:text-gray-300"
+            data-i18n="Dash.subtitle"
+          >
+            Indicadores principais por bacia (últimos 7 dias).
+          </p>
+        </header>
 
-      <!-- ========= CONTEÚDO ========= -->
-      <div class="flex-1 min-w-0 flex flex-col">
-        <!-- Header (você pode manter o seu header global se quiser) -->
-        <header id="app-header" class="w-full sticky top-0 z-40"></header>
+        <!-- Filtros -->
+        <section
+          class="rounded-3xl ring-1 ring-black/5 dark:ring-white/10 bg-white/70 dark:bg-white/5 backdrop-blur p-4 sm:p-5 mb-6"
+        >
+          <form
+            id="dash-filters"
+            class="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 items-end"
+          >
+            <!-- Região -->
+            <div class="md:col-span-4">
+              <label
+                class="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1"
+                data-i18n="Dash.filters.region"
+                >Região</label
+              >
+              <select
+                id="f-region"
+                class="w-full rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-white/10
+                             text-sm px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#0A5C67]"
+              >
+                <option value="df" data-i18n="Map.region.df">DF — Geral</option>
+                <option value="descoberto" data-i18n="Map.region.desc">Bacia Descoberto</option>
+                <option value="paranoa" data-i18n="Map.region.paranoa">Bacia Paranoá</option>
+                <option value="saob" data-i18n="Map.region.sb">Bacia São Bartolomeu</option>
+              </select>
+            </div>
 
-        <main id="conteudo" class="flex-1 w-full">
-          <section class="w-full">
-            <div class="max-w-[1358px] mx-auto px-5 sm:px-6 lg:px-10 py-8">
-              <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#031E21] dark:text-white">
-                <span data-i18n="Sidebar.overview">Visão geral</span>
-              </h1>
-              <p class="mt-1 text-gray-600 dark:text-gray-300">
-                Bem-vindo ao seu dashboard. Use o menu à esquerda para navegar entre mapas, séries, alertas e mais.
-              </p>
-
-              <!-- EXEMPLO DE CARDS -->
-              <div class="mt-6 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-                <div class="ap-card p-5">
-                  <p class="text-sm text-gray-500 dark:text-gray-400">Estações ativas</p>
-                  <p class="text-2xl font-bold mt-1">128</p>
-                </div>
-                <div class="ap-card p-5">
-                  <p class="text-sm text-gray-500 dark:text-gray-400">Alertas hoje</p>
-                  <p class="text-2xl font-bold mt-1">3</p>
-                </div>
-                <div class="ap-card p-5">
-                  <p class="text-sm text-gray-500 dark:text-gray-400">Atualizações</p>
-                  <p class="text-2xl font-bold mt-1">24h</p>
-                </div>
-                <div class="ap-card p-5">
-                  <p class="text-sm text-gray-500 dark:text-gray-400">Bacias monitoradas</p>
-                  <p class="text-2xl font-bold mt-1">12</p>
-                </div>
+            <!-- Período -->
+            <div class="md:col-span-5 grid grid-cols-2 gap-3">
+              <div>
+                <label
+                  class="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1"
+                  data-i18n="Dash.filters.start"
+                  >Início</label
+                >
+                <input
+                  id="f-start"
+                  type="date"
+                  class="w-full rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-white/10 text-sm px-3 py-2
+                              focus:outline-none focus:ring-2 focus:ring-[#0A5C67]"
+                />
+              </div>
+              <div>
+                <label
+                  class="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1"
+                  data-i18n="Dash.filters.end"
+                  >Fim</label
+                >
+                <input
+                  id="f-end"
+                  type="date"
+                  class="w-full rounded-xl border border-black/10 dark:border-white/10 bg-white dark:bg-white/10 text-sm px-3 py-2
+                              focus:outline-none focus:ring-2 focus:ring-[#0A5C67]"
+                />
               </div>
             </div>
-          </section>
-        </main>
 
-        <div id="app-footer" class="w-full"></div>
+            <!-- Métricas -->
+            <div class="md:col-span-3">
+              <span
+                class="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1"
+                data-i18n="Dash.filters.metrics"
+                >Métricas</span
+              >
+              <div class="flex flex-wrap gap-2">
+                <label class="inline-flex items-center gap-2 text-xs">
+                  <input
+                    type="checkbox"
+                    class="rounded text-[#0A5C67]"
+                    id="m-precip"
+                    checked
+                  />
+                  <span data-i18n="Map.metric_precip">Precipitação</span>
+                </label>
+                <label class="inline-flex items-center gap-2 text-xs">
+                  <input
+                    type="checkbox"
+                    class="rounded text-[#0A5C67]"
+                    id="m-flow"
+                    checked
+                  />
+                  <span data-i18n="Map.metric_flow">Vazão</span>
+                </label>
+                <label class="inline-flex items-center gap-2 text-xs">
+                  <input
+                    type="checkbox"
+                    class="rounded text-[#0A5C67]"
+                    id="m-storage"
+                    checked
+                  />
+                  <span data-i18n="Map.metric_storage">Armazenamento</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Ações -->
+            <div class="md:col-span-12 flex items-center gap-3">
+              <button
+                type="submit"
+                class="inline-flex items-center gap-2 rounded-xl px-4 py-2 bg-[#0A5C67] text-white text-sm font-semibold hover:brightness-110"
+                data-i18n="Dash.filters.apply"
+              >
+                Aplicar filtros
+              </button>
+              <button
+                type="button"
+                id="f-reset"
+                class="inline-flex items-center gap-2 rounded-xl px-4 py-2 border border-black/10 dark:border-white/10
+                             bg-white dark:bg-white/10 text-sm hover:bg-black/5 dark:hover:bg-white/10"
+                data-i18n="Dash.filters.reset"
+              >
+                Redefinir
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <!-- KPIs -->
+        <section
+          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6"
+        >
+          <div
+            class="rounded-2xl ring-1 ring-black/5 dark:ring-white/10 bg-white/70 dark:bg-white/5 backdrop-blur p-4"
+          >
+            <p class="text-xs text-gray-500 dark:text-gray-400" data-i18n="Kpi.avg_precip_label">
+              Precipitação média
+            </p>
+            <p class="mt-1 text-2xl font-bold">
+              7.4 <span class="text-base font-semibold">mm</span>
+            </p>
+          </div>
+          <div
+            class="rounded-2xl ring-1 ring-black/5 dark:ring-white/10 bg-white/70 dark:bg-white/5 backdrop-blur p-4"
+          >
+            <p class="text-xs text-gray-500 dark:text-gray-400" data-i18n="Kpi.avg_flow_label">Vazão média</p>
+            <p class="mt-1 text-2xl font-bold">
+              18.6 <span class="text-base font-semibold">m³/s</span>
+            </p>
+          </div>
+          <div
+            class="rounded-2xl ring-1 ring-black/5 dark:ring-white/10 bg-white/70 dark:bg-white/5 backdrop-blur p-4"
+          >
+            <p class="text-xs text-gray-500 dark:text-gray-400" data-i18n="Kpi.avg_storage_label">
+              Armazenamento médio
+            </p>
+            <p class="mt-1 text-2xl font-bold">
+              72 <span class="text-base font-semibold">%</span>
+            </p>
+          </div>
+          <div
+            class="rounded-2xl ring-1 ring-black/5 dark:ring-white/10 bg-white/70 dark:bg-white/5 backdrop-blur p-4"
+          >
+            <p class="text-xs text-gray-500 dark:text-gray-400" data-i18n="Kpi.risk_high_7d_label">
+              Risco alto (próx. 7d)
+            </p>
+            <p class="mt-1 text-2xl font-bold">
+              12 <span class="text-base font-semibold">%</span>
+            </p>
+          </div>
+        </section>
+
+        <!-- Grade de gráficos -->
+        <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <article
+            class="lg:col-span-7 rounded-3xl ring-1 ring-black/5 dark:ring-white/10 bg-white/70 dark:bg-white/5 backdrop-blur p-5"
+          >
+            <h2 class="font-semibold mb-3" data-i18n="Dash.chart_precip">Precipitação (mm) — últimos 7 dias</h2>
+            <canvas
+              id="ch-precip"
+              height="140"
+              aria-label="Gráfico de precipitação"
+            ></canvas>
+          </article>
+
+          <article
+            class="lg:col-span-5 rounded-3xl ring-1 ring-black/5 dark:ring-white/10 bg-white/70 dark:bg-white/5 backdrop-blur p-5"
+          >
+            <h2 class="font-semibold mb-3" data-i18n="Dash.chart_storage">
+              Reservatórios — nível de armazenamento (%)
+            </h2>
+            <canvas
+              id="ch-storage"
+              height="140"
+              aria-label="Gráfico de armazenamento"
+            ></canvas>
+          </article>
+
+          <article
+            class="lg:col-span-7 rounded-3xl ring-1 ring-black/5 dark:ring-white/10 bg-white/70 dark:bg-white/5 backdrop-blur p-5"
+          >
+            <h2 class="font-semibold mb-3" data-i18n="Dash.chart_flow">Vazão (m³/s) — série diária</h2>
+            <canvas
+              id="ch-flow"
+              height="150"
+              aria-label="Gráfico de vazão"
+            ></canvas>
+          </article>
+
+          <article
+            class="lg:col-span-5 rounded-3xl ring-1 ring-black/5 dark:ring-white/10 bg-white/70 dark:bg-white/5 backdrop-blur p-5"
+          >
+            <h2 class="font-semibold mb-3" data-i18n="Dash.chart_risk">
+              Composição de risco (próx. 7 dias)
+            </h2>
+            <canvas
+              id="ch-risk"
+              height="150"
+              aria-label="Gráfico de risco"
+            ></canvas>
+          </article>
+        </section>
       </div>
-    </div>
+    </main>
 
-    <!-- Widget social -->
-    <div id="app-social-floating"></div>
-
   </body>
 </html>
